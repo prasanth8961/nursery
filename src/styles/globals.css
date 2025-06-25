@@ -1,0 +1,94 @@
+/* globals.css or styles.css */
+@import "tailwindcss";
+:root {
+  --color-primary: #2f6b3d;        /* Brand green */
+  --color-primary-light: #4caf50;  /* Soft green */
+  --color-primary-dark: #1e4729;
+
+  --color-accent-light: #a3d9a5;
+  --color-accent-ultralight: #d6e7d7;
+  --color-accent-mid: #82c49e;
+  --color-accent-dark: #3a7750;
+
+  --color-dark: #374151;
+  --foreground: #171717;
+  --background: #ffffff;
+}
+
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #f9f9f9;
+
+  --color-primary: #9EDF9C;
+  --color-primary-light: #4caf50;
+  --color-primary-dark: #2f6b3d;
+
+  --color-accent-light: #355e3b;
+  --color-accent-ultralight: #1d1f1d;
+  --color-accent-mid: #58a77c;
+  --color-accent-dark: #2e593a;
+
+  --color-dark: #d1d5db;
+}
+
+
+@layer utilities {
+  @keyframes ripple {
+    0% {
+      transform: scale(0.5);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  .animate-ripple {
+    animation: ripple 3s infinite ease-out;
+  }
+
+  .delay-200 {
+    animation-delay: 0.2s;
+  }
+
+  .delay-400 {
+    animation-delay: 0.4s;
+  }
+}
+
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-fade {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.fade-delay-100 {
+  animation-delay: 0.1s;
+}
+.fade-delay-300 {
+  animation-delay: 0.3s;
+}
+.fade-delay-500 {
+  animation-delay: 0.5s;
+}
+
+
+
+
+body{
+  background: var(--background);
+  color : var(--foreground);
+}
