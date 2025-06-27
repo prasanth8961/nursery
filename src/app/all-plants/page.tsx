@@ -9,24 +9,32 @@ import { Plant, plantsData } from '@/seeds/plantData';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-const categories = ['All', 'Indoor', 'Outdoor', 'Flowering'];
+const categories = ['All', 'Indoor', 'Outdoor', 'Flowering', 'Wooden'];
 
 export default function AllPlantsPage() {
   const [active, setActive] = useState<string>(categories[0]);
   const [filteredPlants, setFilteredPlants] = useState<Plant[]>(plantsData);
   const [showFilters, setShowFilters] = useState<boolean>(false);
+  const [searchInput, setSearchInput] = useState<string>("");
 
   const router = useRouter();
 
   useEffect(() => {
-    const filtered =
+    let filtered =
       active === 'All'
         ? plantsData
         : plantsData.filter(
           (plant) => plant.category.toLowerCase() === active.toLowerCase()
         );
+    if (searchInput) {
+      filtered = filtered.filter((item) => (item.name.toLowerCase().includes(searchInput.toLowerCase())) || item.category.toLowerCase().includes(searchInput.toLowerCase()))
+    }
     setFilteredPlants(filtered);
-  }, [active]);
+  }, [active, searchInput]);
+
+  const handlePlantDetails = (_id: number) => {
+    router.push(`/plant-detail?id=${_id}`);
+  }
 
   const socialMedias = [
     { id: 1, icon: FaWhatsapp, link: 'https://wa.me/917639874667' },
@@ -61,22 +69,37 @@ export default function AllPlantsPage() {
           </div>
         </div>
 
-        <div className="w-full flex items-center justify-between gap-4 mt-1 mb-2 px-2">
+        <div className="w-full flex items-center justify-between gap-2 mt-1 mb-2 px-1">
           <button
-            onClick={() => router.back()}
-            className="h-8 w-8 bg-[var(--color-accent-ultralight)] rounded-tl-md rounded-br-md border-2 border-[var(--color-accent-light)] flex items-center justify-center hover:bg-[var(--color-accent-mid)] text-[var(--color-primary-dark)] transition cursor-pointer"
+            onClick={() => router.push('/')}
+            className="h-10 w-12 bg-[var(--color-accent-ultralight)] rounded-tl-md rounded-br-md border-2 border-[var(--color-accent-light)] flex items-center justify-center hover:bg-[var(--color-accent-mid)] text-[var(--color-primary-dark)] transition cursor-pointer"
           >
             <FaArrowLeft size={14} />
           </button>
 
-          <h1 className="flex-1 text-center text-xl sm:text-2xl font-bold text-[var(--color-primary-dark)]">
-            Our Products
-          </h1>
+          <div className="w-full max-w-xl mx-auto flex items-center gap-2  border border-[var(--color-primary-light)] rounded-md px-4 py-2 shadow-sm focus-within:ring-2 focus-within:ring-[var(--color-primary)]">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-[var(--color-primary-dark)]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search plants, categories..."
+              onChange={(e) => setSearchInput(e.target.value.trim())}
+              className="flex-1 bg-transparent focus:outline-none text-[var(--color-primary-dark)] placeholder:text-gray-400"
+            />
+          </div>
+
 
           <button
-            className={`h-8 w-8 rounded-tl-md border-2 rounded-br-md border-[var(--color-accent-light)] flex items-center justify-center transition cursor-pointer ${showFilters
-                ? 'bg-[var(--color-accent-dark)] text-[var(--color-accent-mid)]'
-                : 'bg-[var(--color-accent-ultralight)] text-[var(--color-primary-dark)] hover:bg-[var(--color-accent-mid)]'
+            className={`h-10 w-12 rounded-tl-md border-2 rounded-br-md border-[var(--color-accent-light)] flex items-center justify-center transition cursor-pointer ${showFilters
+              ? 'bg-[var(--color-accent-dark)] text-[var(--color-accent-mid)]'
+              : 'bg-[var(--color-accent-ultralight)] text-[var(--color-primary-dark)] hover:bg-[var(--color-accent-mid)]'
               }`}
             onClick={() => setShowFilters((prev) => !prev)}
           >
@@ -85,7 +108,7 @@ export default function AllPlantsPage() {
         </div>
 
         {showFilters && (
-          <div className="flex flex-wrap gap-4 items-start px-1 mb-1">
+          <div className="flex flex-wrap gap-4 items-start px-1">
             {categories.map((category, idx) => (
               <div
                 key={idx}
@@ -94,8 +117,8 @@ export default function AllPlantsPage() {
               >
                 <span
                   className={`text-sm font-medium transition-colors duration-200 ${active === category
-                      ? 'text-[var(--color-primary-dark)]'
-                      : 'text-[var(--color-primary)] hover:text-[var(--color-primary-light)]'
+                    ? 'text-[var(--color-primary-dark)]'
+                    : 'text-[var(--color-primary)] hover:text-[var(--color-primary-light)]'
                     }`}
                 >
                   {category}
@@ -114,6 +137,7 @@ export default function AllPlantsPage() {
         {filteredPlants.map((plant) => (
           <div
             key={plant.id}
+            onClick={() => handlePlantDetails(plant.id)}
             className="rounded-sm shadow-sm hover:shadow-xl transition-all duration-300 mb-2"
           >
             <div className="relative w-full aspect-[4/3] overflow-hidden rounded-t-sm">
@@ -124,7 +148,7 @@ export default function AllPlantsPage() {
                 className="object-fit hover:scale-105 transition-transform duration-300 ease-in-out"
                 sizes="(max-width: 768px) 100vw, 300px"
               />
-              <div className="absolute right-2 top-2 z-30 bg-gradient-to-r from-green-400 to-green-600 text-white px-3 py-1 rounded-full shadow-md text-xs font-bold tracking-wide animate-bounce">
+              <div className="absolute right-2 top-2 z-30 bg-gradient-to-r from-green-400 to-green-600 text-white px-3 py-1 rounded-tl-md rounded-br-md shadow-md text-xs font-bold tracking-wide ">
                 {plant.discount}% OFF
               </div>
             </div>
@@ -146,7 +170,9 @@ export default function AllPlantsPage() {
                     </span>
                   )}
                 </div>
-                <div className="rounded-full p-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white flex items-center justify-center text-sm font-semibold tracking-wide transition-colors duration-200 cursor-pointer">
+                <div className="rounded-tl-md rounded-br-md p-2 bg-[var(--color-primary-light)] hover:bg-[var(--color-primary-dark)] text-white flex items-center justify-center text-sm font-semibold tracking-wide transition-colors duration-200 cursor-pointer"
+                  onClick={() => handlePlantDetails(plant.id)}
+                >
                   <FaArrowRight className="text-white text-base" />
                 </div>
               </div>

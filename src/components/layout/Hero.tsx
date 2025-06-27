@@ -1,41 +1,107 @@
-import Image from "next/image";
+'use client';
 
+import Image from "next/image";
+import { motion, Variants } from "framer-motion";
+
+const textFadeIn: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.2,
+      duration: 0.8,
+      ease: 'easeOut',
+    },
+  }),
+};
 
 export const Hero = () => {
-    return (
-         <main className="flex flex-col md:flex-row items-center justify-between px-6 py-10 sm:py-18 max-w-7xl mx-auto">
-          <div className="max-w-xl">
-            <span className="text-xs font-medium uppercase bg-[var(--color-accent-mid)] text-[var(--color-accent-dark)] px-4 py-2 rounded-tl-xl rounded-br-xl sm:rounded-tl-2xl rounded-xs sm:rounded-br-2xl">
-              Fresh & Green Everyday
-            </span>
-            <h1 className="text-4xl md:text-5xl font-extrabold mt-4 leading-tight">
-              WELCOME TO OUR
-              <br /> BEAUTIFUL NURSERY IN
-              <br /> THE 🌿 HEART OF NATURE
-            </h1>
-            <p className="mt-4 text-[var(--color-primary-dark)]">
-              Discover lush plants, expert gardening tips, and the green beauty your home deserves. Our nursery brings nature closer to you.
-            </p>
-            <div className="mt-6 flex gap-4">
-              <div className="bg-[var(--color-accent-mid)] text-[var(--color-accent-dark)] px-5 py-2 hover:bg-[var(--color-primary-dark)] rounded-tl-xl rounded-br-xl rounded-xs transition cursor-pointer">
-                Explore Plants
-              </div>
-              <div className="border border-[var(--color-primary)] text-[var(--color-accent-light)] px-5 py-2 rounded-md hover:bg-[var(--color-primary-light)] hover:text-white  rounded-tl-xl rounded-br-xl rounded-xs transition cursor-pointer">
-                Need Help? 🌱
-              </div>
-            </div>
-          </div>
-          <div className="relative mt-10 md:mt-0 w-full max-w-[400px] aspect-square flex items-center  justify-center">
-            <div className="absolute w-2/3 aspect-square rounded-tl-[25%] rounded-tr-[25%] rounded-bl-[25%] rounded-br-[25%] bg-green-200 opacity-30 animate-ripple" />
-            <div className="absolute w-2/3 aspect-square rounded-tl-[25%] rounded-tr-[25%] rounded-bl-[25%] rounded-br-[25%] bg-green-300 opacity-20 animate-ripple delay-200" />
-            <div className="absolute w-2/3  aspect-square rounded-tl-[25%] rounded-tr-[25%] rounded-bl-[25%] rounded-br-[25%] bg-green-400 opacity-10 animate-ripple delay-400" />
-            <Image
-              src="/hero_1.png"
-              alt="Nursery showcase"
-              fill
-              className="object-contain drop-shadow-md relative z-10"
-            />
-          </div>
-        </main>
-    )
+  return (
+    <main className="flex flex-col md:flex-row items-center justify-between px-6 py-10 xl:py-42 max-w-7xl mx-auto overflow-hidden">
+      <motion.div
+        className="max-w-xl"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={{
+          hidden: { opacity: 0, x: -50 },
+          visible: {
+            opacity: 1,
+            x: 0,
+            transition: {
+              duration: 0.8,
+              ease: 'easeOut',
+              when: 'beforeChildren',
+              staggerChildren: 0.2,
+            },
+          },
+        }}
+      >
+        <motion.span
+          className="text-xs font-medium uppercase bg-[var(--color-accent-mid)] text-[var(--foreground)] px-4 py-2 rounded-tl-xl rounded-br-xl sm:rounded-tl-2xl rounded-xs sm:rounded-br-2xl inline-block"
+          variants={textFadeIn}
+          custom={0}
+        >
+          Fresh & Green Everyday
+        </motion.span>
+
+        <motion.h1
+          className="text-4xl md:text-5xl font-extrabold mt-4 leading-tight"
+          variants={textFadeIn}
+          custom={1}
+        >
+          WELCOME TO OUR
+          <br /> BEAUTIFUL NURSERY IN
+          <br /> THE 🌿 HEART OF NATURE
+        </motion.h1>
+
+        <motion.p
+          className="mt-4 text-[var(--color-primary)]"
+          variants={textFadeIn}
+          custom={2}
+        >
+          Discover lush plants, expert gardening tips, and the green beauty your home deserves. Our nursery brings nature closer to you.
+        </motion.p>
+
+        <motion.div
+          className="mt-6 flex gap-4"
+          variants={textFadeIn}
+          custom={3}
+        >
+          <button className="bg-[var(--color-accent-mid)] text-[var(--foreground)] px-5 py-2 hover:bg-[var(--color-primary-dark)] hover:text-white rounded-tl-xl rounded-br-xl transition cursor-pointer">
+            Explore Plants
+          </button>
+          <button className="border border-[var(--color-primary)] text-[var(--foreground)] px-5 py-2 hover:bg-[var(--color-primary-light)] hover:text-white rounded-tl-xl rounded-br-xl transition cursor-pointer">
+            Need Help? 🌱
+          </button>
+        </motion.div>
+      </motion.div>
+
+      <motion.div
+        className="relative mt-10 md:mt-0 w-full max-w-[400px] aspect-square flex items-center justify-center"
+        initial={{ opacity: 0, scale: 0.9 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+      >
+        <div className="absolute w-2/3 aspect-square rounded-[25%] bg-green-200 opacity-30 animate-ripple" />
+        <div className="absolute w-2/3 aspect-square rounded-[25%] bg-green-300 opacity-20 animate-ripple delay-[200ms]" />
+        <div className="absolute w-2/3 aspect-square rounded-[25%] bg-green-400 opacity-10 animate-ripple delay-[400ms]" />
+
+        <motion.div
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="relative z-10 w-full h-full"
+        >
+          <Image
+            src="/hero_1.png"
+            alt="Nursery showcase"
+            fill
+            className="object-contain drop-shadow-md"
+          />
+        </motion.div>
+      </motion.div>
+    </main>
+  );
 };

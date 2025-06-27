@@ -8,16 +8,17 @@ import {
   FaInstagram,
   FaFacebookF,
   FaBars,
-  FaTimes,
+  FaTimes, FaHome, FaSeedling, FaShoppingCart, FaHeart
 } from "react-icons/fa";
 import { RiTwitterXLine } from "react-icons/ri";
 import { BsPerson } from "react-icons/bs";
 import { Theme } from "@/components/common/Theme";
 import Image from "next/image";
-
+import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const router = useRouter();
 
   const socialMedias = [
     {
@@ -41,6 +42,17 @@ export const Navbar = () => {
       link: '#'
     }
   ];
+
+
+  const navigeteIntoHome = () => {
+    setMenuOpen(false);
+    router.replace('/');
+  }
+
+  const navigateTo = (path:string)=>{
+    setMenuOpen(false);
+    router.push(path);
+  }
 
   return (
     <nav className="bg-[var(--background)] w-full relative sticky top-0 z-50 shadow-sm sm:shadow-none">
@@ -109,10 +121,34 @@ export const Navbar = () => {
           className="hidden sm:flex gap-4 text-[var(--color-accent-dark)] font-medium text-sm sm:text-base sm:font-semibold"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
-          <div>Home</div>
-          <div>Products</div>
-          <div>About</div>
-          <div>Contact</div>
+          <div className="flex gap-6 items-center text-[var(--color-primary-dark)] text-sm sm:text-base font-medium">
+            <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
+            onClick={navigeteIntoHome}
+            >
+              <FaHome />
+              <span>Home</span>
+            </div>
+            <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
+            onClick={()=>navigateTo('all-plants')}
+            >
+              <FaSeedling />
+              <span>Plants</span>
+            </div>
+            <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
+            onClick={()=>navigateTo('wishlist')}
+            >
+              <FaHeart />
+              <span>Wishlist</span>
+            </div>
+            <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
+            onClick={()=>navigateTo('checkout')}
+            >
+              <FaShoppingCart />
+              <span>Cart</span>
+            </div>
+          </div>
+
+
         </div>
 
         <div className="flex items-center gap-2">
@@ -151,7 +187,7 @@ export const Navbar = () => {
                 >
                   Prasanth Nursery
                 </span>
-                <p className="text-sm text-[var(--color-accent-mid)] italic font-[cursive] leading-snug">
+                <p className="text-sm text-[var(--foreground)] italic font-[cursive] leading-snug">
                   Growing together, like family 🌿
                 </p>
               </div>
@@ -160,7 +196,7 @@ export const Navbar = () => {
 
           <button
             onClick={() => setMenuOpen(false)}
-            className="absolute right-2 top-2 p-2 text-xl text-[var(--color-accent-dark)] border border-2 border-[var(--color-accent-light)] flex items-center justify-center cursor-pointer rounded-tr-md rounded-bl-md"
+            className="absolute right-2 top-2 p-2 text-xl text-[var(--forground)] border border-2 border-[var(--color-accent-light)] flex items-center justify-center cursor-pointer rounded-tr-md rounded-bl-md"
           >
             <FaTimes />
           </button>
@@ -169,13 +205,32 @@ export const Navbar = () => {
         <div className="w-full border-b border-gray-300 mb-4" />
 
         <div
-          className="flex flex-col gap-4 text-[var(--color-accent-dark)] font-medium text-base"
+          className="flex flex-col gap-4 text-[var(--color-foreground)] font-medium text-base"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
-          <a href="#" onClick={() => setMenuOpen(false)}>Home</a>
-          <a href="#" onClick={() => setMenuOpen(false)}>Products</a>
-          <a href="#" onClick={() => setMenuOpen(false)}>About</a>
-          <a href="#" onClick={() => setMenuOpen(false)}>Contact</a>
+          <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
+          onClick={navigeteIntoHome}
+          >
+            <FaHome />
+            <span>Home</span>
+          </div>
+          <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
+          onClick={()=>navigateTo('all-plants')}
+          >
+            <FaSeedling />
+            <span>Plants</span>
+          </div>
+          <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
+          onClick={()=>navigateTo('wishlist')}
+          >
+            <FaHeart />
+            <span>Wishlist</span>
+          </div>
+          <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
+          onClick={()=>navigateTo('checkout')}>
+            <FaShoppingCart />
+            <span>Cart</span>
+          </div>
         </div>
 
         <div className="mt-auto pt-6">
