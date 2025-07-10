@@ -1,8 +1,8 @@
-/* globals.css or styles.css */
+/* globals.css*/
 @import "tailwindcss";
 :root {
-  --color-primary: #2f6b3d;        /* Brand green */
-  --color-primary-light: #4caf50;  /* Soft green */
+  --color-primary: #2f6b3d;       
+  --color-primary-light: #4caf50;
   --color-primary-dark: #1e4729;
 
   --color-accent-light: #a3d9a5;
@@ -70,6 +70,36 @@
   }
 }
 
+@keyframes scan-line {
+  0% {
+    top: 0%;
+    opacity: 1;
+  }
+  90% {
+    top: 100%;
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes scan-dot {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+.animate-scan-line {
+  animation: scan-line 2.5s linear infinite;
+}
+
 .card-fade {
   opacity: 0;
   animation: fadeInUp 0.8s ease-out forwards;
@@ -83,6 +113,14 @@
 }
 .fade-delay-500 {
   animation-delay: 0.5s;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; 
+  scrollbar-width: none;     
 }
 
 body{

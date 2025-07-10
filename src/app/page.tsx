@@ -1,21 +1,23 @@
 'use client'
 
-import { About } from "@/components/layout/About";
-import { Contact } from "@/components/layout/Contact";
-import { Hero } from "@/components/layout/Hero";
-import { Navbar } from "@/components/layout/Navbar";
+import { ContactSection } from "@/components/layout/ContactSection";
+import { Gallery } from "@/components/layout/Gallery";
+import { HeroSection } from "@/components/layout/HeroSection";
+import { Header } from "@/components/layout/Header";
 import { Products } from "@/components/layout/Products";
+import { About } from "./about/page";
 
 
 export default function Home() {
 
   return (
     <>
-      <Navbar />
-      <Hero />
+      <Header />
+      <HeroSection />
       <Products />
       <About />
-      <Contact />
+      <Gallery />
+      <ContactSection />
     </>
   );
 }
