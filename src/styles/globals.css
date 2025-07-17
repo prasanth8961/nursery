@@ -1,7 +1,9 @@
-/* globals.css*/
+/* globals.css */
 @import "tailwindcss";
+
+/* ===== Root Variables ===== */
 :root {
-  --color-primary: #2f6b3d;       
+  --color-primary: #2f6b3d;
   --color-primary-light: #4caf50;
   --color-primary-dark: #1e4729;
 
@@ -13,8 +15,10 @@
   --color-dark: #374151;
   --foreground: #171717;
   --background: #ffffff;
-}
 
+  --shimmer-base: #e6fcef;
+  --shimmer-highlight: #c4f6da;
+}
 
 .dark {
   --background: #0a0a0a;
@@ -32,8 +36,15 @@
   --color-dark: #d1d5db;
 }
 
+/* ===== Base Styles ===== */
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
 
+/* ===== Animations & Utilities ===== */
 @layer utilities {
+  /* Ripple */
   @keyframes ripple {
     0% {
       transform: scale(0.5);
@@ -56,20 +67,69 @@
   .delay-400 {
     animation-delay: 0.4s;
   }
-}
 
+  /* Shimmer */
+  @keyframes shimmer {
+    0% {
+      background-position: -100% 0;
+    }
+    100% {
+      background-position: 100% 0;
+    }
+  }
 
-@keyframes fadeInUp {
-  from {
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--shimmer-base) 0%,
+      var(--shimmer-highlight) 50%,
+      var(--shimmer-base) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s linear infinite;
+  }
+
+  /* Fade In Up */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .card-fade {
     opacity: 0;
-    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease-out forwards;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .fade-delay-100 {
+    animation-delay: 0.1s;
+  }
+
+  .fade-delay-300 {
+    animation-delay: 0.3s;
+  }
+
+  .fade-delay-500 {
+    animation-delay: 0.5s;
+  }
+
+  /* Scrollbar Hide */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
+/* ===== Scan Animation (outside @layer due to selector constraints) ===== */
 @keyframes scan-line {
   0% {
     top: 0%;
@@ -86,7 +146,8 @@
 }
 
 @keyframes scan-dot {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.3;
     transform: scale(1);
   }
@@ -98,32 +159,4 @@
 
 .animate-scan-line {
   animation: scan-line 2.5s linear infinite;
-}
-
-.card-fade {
-  opacity: 0;
-  animation: fadeInUp 0.8s ease-out forwards;
-}
-
-.fade-delay-100 {
-  animation-delay: 0.1s;
-}
-.fade-delay-300 {
-  animation-delay: 0.3s;
-}
-.fade-delay-500 {
-  animation-delay: 0.5s;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none; 
-  scrollbar-width: none;     
-}
-
-body{
-  background: var(--background);
-  color : var(--foreground);
 }

@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { HERO_IMAGE } from "@/constants";
+import { useRoute } from "@/routes";
 
 const textFadeIn: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -18,9 +20,9 @@ const textFadeIn: Variants = {
 };
 
 export const HeroSection = () => {
-  const router = useRouter();
+  const {goToPlants} = useRoute();
   return (
-    <main className="flex flex-col md:flex-row items-center justify-between px-6 py-10 xl:py-42 max-w-7xl mx-auto overflow-hidden">
+    <main className="flex flex-col md:flex-row items-center justify-between px-6 py-10 xl:py-40 max-w-7xl mx-auto overflow-hidden">
       <motion.div
         className="max-w-xl"
         initial="hidden"
@@ -72,7 +74,7 @@ export const HeroSection = () => {
           custom={3}
         >
           <button className="bg-green-700 text-green-200 px-5 py-2 hover:bg-[var(--color-primary-dark)] hover:text-white rounded-tl-xl rounded-br-xl transition cursor-pointer"
-            onClick={() => router.push('all-plants')}>
+            onClick={() => goToPlants()}>
             Explore Plants
           </button>
           <button className="border border-[var(--color-primary)] text-green-500 px-5 py-2 hover:bg-[var(--color-primary-light)] hover:text-white rounded-tl-xl rounded-br-xl transition cursor-pointer"
@@ -104,7 +106,7 @@ export const HeroSection = () => {
           className="relative z-10 w-full h-full"
         >
           <Image
-            src="/hero_1.png"
+            src= {HERO_IMAGE} 
             alt="Nursery showcase"
             fill
             className="object-contain drop-shadow-md"

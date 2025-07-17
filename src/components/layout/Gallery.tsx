@@ -1,9 +1,9 @@
 'use client';
 
+import { DEFAULT_IMAGE } from '@/constants';
 import Image from 'next/image';
 
 const imageUrls = Array.from({ length: 12 }, (_, i) => `/images/${i + 2}.png`);
-const DEFAULT_IMAGE = '/images/1.png'
 
 const mobileImageLayout = [
     { src: imageUrls[0], className: 'row-span-3' },
@@ -48,7 +48,7 @@ export const Gallery = () => {
                             } aspect-[3/4] sm:aspect-square`}
                     >
                         <Image
-                            src={src}
+                            src={src || DEFAULT_IMAGE}
                             alt={`Desktop Gallery Image ${idx + 1}`}
                             fill
                             className="object-cover rounded-lg"

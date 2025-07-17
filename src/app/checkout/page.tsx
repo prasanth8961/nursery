@@ -1,165 +1,116 @@
 'use client';
 
-import { plantsData } from "@/seeds/plantData";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { FaTimes } from "react-icons/fa";
-import { useRouter } from 'next/navigation';
+import { FaLeaf, FaTimes } from "react-icons/fa";
 import { useCart } from "@/features/checkout/useCart";
-import { MdQrCodeScanner } from "react-icons/md";
-import { Html5Qrcode } from 'html5-qrcode';
 import { Plant } from "@/types";
 import { encryptId } from "@/lib/crypto";
-
-const DEFAULT_IMAGE = '/images/1.png';
+import { DEFAULT_IMAGE, SHIPPING_COST } from "@/constants";
+import { useRoute } from "@/routes";
+import { useRouter } from 'next/navigation';
+import { Loader } from "@/components/common/Loader";
+import { IoStarHalfSharp, IoStarOutline, IoStarSharp } from "react-icons/io5";
 
 export default function Checkout() {
     const [imageLoadingMap, setImageLoadingMap] = useState<Record<number, boolean>>({});
-    const router = useRouter();
+    const { goToPlantDetails, goToHome } = useRoute();
+    const [confirmation, setconfirmation] = useState<boolean>(false);
     const { cart, toggleCart, isInCart, clearCart, totalAmount } = useCart(null);
-    const [scannerOpen, setScannerOpen] = useState<boolean>(false);
+    const router = useRouter()
 
-    const handlePlantDetails = (id: number) => {
-        const encrypted = encryptId(id);
-        router.push(`/plants/${encrypted}`);
-    };
+    const [isPageReady, setIsPageReady] = useState(false);
 
     useEffect(() => {
-        if (!scannerOpen || typeof window === "undefined") return;
+        const timer = setTimeout(() => setIsPageReady(true), 300);
+        return () => clearTimeout(timer);
+    }, []);
 
-        const qrRegionId = "qr-reader";
-        const html5QrCode = new Html5Qrcode(qrRegionId);
-        let isMounted = true;
-        const startScanner = async () => {
-            try {
-                const devices = await Html5Qrcode.getCameras();
-                if (!devices || devices.length === 0) {
-                    alert("No camera found on this device.");
-                    setScannerOpen(false);
-                    return;
-                }
-
-                await html5QrCode.start(
-                    { facingMode: "environment" },
-                    {
-                        fps: 10,
-                        qrbox: { width: 250, height: 250 },
-                        aspectRatio: 1.777,
-                    },
-                    async (decodedText) => {
-                        try {
-                            const id = parseInt(decodedText.trim());
-                            const matched = plantsData.find(p => p.id === id);
-                            if (matched) {
-                                toggleCart(matched);
-                            } else {
-                                alert("Plant not found.");
-                            }
-                        } catch (err) {
-                            console.error("Invalid QR content:", err);
-                        } finally {
-                            await html5QrCode.stop();
-                            html5QrCode.clear();
-                            if (isMounted) setScannerOpen(false);
-                        }
-                    },
-                    (error) => {
-                        // silent decode errors
-                    }
-                );
-            } catch (err) {
-                console.log("QR Scanner failed:", err);
-                alert("Camera streaming not supported or permission denied.");
-                setScannerOpen(false);
-            }
-        };
-
-        setTimeout(startScanner, 100);
-
-        return () => {
-            isMounted = false;
-            if (html5QrCode.isScanning) {
-                html5QrCode
-                    .stop()
-                    .then(() => html5QrCode.clear())
-                    .catch((err) => console.warn("Stop scanner error:", err));
-            }
-        };
-    }, [scannerOpen]);
-
+    if (!isPageReady) return <Loader />;
 
     return (
         <section className="max-w-[95vw] mx-auto py-4 sm:py-6">
             <div className="mb-4 px-2 flex justify-between">
                 <button
                     onClick={() => router.back()}
-                    className="flex items-center gap-2 text-[var(--color-primary-dark)] border border-[var(--color-primary-light)] px-4 py-2 rounded-tl-md rounded-br-md hover:bg-[var(--color-accent-ultralight)] transition text-sm font-medium"
+                    className="flex items-center gap-2 text-[var(--color-primary-dark)] border border-[var(--color-primary-light)] px-4 py-2 rounded-tl-md rounded-br-md hover:bg-[var(--color-accent-ultralight)] transition text-sm font-semibold"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="green">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
-                <div className="flex gap-3">
-                    <button
-                        onClick={() => {
-                            const lines = cart.map(item => `🌿 ${item.name} - ₹${item.price}`).join('\n');
-                            const total = cart.reduce((sum, item) => sum + item.price, 0);
+                {
+                    cart.length > 0 && (
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => {
+                                    const lines = cart.map(item => `🌿 ${item.name} - ₹${item.price}`).join('\n');
+                                    const total = cart.reduce((sum, item) => sum + item.price, 0);
 
-                            const fullMsg = `Hi, I want to order the following plants:\n\n${lines}\n\nTotal: ₹${total}`;
-                            const whatsappURL = `https://wa.me/917639874667?text=${encodeURIComponent(fullMsg)}`;
-                            window.open(whatsappURL, '_blank');
-                        }}
-                        className="flex flex-col items-center text-[var(--color-primary-dark)] border border-[var(--color-primary-light)] px-4 py-1 rounded-tl-md rounded-br-md hover:bg-[var(--color-accent-ultralight)] transition text-xs font-medium"
-                    >
-                        Place Order <span className="text-green-500" > {totalAmount}</span>
-                    </button>
-                    <button
-                        onClick={() => clearCart()}
-                        className="flex items-center text-red-500 border border-[var(--color-primary-light)] px-4 py-1 rounded-tl-md rounded-br-md hover:bg-[var(--color-accent-ultralight)] transition text-xs font-medium"
-                    >
-                        Clear
-                    </button>
-                </div>
+                                    const fullMsg = `Hi, I want to order the following plants:\n\n${lines}\n\nTotal: ₹${total}`;
+                                    const whatsappURL = `https://wa.me/917639874667?text=${encodeURIComponent(fullMsg)}`;
+                                    window.open(whatsappURL, '_blank');
+                                }}
+                                className="flex flex-col items-center text-[var(--color-primary-dark)] border border-[var(--color-primary-light)] px-4 py-1 rounded-tl-md rounded-br-md hover:bg-[var(--color-accent-ultralight)] transition text-xs font-medium"
+                            >
+                                Place Order <span className="text-green-500" > {totalAmount + SHIPPING_COST}</span>
+                            </button>
+                            <button
+                                onClick={() => setconfirmation(true)}
+                                className="flex items-center text-red-500 border border-[var(--color-primary-light)] px-4 py-1 rounded-tl-md rounded-br-md hover:bg-[var(--color-accent-ultralight)] transition text-xs font-medium"
+                            >
+                                Clear
+                            </button>
+                            {confirmation && (
+                                <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
+                                    <div className="bg-white p-5 rounded-lg shadow-xl w-[90%] max-w-sm">
+                                        <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                                            Are you sure you want to clear the cart?
+                                        </h2>
+
+                                        <div className="flex justify-end gap-3 mt-4">
+                                            <button
+                                                onClick={() => setconfirmation(false)}
+                                                className="px-4 py-2 rounded-md border border-gray-300 text-red-700 hover:bg-gray-100 transition"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    clearCart();
+                                                    setconfirmation(false);
+                                                }}
+                                                className="px-4 py-2 rounded-md bg-green-600 text-white hover:bg-red-700 transition"
+                                            >
+                                                Yes, Clear
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )
+                }
             </div>
 
             <div className="h-px bg-gray-300 w-full my-2"></div>
-
             {cart.length === 0 ? (
-                <div className="flex flex-col items-center justify-center text-center py-16 px-4 text-[var(--color-primary)]">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-20 w-20 text-[var(--color-accent-light)] mb-4"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={1.5}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    >
-                        <path d="M6 6h15l-1.5 9h-13z" />
-                        <circle cx="9" cy="20" r="1" />
-                        <circle cx="18" cy="20" r="1" />
-                        <path d="M6 6l-2 0" />
-                        <path d="M5 6l-1.5-4" />
-                        <path d="M8 10l1 1" />
-                        <path d="M10 10l-1 1" />
-                        <path d="M14 10l1 1" />
-                        <path d="M16 10l-1 1" />
-                    </svg>
-
-                    <h2 className="text-xl font-semibold mb-2">Your cart is empty</h2>
-                    <p className="hidden sm:block text-sm text-[var(--color-accent-mid)] mb-4 max-w-xs">
-                        You haven’t added any plants to your cart yet. Explore and find your perfect greens!
+                <div className="flex flex-col items-center justify-center mt-20 text-center text-gray-600">
+                    <FaLeaf className="text-green-500 text-5xl mb-4" />
+                    <h2 className="text-xl font-semibold">Your Cart is Empty</h2>
+                    <p className="text-sm text-gray-500 mt-1">
+                        Looks like you haven't added any plants yet. Let's explore the greenery and bring your space to life!
                     </p>
-                    <button
-                        onClick={() => router.push('/')}
-                        className="hidden sm:block px-6 py-2 bg-[var(--color-primary-light)] text-white rounded-xs rounded-tl-xl rounded-br-xl hover:bg-[var(--color-primary)] transition font-medium cursor-pointer"
-                    >
-                        Browse Plants
-                    </button>
+                    <div
+                        onClick={() => goToHome()}
+                        style={{ textShadow: '2px 2px 4px rgba(17, 116, 46, 0.2)' }}
+                        className="px-6 py-3 mt-3 text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-lime-500 to-green-400 font-semibold"
+                    > Browse Plants
+                    </div>
                 </div>
+
             ) : (
-                <div className="flex flex-col gap-2 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-3 px-2 mt-4">
+                <div className="flex flex-col gap-2 sm:grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 sm:gap-3 px-2 mt-4">
                     {cart.map((plant: Plant) => {
                         const isLoading = imageLoadingMap[plant.id] ?? true;
                         const originalPrice = Math.round(plant.price / (1 - plant.discount / 100));
@@ -175,7 +126,7 @@ export default function Checkout() {
                                         alt={plant.name}
                                         fill
                                         sizes="(max-width: 768px) 100vw, 300px"
-                                        className={`object-cover  transition-transform duration-300 ease-in-out group-hover:scale-105 ${isLoading ? "opacity-0" : "opacity-100"}`}
+                                        className={`object-cover p-1  transition-transform duration-300 ease-in-out group-hover:scale-105 ${isLoading ? "opacity-0" : "opacity-100"}`}
                                         onLoadingComplete={() =>
                                             setImageLoadingMap((prev) => ({ ...prev, [plant.id]: false }))
                                         }
@@ -185,16 +136,29 @@ export default function Checkout() {
                                     <h2 className="text-base font-semibold text-[var(--color-accent-dark)] truncate">{plant.name}</h2>
                                     {plant.subName && <p className="text-sm text-gray-500 italic truncate">{plant.subName}</p>}
                                     <div className="mt-2 flex justify-between items-center w-full">
-                                        <div className="text-green-700 font-semibold text-base">
-                                            ₹{plant.price}
-                                            {plant.discount > 0 && (
-                                                <span className="ml-2 text-red-500 line-through font-normal text-sm">₹{originalPrice}</span>
-                                            )}
+                                        <div className="flex flex-col gap-1">
+                                            <div className="flex items-center gap-1 sm:gap-2 text-sm mt-1">
+                                                {Array.from({ length: 5 }, (_, i) => {
+                                                    const filled = i + 1 <= Math.floor(plant.ratings);
+                                                    const half = i + 0.5 === plant.ratings;
+                                                    return (
+                                                        <span key={i} className="text-green-500">
+                                                            {filled ? <IoStarSharp /> : half ? <IoStarHalfSharp /> : <IoStarOutline />}
+                                                        </span>
+                                                    );
+                                                })}
+                                            </div>
+                                            <div className="text-green-700 font-semibold text-base">
+                                                ₹{plant.price}
+                                                {plant.discount > 0 && (
+                                                    <span className="ml-2 text-red-500 line-through font-normal text-sm">₹{originalPrice}</span>
+                                                )}
+                                            </div>
                                         </div>
                                         <div
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                handlePlantDetails(plant.id);
+                                                goToPlantDetails(encryptId(plant.id));
                                             }}
                                             className="rounded-tl-md rounded-br-md p-2 bg-[var(--color-primary-light)] hover:bg-[var(--color-primary-dark)] text-white flex items-center justify-center text-sm font-semibold tracking-wide transition-colors duration-200"
                                         >
@@ -214,47 +178,39 @@ export default function Checkout() {
                             </div>
                         );
                     })}
+
                 </div>
             )}
 
-            <div className="block sm:hidden fixed bottom-0 z-50 w-full bg-white border-t border-green-300 shadow-md">
-                <div className="relative flex justify-center items-center h-[64px]">
-                    <button
-                        className="absolute -top-8 w-16 h-16 bg-green-500 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-green-600 transition active:scale-95"
-                        onClick={() => setScannerOpen(true)}
-                    >
-                        <MdQrCodeScanner size={32} color="white" />
-                    </button>
-                </div>
-            </div>
-
-            {scannerOpen && (
-                <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
-                    <div
-                        id="qr-reader"
-                        className="w-full h-full bg-black"
-                    ></div>
-
-                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                        <div className="w-60 h-60 border-4 border-green-400 rounded-xl opacity-80 relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-full h-full">
-                                <div className="absolute top-0 left-0 w-full h-[2px] bg-green-400 animate-scan-line z-10">
-                                </div>
-                            </div>
+            {cart.length > 0 && (
+                <div className="border border-green-200 rounded-md mt-5  px-4 py-3 mx-2 sm:mx-0">
+                    <h3 className="text-lg font-semibold text-green-700 mb-2">🧾 Order Summary</h3>
+                    <ul className="text-sm text-green-900 space-y-1 mb-3">
+                        {cart.map((item) => (
+                            <li key={item.id} className="flex justify-between">
+                                <span>{item.name}</span>
+                                <span>₹{item.price}</span>
+                            </li>
+                        ))}
+                    </ul>
+                    <hr className="my-2 text-green-400" />
+                    <div className="text-sm text-green-800 space-y-1">
+                        <div className="flex justify-between">
+                            <span>Subtotal</span>
+                            <span>₹{totalAmount}</span>
                         </div>
-                        <p className="text-white mt-6 text-sm opacity-80">Align QR code within frame</p>
+                        <div className="flex justify-between">
+                            <span>Shipping</span>
+                            <span>₹{SHIPPING_COST}</span>
+                        </div>
+                        <hr className="my-2 text-green-400" />
+                        <div className="flex justify-between font-semibold text-green-700">
+                            <span>Total</span>
+                            <span>₹{Math.round(totalAmount + SHIPPING_COST)}</span>
+                        </div>
                     </div>
-
-                    <button
-                        onClick={() => setScannerOpen(false)}
-                        className="absolute top-4 right-4 z-50 bg-black bg-opacity-50 hover:bg-opacity-80 rounded-full p-2"
-                    >
-                        <FaTimes className="text-white text-lg" />
-                    </button>
                 </div>
-            )
-            }
-
+            )}
         </section>
     );
 }

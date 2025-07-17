@@ -1,15 +1,13 @@
 'use client';
 
+import { CONTACT, EMAIL, socialMedias } from '@/constants';
+import { Media } from '@/types';
 import { motion, Variants } from 'framer-motion';
 import {
     FaPhoneAlt,
     FaMapMarkerAlt,
     FaEnvelope,
-    FaWhatsapp,
-    FaInstagram,
-    FaFacebookF,
 } from 'react-icons/fa';
-import { RiTwitterXLine } from 'react-icons/ri';
 
 const container: Variants = {
     hidden: {},
@@ -30,29 +28,6 @@ const item: Variants = {
 };
 
 export const ContactSection = () => {
-    const socialMedias = [
-        {
-            id: 1,
-            icon: FaWhatsapp,
-            link: 'https://wa.me/917639874667',
-        },
-        {
-            id: 2,
-            icon: FaInstagram,
-            link: 'https://www.instagram.com/prasanth_nursery_garden?igsh=Nzd5c2ptMnBkY2M1',
-        },
-        {
-            id: 3,
-            icon: FaFacebookF,
-            link: 'https://www.facebook.com/share/1Er7yzKGfL/?mibextid=qi2Omg',
-        },
-        {
-            id: 4,
-            icon: RiTwitterXLine,
-            link: '#',
-        },
-    ];
-
     return (
         <footer className="py-10 px-4 sm:px-10 lg:px-20 text-[var(--color-primary-dark)] font-serif">
             <div className="max-w-7xl mx-auto">
@@ -89,12 +64,12 @@ export const ContactSection = () => {
                             {
                                 icon: <FaPhoneAlt className="text-xl mt-1 text-[var(--color-primary-light)]" />,
                                 title: 'Phone',
-                                value: '+91 7639874667',
+                                value: CONTACT,
                             },
                             {
                                 icon: <FaEnvelope className="text-xl mt-1 text-[var(--color-primary-light)]" />,
                                 title: 'Email',
-                                value: 'prasanthnursery@gmail.com',
+                                value: EMAIL,
                             },
                             {
                                 icon: <FaMapMarkerAlt className="text-xl mt-1 text-[var(--color-primary-light)]" />,
@@ -123,7 +98,7 @@ export const ContactSection = () => {
                         viewport={{ once: true, amount: 0.2 }}
                         className="flex gap-2 items-center text-[var(--color-primary-dark)] mx-4"
                     >
-                        {socialMedias.map((media) => (
+                        {socialMedias.map((media: Media) => (
                             <motion.a
                                 key={media.id}
                                 href={media.link}
@@ -146,7 +121,7 @@ export const ContactSection = () => {
                     className="text-center text-sm text-[var(--foreground)] mt-10"
                 >
                     © {new Date().getFullYear()} Prasanth Nursery Garden 🌿 — All rights
-                    reserved. Designed with ❤️ for plant lovers.
+                    reserved. Designed with 💚 for plant lovers.
                 </motion.p>
             </div>
         </footer>

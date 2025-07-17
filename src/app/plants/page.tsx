@@ -1,126 +1,127 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import Head from 'next/head';
 import { AiFillPhone } from 'react-icons/ai';
-import {
-  FaArrowLeft,
-  FaArrowRight,
-  FaWhatsapp,
-  FaInstagram,
-  FaFacebookF,
-} from 'react-icons/fa';
-import { RiTwitterXLine } from 'react-icons/ri';
+import { FaArrowLeft, FaLeaf } from 'react-icons/fa';
 import { plantsData } from '@/seeds/plantData';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Plant } from '@/types';
+import { useDebounce } from '@/hooks/useDebounce';
+import { categories, socialMedias } from '@/constants';
+import { PlantCard } from '@/components/common/PlantCard';
+import { useRoute } from '@/routes';
+import { ShimmerCard } from '@/components/common/ShimmerLoader';
+import { Loader } from '@/components/common/Loader';
 import { encryptId } from '@/lib/crypto';
 
-const categories = ['All', 'Indoor', 'Outdoor', 'Flowering', 'Wooden'];
-const DEFAULT_IMAGE = '/images/1.png';
-const BATCH_SIZE = 8;
+
+const PAGE_SIZE: number = 12;
+const DELAY: number = 300;
 
 export default function AllPlantsPage() {
   const [active, setActive] = useState<string>(categories[0]);
   const [allFilteredPlants, setAllFilteredPlants] = useState<Plant[]>([]);
   const [visiblePlants, setVisiblePlants] = useState<Plant[]>([]);
   const [searchInput, setSearchInput] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [isPageReady, setIsPageReady] = useState(false);
+  const debouncedSearchInput = useDebounce<string>(searchInput, DELAY);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const router = useRouter();
+  const { goToHome } = useRoute();
 
-  useEffect(() => {
-    let filtered =
+  const filteredPlants = useMemo(() => {
+    let filtered: Plant[] =
       active === 'All'
         ? plantsData
         : plantsData.filter(
-            (plant) => plant.category.toLowerCase() === active.toLowerCase()
-          );
+          (plant) => plant.category.toLowerCase() === active.toLowerCase()
+        );
 
-    if (searchInput) {
+    if (debouncedSearchInput) {
       filtered = filtered.filter(
         (item) =>
-          item.name.toLowerCase().includes(searchInput.toLowerCase()) ||
-          item.category.toLowerCase().includes(searchInput.toLowerCase())
+          item.name.toLowerCase().includes(debouncedSearchInput.toLowerCase()) ||
+          item.category.toLowerCase().includes(debouncedSearchInput.toLowerCase())
       );
     }
 
-    setAllFilteredPlants(filtered);
-    setVisiblePlants(filtered.slice(0, BATCH_SIZE));
-    setHasMore(filtered.length > BATCH_SIZE);
-  }, [active, searchInput]);
+    return filtered;
+  }, [active, debouncedSearchInput]);
+
 
   useEffect(() => {
-    const handleScroll = () => {
-      const bottom =
-        window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 50;
+    const timer = setTimeout(() => {
+      setIsPageReady(true);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
 
-      if (bottom && hasMore && !isLoading) {
-        loadMorePlants();
-      }
-    };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [hasMore, isLoading, visiblePlants]);
+  const paginatedPlants = useMemo(() => {
+    const start = (currentPage - 1) * PAGE_SIZE;
+    return filteredPlants.slice(start, start + PAGE_SIZE);
+  }, [filteredPlants, currentPage]);
 
-  const loadMorePlants = () => {
+  useEffect(() => {
+    setAllFilteredPlants(filteredPlants);
+    if (currentPage !== 1) setCurrentPage(1);
+  }, [filteredPlants]);
+
+
+  useEffect(() => {
     setIsLoading(true);
-    setTimeout(() => {
-      const currentLength = visiblePlants.length;
-      const nextBatch = allFilteredPlants.slice(
-        currentLength,
-        currentLength + BATCH_SIZE
-      );
-
-      setVisiblePlants((prev) => [...prev, ...nextBatch]);
-      setHasMore(currentLength + BATCH_SIZE < allFilteredPlants.length);
+    const timeout = setTimeout(() => {
+      setVisiblePlants(paginatedPlants);
       setIsLoading(false);
-    }, 1000);
-  };
+    }, 500);
 
-  const socialMedias = [
-    {
-      id: 1,
-      icon: FaWhatsapp,
-      link: 'https://wa.me/917639874667',
-    },
-    {
-      id: 2,
-      icon: FaInstagram,
-      link: 'https://www.instagram.com/prasanth_nursery_garden?igsh=Nzd5c2ptMnBkY2M1',
-    },
-    {
-      id: 3,
-      icon: FaFacebookF,
-      link: 'https://www.facebook.com/share/1Er7yzKGfL/?mibextid=qi2Omg',
-    },
-    {
-      id: 4,
-      icon: RiTwitterXLine,
-      link: '#',
-    },
-  ];
+    return () => clearTimeout(timeout);
+  }, [paginatedPlants]);
+
+  useEffect(() => {
+    const listTop = document.getElementById("plant-list")?.offsetTop;
+    if (listTop !== undefined) window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
+
+
+  const totalPages = Math.ceil(allFilteredPlants.length / PAGE_SIZE);
+
+  if (!isPageReady) {
+    return (
+      <Loader />
+    );
+  }
 
   return (
     <div>
+      <Head>
+        <title>All Plants | Prasanth Nursery Garden</title>
+        <meta
+          name="description"
+          content="Explore our diverse plant collection: indoor, outdoor, flowering, and wooden plants available now!"
+        />
+      </Head>
+
       <div className="p-2 sticky top-0 z-50 flex flex-col gap-2 text-sm bg-[var(--background)] shadow-sm">
-        <div className="flex justify-between w-full sm:justify-around items-center">
+        <div className="flex justify-between sm:justify-around items-center">
           <a
             href="tel:+917639874667"
+            aria-label="Phone"
             className="flex items-center gap-1 hover:text-[var(--color-primary)] transition text-[var(--color-dark)]"
           >
             <AiFillPhone size={18} color="var(--color-primary-light)" />
             +91 7639874667
           </a>
           <div className="flex gap-2 items-center text-[var(--color-primary-dark)]">
-            {socialMedias.map((media: any) => (
+            {socialMedias.map((media) => (
               <a
                 key={media.id}
                 href={media.link}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Visit us on ${media.icon.name}`}
                 className="h-8 w-8 rounded-tl-md rounded-br-md border border-[var(--color-accent-light)] flex items-center justify-center hover:bg-[var(--color-accent-mid)] transition"
               >
                 <media.icon size={16} />
@@ -131,7 +132,8 @@ export default function AllPlantsPage() {
 
         <div className="w-full flex items-center justify-between gap-2 mt-1 mb-2 px-1">
           <button
-            onClick={() => router.push('/')}
+            onClick={() => goToHome()}
+            aria-label="Go back home"
             className="h-10 w-12 bg-[var(--color-accent-ultralight)] rounded-tl-md rounded-br-md border-2 border-[var(--color-accent-light)] flex items-center justify-center hover:bg-[var(--color-accent-mid)] text-[var(--color-primary-dark)] transition"
           >
             <FaArrowLeft size={14} />
@@ -155,123 +157,108 @@ export default function AllPlantsPage() {
             <input
               type="text"
               placeholder="Search plants, categories..."
-              onChange={(e) => setSearchInput(e.target.value.trim())}
+              ref={searchInputRef}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  searchInputRef.current?.blur();
+                }
+              }}
               className="flex-1 bg-transparent focus:outline-none text-[var(--color-primary-dark)] placeholder:text-gray-400"
             />
           </div>
         </div>
 
         <div className="flex flex-wrap gap-4 items-start px-1">
-          {categories.map((category: string, idx: number) => (
+          {categories.map((category) => (
             <div
-              key={idx}
+              key={category}
               onClick={() => setActive(category)}
               className="flex flex-col items-center pb-2 cursor-pointer"
             >
               <span
-                className={`text-sm font-medium transition-colors duration-200 ${
-                  active === category
-                    ? 'text-[var(--color-primary-dark)]'
-                    : 'text-[var(--color-primary)] hover:text-[var(--color-primary-light)]'
-                }`}
+                className={`text-sm font-medium transition-colors duration-200 ${active === category
+                  ? 'text-[var(--color-primary-dark)]'
+                  : 'text-[var(--color-primary)] hover:text-[var(--color-primary-light)]'
+                  }`}
               >
                 {category}
               </span>
               <div
-                className={`h-[2px] mt-1 w-full rounded-full transition-all duration-300 ${
-                  active === category
-                    ? 'bg-[var(--color-primary)]'
-                    : 'bg-transparent'
-                }`}
+                className={`h-[2px] mt-1 w-full rounded-full transition-all duration-300 ${active === category ? 'bg-[var(--color-primary)]' : 'bg-transparent'
+                  }`}
               />
             </div>
           ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 p-2 mt-4">
-        {visiblePlants.map((plant: Plant) => (
-          <PlantCard key={plant.id} plant={plant} />
-        ))}
-      </div>
+      {isLoading ? (
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 p-2 mt-4">
+          {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+            <ShimmerCard key={i} />
+          ))}
+        </div>
+      ) : visiblePlants.length > 0 ? (
+        <>
+          <div id="plant-list" className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 p-2 mt-4">
+            {visiblePlants.map((plant) => (
+              <PlantCard key={plant.id} plant={plant} animated_bounce={false} />
+            ))}
+          </div>
+          <div className="flex justify-center items-center gap-1 md:gap-2 py-6 flex-wrap">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 rounded-md border border-[var(--color-primary)] bg-[var(--color-accent-ultralight)] font-semibold text-sm hover:bg-[var(--color-primary-light)] disabled:opacity-50"
+            >
+              Prev
+            </button>
+            {(() => {
+              const pagesToShow = 4;
+              let startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
+              let endPage = startPage + pagesToShow - 1;
 
-      {isLoading && (
-        <div className="flex justify-center items-center my-6">
-          <span className="h-8 w-8 rounded-full border-4 border-dashed border-[var(--color-primary)] animate-spin"></span>
+              if (endPage > totalPages) {
+                endPage = totalPages;
+                startPage = Math.max(1, endPage - pagesToShow + 1);
+              }
+
+              const buttons = [];
+              for (let page = startPage; page <= endPage; page++) {
+                buttons.push(
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`px-4 py-2 text-sm font-semibold rounded-md transition border ${currentPage === page
+                      ? 'bg-[var(--color-primary-dark)] text-[var(--color-primary-light)] border-[var(--color-primary)]'
+                      : 'border-[var(--color-primary)] hover:bg-[var(--color-accent-ultralight)]'
+                      }`}
+                  >
+                    {page}
+                  </button>
+                );
+              }
+              return buttons;
+            })()}
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 rounded-md border border-[var(--color-primary)] bg-[var(--color-accent-ultralight)] font-semibold text-sm hover:bg-[var(--color-primary-light)] disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="flex flex-col items-center justify-center mt-20 text-center text-gray-600">
+          <FaLeaf className="text-green-500 text-5xl mb-4" />
+          <h2 className="text-xl font-semibold">No Plants Found</h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Try searching with a different name or filter.
+          </p>
         </div>
       )}
     </div>
   );
-}
-
-export const PlantCard = ({ plant }: PlantCardProps) => {
-  const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(true);
-
-  const originalPrice = Math.round(plant.price / (1 - plant.discount / 100));
-
-  const handleClick = () => {
-    const encrypted = encryptId(plant.id);
-    router.push(`/plants/${encrypted}`);
-  };
-
-  return (
-    <div
-      role="button"
-      onClick={handleClick}
-      className="group rounded-md shadow-sm border border-[var(--color-primary-light)] hover:shadow-lg transition-all duration-300 cursor-pointer"
-    >
-      <div className="relative w-full aspect-[4/3] overflow-hidden rounded-t-md">
-        <img
-          src={plant.imageUrl || DEFAULT_IMAGE}
-          alt={plant.name}
-          className={`w-full h-full object-cover transition-opacity duration-300 ${
-            loading ? 'opacity-0' : 'opacity-100'
-          }`}
-          onLoad={() => setLoading(false)}
-        />
-        {plant.discount > 0 && (
-          <div className="absolute right-2 top-2 z-30 bg-gradient-to-r from-green-400 to-green-600 text-white px-3 py-1 rounded-tl-md rounded-br-md shadow-md text-xs font-bold tracking-wide">
-            {plant.discount}% OFF
-          </div>
-        )}
-      </div>
-
-      <div className="p-3 flex flex-col gap-1">
-        <h2 className="text-base font-semibold text-[var(--color-accent-dark)] truncate">
-          {plant.name}
-        </h2>
-        {plant.subName && (
-          <p className="text-sm text-gray-500 italic truncate">
-            {plant.subName}
-          </p>
-        )}
-
-        <div className="mt-2 flex justify-between items-center">
-          <div className="text-green-700 font-semibold text-base">
-            ₹{plant.price}
-            {plant.discount > 0 && (
-              <span className="ml-2 text-red-500 line-through font-normal text-sm">
-                ₹{originalPrice}
-              </span>
-            )}
-          </div>
-
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              handleClick();
-            }}
-            className="rounded-tl-md rounded-br-md p-2 bg-[var(--color-primary-light)] hover:bg-[var(--color-primary-dark)] text-white flex items-center justify-center text-sm font-semibold tracking-wide transition-colors duration-200"
-          >
-            <FaArrowRight className="text-white text-base" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-interface PlantCardProps {
-  plant: Plant;
 }

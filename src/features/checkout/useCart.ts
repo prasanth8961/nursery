@@ -2,15 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { plantsData } from "@/seeds/plantData";
-import { Plant } from "@/types";
+import { Plant, UseCartReturn } from "@/types";
+import { keys } from "@/constants";
 
-interface UseCartReturn {
-  cart: Plant[];
-  toggleCart: (plant: Plant) => void;
-  isInCart: (plantId: number) => boolean;
-  clearCart: () => void;
-  totalAmount: number;
-}
+
 
 export const useCart = (user: { id?: string } | null): UseCartReturn => {
   const [cartIds, setCartIds] = useState<number[]>([]);
@@ -19,24 +14,24 @@ export const useCart = (user: { id?: string } | null): UseCartReturn => {
     if (user?.id) {
       // TODO: Fetch user's cart IDs from the database
     } else {
-      const local = localStorage.getItem("guest_cart_ids");
+      const local = localStorage.getItem(keys.Cart);
       if (local) {
         try {
           const parsed = JSON.parse(local) as number[];
           setCartIds(parsed);
         } catch {
-          localStorage.removeItem("guest_cart_ids");
+          localStorage.removeItem(keys.Cart);
         }
       }
     }
   }, [user?.id]);
 
-  const syncLocal = (updated: number[]) => {
+  const syncLocal = (updated: number[]) : void => {
     setCartIds(updated);
-    localStorage.setItem("guest_cart_ids", JSON.stringify(updated));
+    localStorage.setItem(keys.Cart, JSON.stringify(updated));
   };
 
-  const toggleCart = (plant: Plant) => {
+  const toggleCart = (plant: Plant) : void => {
     const exists = cartIds.includes(plant.id);
     let updated: number[];
 
@@ -63,11 +58,11 @@ export const useCart = (user: { id?: string } | null): UseCartReturn => {
 
   const clearCart = () => {
     setCartIds([]);
-    localStorage.removeItem("guest_cart_ids");
+    localStorage.removeItem(keys.Cart);
   };
 
   const cart: Plant[] = plantsData.filter(plant => cartIds.includes(plant.id));
-  const totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
+  const totalAmount : number = cart.reduce((sum, item) => sum + item.price, 0);
 
   return { cart, toggleCart, isInCart, clearCart, totalAmount };
 };

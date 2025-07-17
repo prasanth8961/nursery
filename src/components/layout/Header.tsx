@@ -4,80 +4,47 @@ import { useState } from "react";
 import { AiFillPhone } from "react-icons/ai";
 import { MdMail } from "react-icons/md";
 import {
-  FaWhatsapp,
-  FaInstagram,
-  FaFacebookF,
   FaBars,
-  FaTimes, FaHome, FaSeedling, FaShoppingCart, FaHeart
+  FaTimes, FaSeedling, FaShoppingCart, FaHeart
 } from "react-icons/fa";
-import { RiTwitterXLine } from "react-icons/ri";
 import { BsPerson } from "react-icons/bs";
 import { ThemeContext } from "@/contexts/ThemeContext";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { CONTACT, EMAIL, LOGO_IMAGE, socialMedias } from "@/constants";
+import { Media } from "@/types";
+import { useRoute } from "@/routes";
+import { useCart } from "@/features/checkout/useCart";
 
 export const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const router = useRouter();
 
-  const socialMedias = [
-    {
-      id: 1,
-      icon: FaWhatsapp,
-      link: 'https://wa.me/917639874667'
-    },
-    {
-      id: 2,
-      icon: FaInstagram,
-      link: 'https://www.instagram.com/prasanth_nursery_garden?igsh=Nzd5c2ptMnBkY2M1'
-    },
-    {
-      id: 3,
-      icon: FaFacebookF,
-      link: 'https://www.facebook.com/share/1Er7yzKGfL/?mibextid=qi2Omg'
-    },
-    {
-      id: 4,
-      icon: RiTwitterXLine,
-      link: '#'
-    }
-  ];
-
-
-  const navigeteIntoHome = () => {
-    setMenuOpen(false);
-    router.replace('/');
-  }
-
-  const navigateTo = (path:string)=>{
-    setMenuOpen(false);
-    router.push(path);
-  }
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const { goToCart, goToHome, goToPlants, goToWishlist, redirectToHome, goToAuth } = useRoute();
+  const {cart} = useCart(null);
 
   return (
-    <nav className="bg-[var(--background)] w-full relative sticky top-0 z-50 shadow-sm sm:shadow-none">
+    <header className="bg-[var(--background)] w-full relative sticky top-0 z-50 shadow-sm sm:shadow-none">
       <div className="hidden sm:flex px-4 sm:px-8 pt-2 pb-3 flex-col sm:flex-row items-center justify-between gap-3 text-sm">
         <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 text-[var(--color-dark)] text-center sm:text-left">
           <a
-            href="tel:+917639874667"
+            href={`tel:${CONTACT}`}
             className="flex items-center gap-1 hover:text-[var(--color-primary)] transition"
           >
             <AiFillPhone size={18} color="var(--color-primary-light)" />
-            +91 7639874667
+            {CONTACT}
           </a>
           <span className="hidden sm:inline text-gray-400">|</span>
           <a
-            href="mailto:prasanthnursery@gmail.com"
+            href={`mailto:${EMAIL}`}
             className="flex items-center gap-2 hover:text-[var(--color-primary)] transition"
           >
             <MdMail size={18} color="var(--color-primary-light)" />
-            prasanthnursery@gmail.com
+            {EMAIL}
           </a>
         </div>
 
         <div className="flex gap-2 items-center text-[var(--color-primary-dark)]">
           {socialMedias.map(
-            (media, _) => (
+            (media: Media, _) => (
               <a
                 key={media.id}
                 href={media.link}
@@ -91,10 +58,10 @@ export const Header = () => {
       </div>
 
       <div className="w-full border-b border-[var(--color-accent-ultralight)]" />
-      <div className="px-4 sm:px-8 py-1 flex items-center justify-between">
+      <div className="px-4 sm:px-8 py-2 flex items-center justify-between">
         <div className="flex items-center gap-2 sm:gap-3">
           <Image
-            src="/logo_transparent.png"
+            src={LOGO_IMAGE}
             alt="Prasanth Nursery"
             width={40}
             height={40}
@@ -123,25 +90,28 @@ export const Header = () => {
         >
           <div className="flex gap-6 items-center text-[var(--color-primary-dark)] text-sm sm:text-base font-medium">
             <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
-            onClick={navigeteIntoHome}
-            >
-              <FaHome />
-              <span>Home</span>
-            </div>
-            <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
-            onClick={()=>navigateTo('plants')}
+              onClick={() => {
+                setMenuOpen(false);
+                goToPlants();
+              }}
             >
               <FaSeedling />
               <span>Plants</span>
             </div>
             <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
-            onClick={()=>navigateTo('wishlist')}
+              onClick={() => {
+                setMenuOpen(false);
+                goToWishlist();
+              }}
             >
               <FaHeart />
-              <span>Wishlist</span>
+              <span>Favorites</span>
             </div>
             <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
-            onClick={()=>navigateTo('checkout')}
+              onClick={() => {
+                setMenuOpen(false);
+                goToCart();
+              }}
             >
               <FaShoppingCart />
               <span>Cart</span>
@@ -151,9 +121,14 @@ export const Header = () => {
 
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <ThemeContext />
-          <div className="hidden sm:flex border-2 border-[var(--color-accent-light)] bg-[var(--color-primary-light)] text-white px-3 py-2 rounded-tl-lg rounded-br-lg items-center gap-1 text-sm">
+          <div className="hidden sm:flex border-2 border-[var(--color-accent-light)] bg-[var(--color-primary-light)] text-white px-3 py-2 rounded-tl-lg rounded-br-lg items-center gap-1 text-sm"
+            onClick={() => {
+              setMenuOpen(false);
+              goToAuth();
+            }}
+          >
             <BsPerson /> <span>Login</span>
           </div>
 
@@ -161,7 +136,7 @@ export const Header = () => {
             className="flex sm:hidden items-center justify-center gap-2 border-2 border-[var(--color-accent-light)] p-2 rounded-tl-md rounded-br-md cursor-pointer"
             onClick={() => setMenuOpen(true)}
           >
-            <FaBars />
+            <FaBars className="text-green-600"/>
           </div>
         </div>
       </div>
@@ -171,9 +146,9 @@ export const Header = () => {
       >
         <div className="flex items-start justify-between mb-4">
           <div className="flex flex-col">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between">
               <Image
-                src="/logo_transparent.png"
+                src={LOGO_IMAGE}
                 alt="Prasanth Nursery"
                 width={40}
                 height={40}
@@ -196,7 +171,7 @@ export const Header = () => {
 
           <button
             onClick={() => setMenuOpen(false)}
-            className="absolute right-2 top-2 p-2 text-xl text-[var(--forground)] border border-2 border-[var(--color-accent-light)] flex items-center justify-center cursor-pointer rounded-tr-md rounded-bl-md"
+            className="absolute right-2 top-2 p-1 text-xl text-[var(--color-primary-light)] border border-2 border-[var(--color-accent-light)] flex items-center justify-center cursor-pointer rounded-tr-md rounded-bl-md shadow-sm"
           >
             <FaTimes />
           </button>
@@ -204,37 +179,59 @@ export const Header = () => {
 
         <div className="w-full border-b border-gray-300 mb-4" />
 
+
         <div
           className="flex flex-col gap-4 text-[var(--color-accent-mid)] font-medium text-base m-2"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
-          <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
-          onClick={navigeteIntoHome}
-          >
-            <FaHome />
-            <span>Home</span>
-          </div>
-          <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
-          onClick={()=>navigateTo('plants')}
+          <div
+            className="flex items-center gap-2 cursor-pointer  hover:text-[var(--color-primary)] transition"
+            onClick={() => {
+              setMenuOpen(false);
+              goToPlants();
+            }}
           >
             <FaSeedling />
-            <span>Products</span>
+            <span className="bg-gradient-to-r from-green-500 to-lime-500 bg-clip-text text-transparent drop-shadow-md">
+              Products
+            </span>
           </div>
-          <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
-          onClick={()=>navigateTo('wishlist')}
+
+          <div
+            className="flex items-center gap-2 cursor-pointer  hover:text-[var(--color-primary)] transition"
+            onClick={() => {
+              setMenuOpen(false);
+              goToWishlist();
+            }}
           >
             <FaHeart />
-            <span>Favorites</span>
+            <span className="bg-gradient-to-r from-green-500 to-lime-500 bg-clip-text text-transparent drop-shadow-md">
+              Favorites
+            </span>
           </div>
-          <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
-          onClick={()=>navigateTo('checkout')}>
+
+          <div
+            className="flex items-center gap-2 cursor-pointer  hover:text-[var(--color-primary)] transition"
+            onClick={() => {
+              setMenuOpen(false);
+              goToCart();
+            }}
+          >
             <FaShoppingCart />
-            <span>Cart</span>
+            <span className="bg-gradient-to-r from-green-500 to-lime-500 bg-clip-text text-transparent drop-shadow-md">
+              Cart
+            </span>
+            <span className="rounded-sm text-sm font-semibold border-2 border-green-400 flex items-center justify-center h-5 px-1 py-[1px]">{cart.length || 0}</span>
           </div>
         </div>
 
         <div className="mt-auto pt-6">
-          <div className="flex items-center justify-center gap-2 bg-[var(--color-primary-light)] text-white px-3 py-3 rounded-tl-lg rounded-br-lg">
+          <div className="flex items-center justify-center gap-2 bg-[var(--color-primary-light)] text-white px-3 py-3 rounded-tl-lg rounded-br-lg"
+            onClick={() => {
+              setMenuOpen(false);
+              goToAuth();
+            }}
+          >
             <BsPerson /> <span>Login</span>
           </div>
         </div>
@@ -244,6 +241,6 @@ export const Header = () => {
         className={`fixed inset-0 z-40 sm:hidden backdrop-blur-sm transition-opacity duration-300 ease-in-out ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} bg-black/40`}
         onClick={() => setMenuOpen(false)}
       />
-    </nav>
+    </header>
   )
 }

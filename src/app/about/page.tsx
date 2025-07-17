@@ -14,7 +14,6 @@ const cardVariants: Variants = {
     },
   }),
 };
-const DEFULT_IMAGE = '/images/1.png';
 
 export const About = () => {
   return (
@@ -69,7 +68,7 @@ export const About = () => {
             text: 'Whether you’re a first-time plant parent or a garden enthusiast, we’re here to guide you. Get tips, support, and grow with a community that shares your love for green living.',
           },
         ]
-          .map((item, i) => (
+          .map((item: any, i: number) => (
             <motion.div
               key={i}
               custom={i}
@@ -117,7 +116,6 @@ export const About = () => {
             </div>
           ))}
       </motion.div>
-
     </section>
   );
 };

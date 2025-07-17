@@ -1,17 +1,9 @@
-'use client';
-
 import { useEffect, useState } from "react";
 import { plantsData } from "@/seeds/plantData";
-import { Plant } from "@/types";
+import { Plant, UseWishlistReturn } from "@/types";
 import { getLocalStorage, setLocalStorage, removeLocalStorage } from "@/lib/localStorage";
+import { keys } from "@/constants";
 
-const WISHLIST_KEY = "guest_wishlist_ids";
-
-interface UseWishlistReturn {
-  wishlist: Plant[];
-  toggleWishlist: (plant: Plant) => void;
-  isInWishlist: (plantId: number) => boolean;
-}
 
 export const useWishlist = (user: { id?: string } | null): UseWishlistReturn => {
   const [wishlistIds, setWishlistIds] = useState<number[]>([]);
@@ -20,18 +12,18 @@ export const useWishlist = (user: { id?: string } | null): UseWishlistReturn => 
     if (user?.id) {
       // TODO: Fetch user's wishlist IDs from the database
     } else {
-      const local = getLocalStorage<number[]>(WISHLIST_KEY);
+      const local = getLocalStorage<number[]>(keys.Wishlist);
       if (Array.isArray(local)) {
         setWishlistIds(local);
       } else {
-        removeLocalStorage(WISHLIST_KEY);
+        removeLocalStorage(keys.Wishlist);
       }
     }
   }, [user?.id]);
 
   const syncLocal = (updated: number[]) => {
     setWishlistIds(updated);
-    setLocalStorage<number[]>(WISHLIST_KEY, updated);
+    setLocalStorage<number[]>(keys.Wishlist, updated);
   };
 
   const toggleWishlist = (plant: Plant) => {

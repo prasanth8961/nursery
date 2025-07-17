@@ -1,24 +1,36 @@
 'use client';
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { FaArrowRight, FaHeart } from "react-icons/fa";
+import { useEffect, useState, useTransition } from "react";
+import { FaArrowRight, FaHeart, FaLeaf } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
 import { useWishlist } from "@/features/wishlist/useWishList";
+import { IoStarHalfSharp, IoStarOutline, IoStarSharp } from "react-icons/io5";
 import { Plant } from "@/types";
 import { encryptId } from "@/lib/crypto";
-
-const DEFAULT_IMAGE = '/images/1.png';
+import { DEFAULT_IMAGE } from "@/constants";
+import { useRoute } from "@/routes";
+import { Loader } from "@/components/common/Loader";
 
 export default function WishList() {
     const [imageLoadingMap, setImageLoadingMap] = useState<Record<number, boolean>>({});
     const router = useRouter();
+    const { goToPlantDetails, goToHome } = useRoute();
     const { wishlist, toggleWishlist, isInWishlist } = useWishlist(null);
     const [totalAmount, setTotalAmount] = useState<string>('0.00');
+    const [isPending, startTransition] = useTransition();
+    const [isPageReady, setIsPageReady] = useState(false);
 
-    const handlePlantDetails = (id: number) => {
-        const encrypted = encryptId(id)
-        router.push(`/plants/${encrypted}`);
+    useEffect(() => {
+        const timer = setTimeout(() => setIsPageReady(true), 300);
+        return () => clearTimeout(timer);
+    }, []);
+
+
+    const handleClick = (id: string) => {
+        startTransition(() => {
+            goToPlantDetails(id);
+        });
     };
 
     useEffect(() => {
@@ -28,8 +40,9 @@ export default function WishList() {
             currency: 'INR',
         });
         setTotalAmount(formattedAmount)
-
     }, [wishlist])
+
+    if (!isPageReady) return <Loader />;
 
     return (
         <section className="max-w-[95vw] mx-auto py-4 sm:py-6">
@@ -43,42 +56,36 @@ export default function WishList() {
                         className="h-4 w-4"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke="currentColor"
+                        stroke="green"
                     >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
-                <button
-                    className="flex flex-col items-center text-[var(--color-primary-dark)] border border-[var(--color-primary-light)] px-4 py-1 rounded-tl-md rounded-br-md hover:bg-[var(--color-accent-ultralight)] transition text-xs font-medium"
-                >
-                    Buy Now <span className="text-green-500" > {totalAmount}</span>
-                </button>
+                {
+                    wishlist.length > 0 && (
+                        <button
+                            className="flex flex-col items-center text-[var(--color-primary-dark)] border border-[var(--color-primary-light)] px-4 py-1 rounded-tl-md rounded-br-md hover:bg-[var(--color-accent-ultralight)] transition text-xs font-medium"
+                        >
+                            Buy Now <span className="text-green-500" > {totalAmount}</span>
+                        </button>
+                    )
+                }
 
             </div>
             <div className="h-px bg-gray-300 w-full my-2"></div>
             {wishlist.length === 0 ? (
-                <div className="flex flex-col items-center justify-center text-center py-16 px-4 text-[var(--color-primary)]">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-20 w-20 text-[var(--color-accent-light)] mb-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={1.5}
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M3 8.25V6a3 3 0 013-3h12a3 3 0 013 3v2.25M21 8.25v9a3 3 0 01-3 3H6a3 3 0 01-3-3v-9M3 8.25L12 13.5l9-5.25"
-                        />
-                    </svg>
-                    <h2 className="text-xl font-semibold mb-2">Your wishlist is empty</h2>
-                    <button
-                        onClick={() => router.push('/')}
-                        className="px-6 py-2 bg-[var(--color-primary-light)]   text-white rounded-xs rounded-tl-xl rounded-br-xl hover:bg-[var(--color-primary)] transition font-medium cursor-pointer"
-                    >
-                        Browse Plants
-                    </button>
+                <div className="flex flex-col items-center justify-center mt-20 text-center text-gray-600">
+                    <FaLeaf className="text-green-500 text-5xl mb-4" />
+                    <h2 className="text-xl font-semibold">No Favorites Yet!</h2>
+                    <p className="text-sm text-gray-500 mt-1">
+                        Looks like you haven't added any plants yet. Let's explore the greenery and bring your space to life!
+                    </p>
+                    <div
+                        onClick={() => goToHome()}
+                        style={{ textShadow: '2px 2px 4px rgba(17, 116, 46, 0.2)' }}
+                        className="px-6 py-3 mt-3 text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-lime-500 to-green-400 font-semibold"
+                    > Browse Plants
+                    </div>
                 </div>
 
             ) : (
@@ -128,25 +135,43 @@ export default function WishList() {
                                         <p className="text-sm text-gray-500 italic truncate">{plant.subName}</p>
                                     )}
 
-                                    <div className="mt-2 flex justify-between items-center">
-                                        <div className="text-green-700 font-semibold text-base">
-                                            ₹{plant.price}
-                                            {plant.discount > 0 && (
-                                                <span className="ml-2 text-red-500 line-through font-normal text-sm">
-                                                    ₹{originalPrice}
-                                                </span>
-                                            )}
+                                    <div className="mt-2 flex justify-between items-center w-full">
+                                        <div className="flex flex-col gap-1">
+                                            <div className="flex items-center gap-1 sm:gap-2 text-sm mt-1">
+                                                {Array.from({ length: 5 }, (_, i) => {
+                                                    const filled = i + 1 <= Math.floor(plant.ratings);
+                                                    const half = i + 0.5 === plant.ratings;
+                                                    return (
+                                                        <span key={i} className="text-green-500">
+                                                            {filled ? <IoStarSharp /> : half ? <IoStarHalfSharp /> : <IoStarOutline />}
+                                                        </span>
+                                                    );
+                                                })}
+                                            </div>
+                                            <div className="text-green-700 font-semibold text-base">
+                                                {plant.discount > 0 && (
+                                                    <span className="mr-2 text-red-500 line-through font-normal text-sm">₹{originalPrice}</span>
+                                                )}
+                                                ₹{plant.price}
+                                            </div>
                                         </div>
-
-                                        <div
+                                        <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                handlePlantDetails(plant.id);
+                                                handleClick(encryptId(plant.id));
                                             }}
-                                            className="rounded-tl-md rounded-br-md p-2 bg-[var(--color-primary-light)] hover:bg-[var(--color-primary-dark)] text-white flex items-center justify-center text-sm font-semibold tracking-wide transition-colors duration-200"
+                                            disabled={isPending}
+                                            className={`rounded-tl-md rounded-br-md p-3 flex items-center justify-center text-sm font-semibold tracking-wide transition-all duration-200 ${isPending
+                                                ? "bg-green-100 cursor-not-allowed"
+                                                : "bg-[var(--color-primary-light)] hover:bg-[var(--color-primary-dark)] text-white"
+                                                }`}
                                         >
-                                            <FaArrowRight className="text-white text-base" />
-                                        </div>
+                                            {isPending ? (
+                                                <span className="animate-spin h-4 w-4 border-2 border-green-500 border-t-transparent rounded-full" />
+                                            ) : (
+                                                <FaArrowRight className="text-white text-base" />
+                                            )}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
