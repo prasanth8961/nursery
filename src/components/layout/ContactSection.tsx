@@ -23,7 +23,7 @@ const item: Variants = {
   },
 };
 
-export const ContactSection = () => {
+const ContactSection = () => {
   return (
     <footer className="py-10 px-4 sm:px-10 lg:px-20 text-[var(--color-primary-dark)] font-serif">
       <div className="max-w-7xl mx-auto">
@@ -45,7 +45,7 @@ export const ContactSection = () => {
           className="text-center text-[var(--foreground)] max-w-2xl mx-auto mb-10"
         >
           Whether you have a question about our plants, availability, services, or anything else —
-          we’re here to help you grow green!
+          we&apos;re here to help you grow green!
         </motion.p>
 
         <div className="flex flex-col sm:flex-row gap-10 items-start mx-auto">
@@ -123,3 +123,5 @@ export const ContactSection = () => {
     </footer>
   );
 };
+
+export default ContactSection;

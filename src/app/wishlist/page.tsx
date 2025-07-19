@@ -1,46 +1,46 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useState } from 'react';
 import { FaHeart, FaLeaf } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import { useWishlist } from '@/features/wishlist/useWishList';
 import { IoStarHalfSharp, IoStarOutline, IoStarSharp } from 'react-icons/io5';
 import { WishListItem } from '@/types';
 import { encryptId } from '@/lib/crypto';
 import { DEFAULT_IMAGE } from '@/constants';
 import { useRoute } from '@/routes';
-import { Loader } from '@/components/common/Loader';
+import Loader from '@/components/common/Loader';
 import { plantsData } from '@/seeds/plantData';
+import { useAppDispatch, useAppSelector } from '@/lib/store/helper';
+import { toggleFav } from '@/lib/store/slices/favSlice';
 
 export default function WishList() {
   const [imageLoadingMap, setImageLoadingMap] = useState<Record<number, boolean>>({});
   const router = useRouter();
   const { goToPlantDetails, goToHome } = useRoute();
-  const { wishlist, toggleWishlist, isInWishlist } = useWishlist(null);
   const [totalAmount, setTotalAmount] = useState<string>('0.00');
-  const [isPending, startTransition] = useTransition();
   const [isPageReady, setIsPageReady] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const favItems = useAppSelector(state => state.fav.items);
+
+  const handleClick = (id: string) => {
+    goToPlantDetails(id);
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => setIsPageReady(true), 300);
     return () => clearTimeout(timer);
   }, []);
 
-  const handleClick = (id: string) => {
-    startTransition(() => {
-      goToPlantDetails(id);
-    });
-  };
-
   useEffect(() => {
-    const amount = wishlist.reduce((prev, item) => prev + item.variant?.price, 0);
+    const amount = favItems.reduce((prev, item) => prev + item.variant?.price, 0);
     const formattedAmount = amount.toLocaleString('en-IN', {
       style: 'currency',
       currency: 'INR',
     });
     setTotalAmount(formattedAmount);
-  }, [wishlist]);
+  }, [favItems]);
 
   if (!isPageReady) return <Loader />;
 
@@ -66,20 +66,19 @@ export default function WishList() {
             />
           </svg>
         </button>
-        {wishlist.length > 0 && (
+        {favItems.length > 0 && (
           <button className="flex flex-col items-center text-[var(--color-primary-dark)] border border-[var(--color-primary-light)] px-4 py-1 rounded-tl-md rounded-br-md hover:bg-[var(--color-accent-ultralight)] transition text-xs font-medium">
             Total <span className="text-green-500"> {totalAmount}</span>
           </button>
         )}
       </div>
       <div className="h-px  w-full my-2"></div>
-      {wishlist.length === 0 ? (
+      {favItems.length === 0 ? (
         <div className="flex flex-col items-center justify-center mt-20 text-center text-gray-600">
           <FaLeaf className="text-green-500 text-5xl mb-4" />
           <h2 className="text-xl font-semibold">No Favorites Yet!</h2>
           <p className="text-sm text-gray-500 mt-1">
-            Looks like you haven't added any plants yet. Let's explore the greenery and bring your
-            space to life!
+            Looks like you haven&apos;t added any plants yet. Let&apos;s explore the greenery...
           </p>
           <div
             onClick={() => goToHome()}
@@ -92,7 +91,7 @@ export default function WishList() {
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-          {wishlist.map((plant: WishListItem, idx: number) => {
+          {favItems.map((plant: WishListItem, idx: number) => {
             const isLoading = imageLoadingMap[plant.plantId] ?? true;
             const originalPrice = Math.round(
               plant.variant.price / (1 - plant.variant.discount / 100)
@@ -114,9 +113,8 @@ export default function WishList() {
                     src={plant.baseImageUrl || DEFAULT_IMAGE}
                     alt={plant.name}
                     fill
-                    className={`object-cover transition duration-300 group-hover:scale-105 ${
-                      isLoading ? 'opacity-0' : 'opacity-100'
-                    }`}
+                    className={`object-cover transition duration-300 group-hover:scale-105 ${isLoading ? 'opacity-0' : 'opacity-100'
+                      }`}
                     onLoadingComplete={() =>
                       setImageLoadingMap(prev => ({ ...prev, [plant.plantId]: false }))
                     }
@@ -126,13 +124,12 @@ export default function WishList() {
                     onClick={e => {
                       e.stopPropagation();
                       const matchedPlant = plantsData.find(p => p.id === plant.plantId);
-                      if (matchedPlant) toggleWishlist(matchedPlant, plant.variant);
+                      if (matchedPlant)
+                        dispatch(toggleFav({ plant: matchedPlant, variant: plant.variant }));
                     }}
                     className="absolute top-2 right-2 z-30 p-2 bg-white rounded-full shadow-md hover:scale-105 transition"
                   >
-                    <FaHeart
-                      className={`text-lg ${isInWishlist(plant.variantId) ? 'text-green-500' : 'text-gray-300'}`}
-                    />
+                    <FaHeart className={`text-lg text-green-500`} />
                   </div>
                 </div>
 

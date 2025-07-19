@@ -1,24 +1,23 @@
-// ⚠️ All imports remain same...
 'use client';
 
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { FaLeaf, FaTimes } from 'react-icons/fa';
-import { useCart } from '@/features/checkout/useCart';
-import { CartItem } from '@/types';
+import { CartItem, Plant } from '@/types';
 import { encryptId } from '@/lib/crypto';
 import { DEFAULT_IMAGE, SHIPPING_COST } from '@/constants';
 import { useRoute } from '@/routes';
 import { useRouter } from 'next/navigation';
-import { Loader } from '@/components/common/Loader';
+import Loader from '@/components/common/Loader';
 import { IoStarHalfSharp, IoStarOutline, IoStarSharp } from 'react-icons/io5';
 import { plantsData } from '@/seeds/plantData';
+import { useAppDispatch, useAppSelector } from '@/lib/store/helper';
+import { clearCart, toggleCart } from '@/lib/store/slices/cartSlice';
 
 export default function Checkout() {
   const [imageLoadingMap, setImageLoadingMap] = useState<Record<string, boolean>>({});
   const { goToPlantDetails, redirectToHome } = useRoute();
   const [confirmation, setconfirmation] = useState(false);
-  const { cart, toggleCart, isInCart, clearCart, totalAmount } = useCart(null);
   const router = useRouter();
   const [isPageReady, setIsPageReady] = useState(false);
 
@@ -26,6 +25,14 @@ export default function Checkout() {
     const timer = setTimeout(() => setIsPageReady(true), 300);
     return () => clearTimeout(timer);
   }, []);
+
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector(state => state.cart.items);
+  const subtotal = useMemo(
+    () => cartItems.reduce((sum, item) => sum + (item.variant?.price ?? 0), 0),
+    [cartItems]
+  );
+  const total = useMemo(() => subtotal + SHIPPING_COST, [subtotal]);
 
   if (!isPageReady) return <Loader />;
 
@@ -51,21 +58,22 @@ export default function Checkout() {
             />
           </svg>
         </button>
-        {cart.length > 0 && (
+        {cartItems.length > 0 && (
           <div className="flex gap-3">
             <button
               onClick={() => {
-                const lines = cart
-                  .map(item => `🌿 ${item.name} - ₹${item.variant?.price ?? 0}`)
+                const lines = cartItems
+                  .map(
+                    item => `🌿 ${item.name} (${item.variant.size}) - ₹${item.variant.price || 0.0}`
+                  )
                   .join('\n');
-                const total = cart.reduce((sum, item) => sum + (item.variant?.price ?? 0), 0);
                 const fullMsg = `Hi, I want to order the following plants:\n\n${lines}\n\nTotal: ₹${total}`;
                 const whatsappURL = `https://wa.me/917639874667?text=${encodeURIComponent(fullMsg)}`;
                 window.open(whatsappURL, '_blank');
               }}
               className="flex flex-col items-center text-[var(--color-primary-dark)] border border-[var(--color-primary-light)] px-4 py-1 rounded-tl-md rounded-br-md hover:bg-[var(--color-accent-ultralight)] transition text-xs font-medium"
             >
-              Place Order <span className="text-green-500">{totalAmount + SHIPPING_COST}</span>
+              Place Order <span className="text-green-500">{total}</span>
             </button>
             <button
               onClick={() => setconfirmation(true)}
@@ -88,7 +96,7 @@ export default function Checkout() {
                     </button>
                     <button
                       onClick={() => {
-                        clearCart();
+                        dispatch(clearCart());
                         setconfirmation(false);
                       }}
                       className="px-4 py-2 rounded-md bg-green-600 text-white hover:bg-red-700 transition"
@@ -104,7 +112,7 @@ export default function Checkout() {
       </div>
       <div className="h-px bg-gray-300 w-full my-2" />
 
-      {cart.length === 0 ? (
+      {cartItems.length === 0 ? (
         <div className="flex flex-col items-center justify-center mt-20 text-center text-gray-600">
           <FaLeaf className="text-green-500 text-5xl mb-4" />
           <h2 className="text-xl font-semibold">Your Cart is Empty</h2>
@@ -122,7 +130,7 @@ export default function Checkout() {
         </div>
       ) : (
         <div className="flex flex-col gap-2 sm:grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 sm:gap-3 px-2 mt-4">
-          {cart.map((plant: CartItem) => {
+          {cartItems.map((plant: CartItem) => {
             const variant = plant.variant;
             if (!variant) return null;
 
@@ -142,14 +150,20 @@ export default function Checkout() {
                     <div className="absolute inset-0 bg-gray-200 animate-pulse z-10 rounded-l-md" />
                   )}
                   <Image
-                    src={plant.baseImageUrl || DEFAULT_IMAGE}
+                    src={plant.baseImageUrl}
                     alt={plant.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 300px"
                     className={`object-cover rounded-l-md transition-transform duration-300 ease-in-out group-hover:scale-105 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
                     onLoadingComplete={() =>
-                      setImageLoadingMap(prev => ({ ...prev, [plant.plantId]: false }))
+                      setImageLoadingMap(prev => {
+                        if (prev[plant.plantId]) return prev;
+                        return { ...prev, [plant.plantId]: false };
+                      })
                     }
+                    onError={e => {
+                      (e.target as HTMLImageElement).src = DEFAULT_IMAGE;
+                    }}
                   />
                 </div>
                 <div className="p-3 w-[50%] flex flex-col gap-1">
@@ -202,15 +216,15 @@ export default function Checkout() {
                   className="absolute right-1 top-1 z-30 px-2 py-2 border rounded-tl-md rounded-br-md border-green-500 shadow cursor-pointer"
                   onClick={e => {
                     e.stopPropagation();
-                    const fullPlant = plantsData.find(data => data.id === plant.plantId);
-                    if (fullPlant && variant) {
-                      toggleCart(fullPlant, variant);
+                    const _plant: Plant | undefined = plantsData.find(
+                      data => data.id === plant.plantId
+                    );
+                    if (_plant && variant) {
+                      dispatch(toggleCart({ plant: _plant, variant }));
                     }
                   }}
                 >
-                  <FaTimes
-                    className={`transition ${isInCart(plant.variantId) ? 'text-green-500' : 'text-gray-300'}`}
-                  />
+                  <FaTimes className={`transition text-green-500`} />
                 </div>
               </div>
             );
@@ -218,12 +232,12 @@ export default function Checkout() {
         </div>
       )}
 
-      {cart.length > 0 && (
+      {cartItems.length > 0 && (
         <div className="border border-green-200 rounded-md mt-5 px-4 py-3 mx-2 sm:mx-0">
           <h3 className="text-lg font-semibold text-green-700 mb-2">🧾 Order Summary</h3>
           <ul className="text-sm text-green-900 space-y-1 mb-3">
-            {cart.map((item: CartItem, idx: number) => (
-              <li key={idx} className="flex justify-between">
+            {cartItems.map((item: CartItem, idx: number) => (
+              <li key={item.variantId} className="flex justify-between">
                 <span>{item.name}</span>
                 <span>₹{item.variant?.price ?? 0}</span>
               </li>
@@ -233,7 +247,7 @@ export default function Checkout() {
           <div className="text-sm text-green-800 space-y-1">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span>₹{totalAmount}</span>
+              <span>₹{subtotal}</span>
             </div>
             <div className="flex justify-between">
               <span>Shipping</span>
@@ -242,7 +256,7 @@ export default function Checkout() {
             <hr className="my-2 text-green-400" />
             <div className="flex justify-between font-semibold text-green-700">
               <span>Total</span>
-              <span>₹{Math.round(totalAmount + SHIPPING_COST)}</span>
+              <span>₹{total}</span>
             </div>
           </div>
         </div>

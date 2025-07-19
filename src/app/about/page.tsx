@@ -1,5 +1,6 @@
 'use client';
 
+import { AboutItem } from '@/types';
 import { motion, Variants } from 'framer-motion';
 
 const cardVariants: Variants = {
@@ -15,7 +16,7 @@ const cardVariants: Variants = {
   }),
 };
 
-export const About = () => {
+const About = () => {
   return (
     <section className="relative py-10 sm:py-16 px-4 sm:px-10 lg:px-24 max-w-7xl mx-auto">
       <motion.h2
@@ -68,7 +69,7 @@ export const About = () => {
             title: 'Community & Support',
             text: 'Whether you’re a first-time plant parent or a garden enthusiast, we’re here to guide you. Get tips, support, and grow with a community that shares your love for green living.',
           },
-        ].map((item: any, i: number) => (
+        ].map((item: AboutItem, i: number) => (
           <motion.div
             key={i}
             custom={i}
@@ -116,3 +117,5 @@ export const About = () => {
     </section>
   );
 };
+
+export default About;
