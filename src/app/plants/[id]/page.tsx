@@ -66,7 +66,7 @@ export default function Details() {
   useEffect(() => {
     const timer = setTimeout(() => setIsPageReady(true), 300);
     return () => clearTimeout(timer);
-  }, []);
+  });
 
   useEffect(() => {
     if (imageList.length > 0) {
@@ -185,8 +185,8 @@ Thank you! 😊
                     key={idx}
                     onClick={() => setSelectedImage(url)}
                     className={`relative min-w-[96px] h-24 rounded-md overflow-hidden cursor-pointer transition ${selectedImage === url
-                        ? 'border-3 border-green-500'
-                        : 'border-2 border-green-100'
+                      ? 'border-3 border-green-500'
+                      : 'border-2 border-green-100'
                       }`}
                   >
                     {thumbLoading[idx] && (

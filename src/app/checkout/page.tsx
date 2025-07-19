@@ -117,7 +117,7 @@ export default function Checkout() {
           <FaLeaf className="text-green-500 text-5xl mb-4" />
           <h2 className="text-xl font-semibold">Your Cart is Empty</h2>
           <p className="text-sm text-gray-500 mt-1">
-            Looks like you haven't added any plants yet. Let's explore the greenery and bring your
+            Looks like you haven&apos;t added any plants yet. Let&apos;s explore the greenery and bring your
             space to life!
           </p>
           <div
@@ -236,7 +236,7 @@ export default function Checkout() {
         <div className="border border-green-200 rounded-md mt-5 px-4 py-3 mx-2 sm:mx-0">
           <h3 className="text-lg font-semibold text-green-700 mb-2">🧾 Order Summary</h3>
           <ul className="text-sm text-green-900 space-y-1 mb-3">
-            {cartItems.map((item: CartItem, idx: number) => (
+            {cartItems.map((item: CartItem) => (
               <li key={item.variantId} className="flex justify-between">
                 <span>{item.name}</span>
                 <span>₹{item.variant?.price ?? 0}</span>
