@@ -69,7 +69,7 @@ export const Header = () => {
               Prasanth
             </span>
             <span
-              className="text-[var(--color-primary-light)] text-sm sm:text-base md:text-lg font-medium capitalize"
+              className="text-[var(--color-primary)] text-sm sm:text-base md:text-lg font-medium capitalize"
               style={{ fontFamily: "'Poppins', sans-serif" }}
             >
               Nursery Garden
@@ -124,7 +124,7 @@ export const Header = () => {
               goToAuth();
             }}
           >
-            <BsPerson /> <span>Login</span>
+            <BsPerson /> <span>Welcome</span>
           </div>
 
           <div
@@ -227,7 +227,7 @@ export const Header = () => {
               goToAuth();
             }}
           >
-            <BsPerson /> <span>Login</span>
+            <BsPerson /> <span>Welcome</span>
           </div>
         </div>
       </div>

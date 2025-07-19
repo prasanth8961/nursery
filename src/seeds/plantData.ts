@@ -18,7 +18,7 @@ export const plantsData: Plant[] = [
     isAvailable: true,
     isFeatured: true,
     tags: ['ritual use', 'fast grower', 'red flower', 'Tamil Nadu'],
-    relatedPlantsIds: [],
+    relatedPlantsIds: [102, 104],
     variants: [
       {
         id: '101-4x6',
@@ -147,7 +147,7 @@ export const plantsData: Plant[] = [
     isAvailable: true,
     isFeatured: true,
     tags: ['pink flower', 'ornamental', 'hedge', 'low maintenance'],
-    relatedPlantsIds: [102],
+    relatedPlantsIds: [102, 101],
     variants: [
       {
         id: '103-7x8',
@@ -203,7 +203,7 @@ export const plantsData: Plant[] = [
     isAvailable: true,
     isFeatured: true,
     tags: ['white aralia', 'foliage', 'indoor plant', 'air purifier'],
-    relatedPlantsIds: [],
+    relatedPlantsIds: [105],
     variants: [
       {
         id: '104-7x8',
@@ -258,7 +258,7 @@ export const plantsData: Plant[] = [
     isAvailable: true,
     isFeatured: true,
     tags: ['ti plant', 'good luck', 'tropical foliage', 'indoor plant'],
-    relatedPlantsIds: [],
+    relatedPlantsIds: [104],
     variants: [
       {
         id: '105-7x8',

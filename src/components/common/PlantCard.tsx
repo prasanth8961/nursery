@@ -87,7 +87,7 @@ const PlantCard = React.memo(({ plant, animated_bounce }: PlantCardProps) => {
 
         {variant.discount > 0 && (
           <div
-            className={`absolute top-3 left-3 bg-green-500 text-white px-3 py-1 text-xs font-bold rounded-tl-md rounded-br-md shadow-md ${animated_bounce ? 'animate-bounce' : ''}`}
+            className={`absolute top-3 left-3 bg-green-700 text-white px-3 py-1 text-xs font-bold rounded-tl-md rounded-br-md shadow-md ${animated_bounce ? 'animate-bounce' : ''}`}
           >
             {variant.discount}% OFF
           </div>
@@ -96,7 +96,7 @@ const PlantCard = React.memo(({ plant, animated_bounce }: PlantCardProps) => {
 
       <div className="p-3 flex flex-col gap-2">
         <div className="flex flex-col">
-          <h2 className="text-sm font-semibold text-green-800 truncate">{plant.name}</h2>
+          <h2 className="text-sm font-semibold text-green-600 truncate">{plant.name}</h2>
           <div className="flex items-center gap-1 mt-1">
             {Array.from({ length: 5 }, (_, i) => {
               const rating = variant.ratings ?? 0;
@@ -117,21 +117,20 @@ const PlantCard = React.memo(({ plant, animated_bounce }: PlantCardProps) => {
 
         <p className="hidden sm:block text-xs text-gray-600 line-clamp-2">{plant.description}</p>
 
-        <div className="flex items-center justify-between gap-3 mt-3">
+        <div className="flex items-center justify-between gap-3 sm:mt-3">
           <div className="flex flex-col leading-tight">
-            <span className="text-lg font-bold text-green-600">₹{variant.price}</span>
             {variant.discount > 0 && (
-              <span className="text-sm text-gray-400 line-through">₹{originalPrice}</span>
+              <span className="text-sm text-red-400 font-medium line-through">₹{originalPrice}</span>
             )}
+            <span className="text-xl font-bold text-green-600">₹{variant.price}</span>
           </div>
 
           <button
             onClick={handleCartClick}
             className={`group z-20 flex items-center gap-[4px] px-2 py-[6px] text-xs font-medium rounded-tl-sm rounded-br-sm transition-all
-              ${
-                isInCart
-                  ? 'bg-gray-100 text-green-800 '
-                  : 'bg-gray-100 text-green-800 hover:bg-green-600'
+              ${isInCart
+                ? 'bg-gray-100 text-green-800 '
+                : 'bg-gray-100 text-green-800 hover:bg-green-600'
               }
             `}
           >
@@ -139,7 +138,7 @@ const PlantCard = React.memo(({ plant, animated_bounce }: PlantCardProps) => {
               size={18}
               className={`transition-transform duration-200 ${isInCart ? 'text-gray-400' : 'text-gray-400 group-hover:scale-110'}`}
             />
-            <span>{isInCart ? 'Already in cart' : 'Add to Cart'}</span>
+            <span>{isInCart ? 'Already In' : 'Add to Cart'}</span>
           </button>
         </div>
       </div>

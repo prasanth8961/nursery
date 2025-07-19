@@ -22,7 +22,7 @@ const Products = () => {
         <section className="max-w-[95vw] mx-auto py-2 sm:py-5">
           <div className="w-full overflow-x-auto mb-4">
             <div className="flex items-start gap-4 px-1 min-w-max lg:justify-between lg:px-4">
-              <div className="text-md font-semibold text-green-600 cursor-pointer whitespace-nowrap drop-shadow-md">
+              <div className="text-md font-semibold  cursor-pointer whitespace-nowrap drop-shadow-md">
                 Most Popular
               </div>
 

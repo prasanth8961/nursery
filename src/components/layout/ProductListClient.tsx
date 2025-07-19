@@ -3,7 +3,7 @@
 import Head from 'next/head';
 import { AiFillPhone } from 'react-icons/ai';
 import { FaArrowLeft, FaLeaf } from 'react-icons/fa';
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Plant } from '@/types';
 import { useDebounce } from '@/hooks/useDebounce';
 import { categories, socialMedias } from '@/constants';
