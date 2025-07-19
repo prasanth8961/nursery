@@ -1,9 +1,12 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-   images: {
-    domains: ['m.media-amazon.com','images-na.ssl-images-amazon.com', 'bs.plantnet.org', 'images.pexels.com'],
-   }
-  };
+  images: {
+    domains: [],
+  },
+  env: {
+    SECRET_KEY: process.env.SECRET_KEY,
+  },
+};
 
 export default nextConfig;

@@ -1,55 +1,73 @@
-import { useEffect, useState } from "react";
-import { plantsData } from "@/seeds/plantData";
-import { Plant, UseWishlistReturn } from "@/types";
-import { getLocalStorage, setLocalStorage, removeLocalStorage } from "@/lib/localStorage";
-import { keys } from "@/constants";
+'use client';
 
+import { useEffect, useState, useCallback } from 'react';
+import { WishListItem, UseWishlistReturn, PlantVariant, Plant } from '@/types';
+import { keys } from '@/constants';
 
 export const useWishlist = (user: { id?: string } | null): UseWishlistReturn => {
-  const [wishlistIds, setWishlistIds] = useState<number[]>([]);
+  const [wishlist, setWishlist] = useState<WishListItem[]>([]);
 
   useEffect(() => {
     if (user?.id) {
-      // TODO: Fetch user's wishlist IDs from the database
+      // TODO: Fetch wishlist from backend
     } else {
-      const local = getLocalStorage<number[]>(keys.Wishlist);
-      if (Array.isArray(local)) {
-        setWishlistIds(local);
-      } else {
-        removeLocalStorage(keys.Wishlist);
+      try {
+        const local = localStorage.getItem(keys.Wishlist);
+        if (local) {
+          const parsed = JSON.parse(local) as WishListItem[];
+          setWishlist(parsed);
+        }
+      } catch {
+        localStorage.removeItem(keys.Wishlist);
       }
     }
   }, [user?.id]);
 
-  const syncLocal = (updated: number[]) => {
-    setWishlistIds(updated);
-    setLocalStorage<number[]>(keys.Wishlist, updated);
-  };
+  const syncLocal = useCallback((updated: WishListItem[]) => {
+    setWishlist(updated);
+    localStorage.setItem(keys.Wishlist, JSON.stringify(updated));
+  }, []);
 
-  const toggleWishlist = (plant: Plant) => {
-    const exists = wishlistIds.includes(plant.id);
-    let updated: number[];
+  const toggleWishlist = (plant: Plant, variant: PlantVariant) => {
+    const exists = wishlist.some(item => item.variantId === variant.id);
 
-    if (exists) {
-      updated = wishlistIds.filter(id => id !== plant.id);
-      if (user?.id) {
-        // TODO: DELETE from database
-      } else {
-        syncLocal(updated);
-      }
+    const updated = exists
+      ? wishlist.filter(item => item.variantId !== variant.id)
+      : [
+          ...wishlist,
+          {
+            variantId: variant.id,
+            plantId: plant.id,
+            name: plant.name,
+            tamilName: plant.tamilName,
+            subName: plant.subName,
+            baseImageUrl: plant.baseImageUrl,
+            category: plant.category,
+            variant,
+          } satisfies WishListItem,
+        ];
+
+    if (user?.id) {
+      // TODO: Sync with backend
     } else {
-      updated = [...wishlistIds, plant.id];
-      if (user?.id) {
-        // TODO: POST to database
-      } else {
-        syncLocal(updated);
-      }
+      syncLocal(updated.reverse());
     }
   };
 
-  const isInWishlist = (plantId: number) => wishlistIds.includes(plantId);
+  const isInWishlist = useCallback(
+    (variantId: string) => wishlist.some(item => item.variantId === variantId),
+    [wishlist]
+  );
 
-  const wishlist: Plant[] = plantsData.filter(plant => wishlistIds.includes(plant.id));
+  const clearWishlist = useCallback(() => {
+    setWishlist([]);
+    localStorage.removeItem(keys.Wishlist);
+  }, []);
 
-  return { wishlist, toggleWishlist, isInWishlist };
+  return {
+    wishlist,
+    toggleWishlist,
+    isInWishlist,
+    clearWishlist,
+  };
 };

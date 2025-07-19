@@ -14,7 +14,6 @@ import { ShimmerCard } from '@/components/common/ShimmerLoader';
 import { Loader } from '@/components/common/Loader';
 import { encryptId } from '@/lib/crypto';
 
-
 const PAGE_SIZE: number = 12;
 const DELAY: number = 300;
 
@@ -35,13 +34,11 @@ export default function AllPlantsPage() {
     let filtered: Plant[] =
       active === 'All'
         ? plantsData
-        : plantsData.filter(
-          (plant) => plant.category.toLowerCase() === active.toLowerCase()
-        );
+        : plantsData.filter(plant => plant.category.toLowerCase() === active.toLowerCase());
 
     if (debouncedSearchInput) {
       filtered = filtered.filter(
-        (item) =>
+        item =>
           item.name.toLowerCase().includes(debouncedSearchInput.toLowerCase()) ||
           item.category.toLowerCase().includes(debouncedSearchInput.toLowerCase())
       );
@@ -50,14 +47,12 @@ export default function AllPlantsPage() {
     return filtered;
   }, [active, debouncedSearchInput]);
 
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsPageReady(true);
     }, 300);
     return () => clearTimeout(timer);
   }, []);
-
 
   const paginatedPlants = useMemo(() => {
     const start = (currentPage - 1) * PAGE_SIZE;
@@ -68,7 +63,6 @@ export default function AllPlantsPage() {
     setAllFilteredPlants(filteredPlants);
     if (currentPage !== 1) setCurrentPage(1);
   }, [filteredPlants]);
-
 
   useEffect(() => {
     setIsLoading(true);
@@ -81,17 +75,14 @@ export default function AllPlantsPage() {
   }, [paginatedPlants]);
 
   useEffect(() => {
-    const listTop = document.getElementById("plant-list")?.offsetTop;
-    if (listTop !== undefined) window.scrollTo({ top: 0, behavior: "smooth" });
+    const listTop = document.getElementById('plant-list')?.offsetTop;
+    if (listTop !== undefined) window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage]);
-
 
   const totalPages = Math.ceil(allFilteredPlants.length / PAGE_SIZE);
 
   if (!isPageReady) {
-    return (
-      <Loader />
-    );
+    return <Loader />;
   }
 
   return (
@@ -115,7 +106,7 @@ export default function AllPlantsPage() {
             +91 7639874667
           </a>
           <div className="flex gap-2 items-center text-[var(--color-primary-dark)]">
-            {socialMedias.map((media) => (
+            {socialMedias.map(media => (
               <a
                 key={media.id}
                 href={media.link}
@@ -158,8 +149,8 @@ export default function AllPlantsPage() {
               type="text"
               placeholder="Search plants, categories..."
               ref={searchInputRef}
-              onChange={(e) => setSearchInput(e.target.value)}
-              onKeyDown={(e) => {
+              onChange={e => setSearchInput(e.target.value)}
+              onKeyDown={e => {
                 if (e.key === 'Enter') {
                   searchInputRef.current?.blur();
                 }
@@ -170,23 +161,25 @@ export default function AllPlantsPage() {
         </div>
 
         <div className="flex flex-wrap gap-4 items-start px-1">
-          {categories.map((category) => (
+          {categories.map(category => (
             <div
               key={category}
               onClick={() => setActive(category)}
               className="flex flex-col items-center pb-2 cursor-pointer"
             >
               <span
-                className={`text-sm font-medium transition-colors duration-200 ${active === category
-                  ? 'text-[var(--color-primary-dark)]'
-                  : 'text-[var(--color-primary)] hover:text-[var(--color-primary-light)]'
-                  }`}
+                className={`text-sm font-medium transition-colors duration-200 ${
+                  active === category
+                    ? 'text-[var(--color-primary-dark)]'
+                    : 'text-[var(--color-primary)] hover:text-[var(--color-primary-light)]'
+                }`}
               >
                 {category}
               </span>
               <div
-                className={`h-[2px] mt-1 w-full rounded-full transition-all duration-300 ${active === category ? 'bg-[var(--color-primary)]' : 'bg-transparent'
-                  }`}
+                className={`h-[2px] mt-1 w-full rounded-full transition-all duration-300 ${
+                  active === category ? 'bg-[var(--color-primary)]' : 'bg-transparent'
+                }`}
               />
             </div>
           ))}
@@ -201,14 +194,17 @@ export default function AllPlantsPage() {
         </div>
       ) : visiblePlants.length > 0 ? (
         <>
-          <div id="plant-list" className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 p-2 mt-4">
-            {visiblePlants.map((plant) => (
+          <div
+            id="plant-list"
+            className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 p-2 mt-4"
+          >
+            {visiblePlants.map(plant => (
               <PlantCard key={plant.id} plant={plant} animated_bounce={false} />
             ))}
           </div>
           <div className="flex justify-center items-center gap-1 md:gap-2 py-6 flex-wrap">
             <button
-              onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
               disabled={currentPage === 1}
               className="px-4 py-2 rounded-md border border-[var(--color-primary)] bg-[var(--color-accent-ultralight)] font-semibold text-sm hover:bg-[var(--color-primary-light)] disabled:opacity-50"
             >
@@ -230,10 +226,11 @@ export default function AllPlantsPage() {
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page)}
-                    className={`px-4 py-2 text-sm font-semibold rounded-md transition border ${currentPage === page
-                      ? 'bg-[var(--color-primary-dark)] text-[var(--color-primary-light)] border-[var(--color-primary)]'
-                      : 'border-[var(--color-primary)] hover:bg-[var(--color-accent-ultralight)]'
-                      }`}
+                    className={`px-4 py-2 text-sm font-semibold rounded-md transition border ${
+                      currentPage === page
+                        ? 'bg-[var(--color-primary-dark)] text-[var(--color-primary-light)] border-[var(--color-primary)]'
+                        : 'border-[var(--color-primary)] hover:bg-[var(--color-accent-ultralight)]'
+                    }`}
                   >
                     {page}
                   </button>
@@ -242,7 +239,7 @@ export default function AllPlantsPage() {
               return buttons;
             })()}
             <button
-              onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
               disabled={currentPage === totalPages}
               className="px-4 py-2 rounded-md border border-[var(--color-primary)] bg-[var(--color-accent-ultralight)] font-semibold text-sm hover:bg-[var(--color-primary-light)] disabled:opacity-50"
             >

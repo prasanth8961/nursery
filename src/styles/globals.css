@@ -1,5 +1,5 @@
 /* globals.css */
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ===== Root Variables ===== */
 :root {
@@ -24,7 +24,7 @@
   --background: #0a0a0a;
   --foreground: #f9f9f9;
 
-  --color-primary: #9EDF9C;
+  --color-primary: #9edf9c;
   --color-primary-light: #4caf50;
   --color-primary-dark: #2f6b3d;
 
@@ -159,4 +159,17 @@ body {
 
 .animate-scan-line {
   animation: scan-line 2.5s linear infinite;
+}
+
+@keyframes spin-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 2s linear infinite;
 }

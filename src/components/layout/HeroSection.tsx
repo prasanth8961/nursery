@@ -1,10 +1,10 @@
 'use client';
 
-import Image from "next/image";
-import { motion, Variants } from "framer-motion";
-import { useRouter } from "next/navigation";
-import { HERO_IMAGE } from "@/constants";
-import { useRoute } from "@/routes";
+import Image from 'next/image';
+import { motion, Variants } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { HERO_IMAGE } from '@/constants';
+import { useRoute } from '@/routes';
 
 const textFadeIn: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -20,7 +20,7 @@ const textFadeIn: Variants = {
 };
 
 export const HeroSection = () => {
-  const {goToPlants} = useRoute();
+  const { goToPlants } = useRoute();
   return (
     <main className="flex flex-col md:flex-row items-center justify-between px-6 py-10 xl:py-40 max-w-7xl mx-auto overflow-hidden">
       <motion.div
@@ -60,24 +60,20 @@ export const HeroSection = () => {
           <br /> THE 🌿 HEART OF NATURE
         </motion.h1>
 
-        <motion.p
-          className="mt-4 text-green-600"
-          variants={textFadeIn}
-          custom={2}
-        >
-          Where plants find homes and homes find life — explore green treasures, grow with ease, and bring nature closer, one leaf at a time.
+        <motion.p className="mt-4 text-green-600" variants={textFadeIn} custom={2}>
+          Where plants find homes and homes find life — explore green treasures, grow with ease, and
+          bring nature closer, one leaf at a time.
         </motion.p>
 
-        <motion.div
-          className="mt-6 flex gap-4"
-          variants={textFadeIn}
-          custom={3}
-        >
-          <button className="bg-green-700 text-green-200 px-5 py-2 hover:bg-[var(--color-primary-dark)] hover:text-white rounded-tl-xl rounded-br-xl transition cursor-pointer"
-            onClick={() => goToPlants()}>
+        <motion.div className="mt-6 flex gap-4" variants={textFadeIn} custom={3}>
+          <button
+            className="bg-green-700 text-green-200 px-5 py-2 hover:bg-[var(--color-primary-dark)] hover:text-white rounded-tl-xl rounded-br-xl transition cursor-pointer"
+            onClick={() => goToPlants()}
+          >
             Explore Plants
           </button>
-          <button className="border border-[var(--color-primary)] text-green-500 px-5 py-2 hover:bg-[var(--color-primary-light)] hover:text-white rounded-tl-xl rounded-br-xl transition cursor-pointer"
+          <button
+            className="border border-[var(--color-primary)] text-green-500 px-5 py-2 hover:bg-[var(--color-primary-light)] hover:text-white rounded-tl-xl rounded-br-xl transition cursor-pointer"
             onClick={() => {
               setTimeout(() => {
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
@@ -94,7 +90,7 @@ export const HeroSection = () => {
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
+        transition={{ duration: 1.2, ease: 'easeOut' }}
       >
         <div className="absolute w-2/3 aspect-square rounded-[25%] bg-green-200 opacity-30 animate-ripple" />
         <div className="absolute w-2/3 aspect-square rounded-[25%] bg-green-300 opacity-20 animate-ripple delay-[200ms]" />
@@ -102,11 +98,11 @@ export const HeroSection = () => {
 
         <motion.div
           animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           className="relative z-10 w-full h-full"
         >
           <Image
-            src= {HERO_IMAGE} 
+            src={HERO_IMAGE}
             alt="Nursery showcase"
             fill
             className="object-contain drop-shadow-md"

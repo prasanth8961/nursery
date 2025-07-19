@@ -1,25 +1,21 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { AiFillPhone } from "react-icons/ai";
-import { MdMail } from "react-icons/md";
-import {
-  FaBars,
-  FaTimes, FaSeedling, FaShoppingCart, FaHeart
-} from "react-icons/fa";
-import { BsPerson } from "react-icons/bs";
-import { ThemeContext } from "@/contexts/ThemeContext";
-import Image from "next/image";
-import { CONTACT, EMAIL, LOGO_IMAGE, socialMedias } from "@/constants";
-import { Media } from "@/types";
-import { useRoute } from "@/routes";
-import { useCart } from "@/features/checkout/useCart";
+import { useState } from 'react';
+import { AiFillPhone } from 'react-icons/ai';
+import { MdMail } from 'react-icons/md';
+import { FaBars, FaTimes, FaSeedling, FaShoppingCart, FaHeart } from 'react-icons/fa';
+import { BsPerson } from 'react-icons/bs';
+import { ThemeContext } from '@/contexts/ThemeContext';
+import Image from 'next/image';
+import { CONTACT, EMAIL, LOGO_IMAGE, socialMedias } from '@/constants';
+import { Media } from '@/types';
+import { useRoute } from '@/routes';
+import { useCart } from '@/features/checkout/useCart';
 
 export const Header = () => {
-
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const { goToCart, goToHome, goToPlants, goToWishlist, redirectToHome, goToAuth } = useRoute();
-  const {cart} = useCart(null);
+  const { cart } = useCart(null);
 
   return (
     <header className="bg-[var(--background)] w-full relative sticky top-0 z-50 shadow-sm sm:shadow-none">
@@ -43,17 +39,15 @@ export const Header = () => {
         </div>
 
         <div className="flex gap-2 items-center text-[var(--color-primary-dark)]">
-          {socialMedias.map(
-            (media: Media, _) => (
-              <a
-                key={media.id}
-                href={media.link}
-                className="h-8 w-8 rounded-tl-md rounded-br-md border border-[var(--color-accent-light)] flex items-center justify-center hover:bg-[var(--color-accent-mid)] transition"
-              >
-                <media.icon />
-              </a>
-            )
-          )}
+          {socialMedias.map((media: Media, _) => (
+            <a
+              key={media.id}
+              href={media.link}
+              className="h-8 w-8 rounded-tl-md rounded-br-md border border-[var(--color-accent-light)] flex items-center justify-center hover:bg-[var(--color-accent-mid)] transition"
+            >
+              <media.icon />
+            </a>
+          ))}
         </div>
       </div>
 
@@ -89,7 +83,8 @@ export const Header = () => {
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           <div className="flex gap-6 items-center text-[var(--color-primary-dark)] text-sm sm:text-base font-medium">
-            <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
+            <div
+              className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
               onClick={() => {
                 setMenuOpen(false);
                 goToPlants();
@@ -98,7 +93,8 @@ export const Header = () => {
               <FaSeedling />
               <span>Plants</span>
             </div>
-            <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
+            <div
+              className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
               onClick={() => {
                 setMenuOpen(false);
                 goToWishlist();
@@ -107,7 +103,8 @@ export const Header = () => {
               <FaHeart />
               <span>Favorites</span>
             </div>
-            <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
+            <div
+              className="flex items-center gap-2 cursor-pointer hover:text-[var(--color-primary)] transition"
               onClick={() => {
                 setMenuOpen(false);
                 goToCart();
@@ -117,13 +114,12 @@ export const Header = () => {
               <span>Cart</span>
             </div>
           </div>
-
-
         </div>
 
         <div className="flex items-center gap-1">
           <ThemeContext />
-          <div className="hidden sm:flex border-2 border-[var(--color-accent-light)] bg-[var(--color-primary-light)] text-white px-3 py-2 rounded-tl-lg rounded-br-lg items-center gap-1 text-sm"
+          <div
+            className="hidden sm:flex border-2 border-[var(--color-accent-light)] bg-[var(--color-primary-light)] text-white px-3 py-2 rounded-tl-lg rounded-br-lg items-center gap-1 text-sm"
             onClick={() => {
               setMenuOpen(false);
               goToAuth();
@@ -136,13 +132,13 @@ export const Header = () => {
             className="flex sm:hidden items-center justify-center gap-2 border-2 border-[var(--color-accent-light)] p-2 rounded-tl-md rounded-br-md cursor-pointer"
             onClick={() => setMenuOpen(true)}
           >
-            <FaBars className="text-green-600"/>
+            <FaBars className="text-green-600" />
           </div>
         </div>
       </div>
 
       <div
-        className={`fixed top-0 left-0 h-full w-[75%] max-w-[320px] bg-[var(--background)] z-50 p-6 transition-transform duration-300 ease-in-out transform ${menuOpen ? "translate-x-0" : "-translate-x-full"} flex flex-col overflow-y-auto`}
+        className={`fixed top-0 left-0 h-full w-[75%] max-w-[320px] bg-[var(--background)] z-50 p-6 transition-transform duration-300 ease-in-out transform ${menuOpen ? 'translate-x-0' : '-translate-x-full'} flex flex-col overflow-y-auto`}
       >
         <div className="flex items-start justify-between mb-4">
           <div className="flex flex-col">
@@ -178,7 +174,6 @@ export const Header = () => {
         </div>
 
         <div className="w-full border-b border-gray-300 mb-4" />
-
 
         <div
           className="flex flex-col gap-4 text-[var(--color-accent-mid)] font-medium text-base m-2"
@@ -221,12 +216,15 @@ export const Header = () => {
             <span className="bg-gradient-to-r from-green-500 to-lime-500 bg-clip-text text-transparent drop-shadow-md">
               Cart
             </span>
-            <span className="rounded-sm text-sm font-semibold border-2 border-green-400 flex items-center justify-center h-5 px-1 py-[1px]">{cart.length || 0}</span>
+            <span className="rounded-sm text-sm font-semibold border-2 border-green-400 flex items-center justify-center h-5 px-1 py-[1px]">
+              {cart.length || 0}
+            </span>
           </div>
         </div>
 
         <div className="mt-auto pt-6">
-          <div className="flex items-center justify-center gap-2 bg-[var(--color-primary-light)] text-white px-3 py-3 rounded-tl-lg rounded-br-lg"
+          <div
+            className="flex items-center justify-center gap-2 bg-[var(--color-primary-light)] text-white px-3 py-3 rounded-tl-lg rounded-br-lg"
             onClick={() => {
               setMenuOpen(false);
               goToAuth();
@@ -238,9 +236,9 @@ export const Header = () => {
       </div>
 
       <div
-        className={`fixed inset-0 z-40 sm:hidden backdrop-blur-sm transition-opacity duration-300 ease-in-out ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} bg-black/40`}
+        className={`fixed inset-0 z-40 sm:hidden backdrop-blur-sm transition-opacity duration-300 ease-in-out ${menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} bg-black/40`}
         onClick={() => setMenuOpen(false)}
       />
     </header>
-  )
-}
+  );
+};

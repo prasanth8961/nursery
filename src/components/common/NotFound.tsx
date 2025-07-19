@@ -1,40 +1,43 @@
 'use client';
 
-import { useRoute } from '@/routes'; // Your custom route hook
-import { FaSearch } from 'react-icons/fa';
+import { useRoute } from '@/routes';
+import { FaLeaf, FaArrowLeft } from 'react-icons/fa';
 
 interface NotFoundProps {
-    message?: string;
-    showButton?: boolean;
-    buttonLabel?: string;
+  message?: string;
+  showButton?: boolean;
+  buttonLabel?: string;
 }
 
 export default function NotFound({
-    message = 'Item not found',
-    showButton = true,
-    buttonLabel = 'Go Home',
+  message = 'Oops! Page not found',
+  showButton = true,
+  buttonLabel = 'Go Back',
 }: NotFoundProps) {
-    const { goToHome } = useRoute();
+  const { goToBack } = useRoute();
 
-    return (
-        <div className="flex flex-col items-center justify-center h-screen px-4 py-10 text-center">
-            <div className="text-red-600 mb-4">
-                <FaSearch size={48} />
-            </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
-                {message}
-            </h2>
-            <p className="text-gray-600 text-sm md:text-base mb-6">
-                Sorry, we couldn’t find what you were looking for.
-            </p>
-            {showButton && (
-                <button
-                    onClick={goToHome}
-                    className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-tl-lg rounded-br-lg text-sm font-medium shadow transition-all"
-                >
-                    {buttonLabel}
-                </button>
-            )}
-        </div>
-    );
+  return (
+    <div className="flex flex-col items-center justify-center h-screen text-center px-6">
+      <div className="animate-bounce text-[var(--color-accent)] mb-6">
+        <FaLeaf size={64} />
+      </div>
+
+      <h1 className="text-4xl font-bold text-[var(--color-primary-dark)] mb-2">404 - {message}</h1>
+
+      <p className="text-gray-500 mb-6 max-w-md">
+        We couldn't find the page you're looking for. It might have been removed, renamed, or
+        doesn't exist.
+      </p>
+
+      {showButton && (
+        <button
+          onClick={goToBack}
+          className="flex items-center gap-2 bg-[var(--color-primary-dark)] hover:bg-[var(--color-accent-mid)] text-white px-6 py-3 rounded-tl-xl rounded-br-xl shadow-md transition"
+        >
+          <FaArrowLeft />
+          {buttonLabel}
+        </button>
+      )}
+    </div>
+  );
 }

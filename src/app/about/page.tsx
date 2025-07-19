@@ -35,9 +35,10 @@ export const About = () => {
         transition={{ duration: 0.6, delay: 0.2 }}
         className="font-[Lora,serif] text-base sm:text-lg lg:text-xl text-[var(--foreground)] leading-loose max-w-5xl mx-auto text-justify sm:text-center mb-6 sm:mb-12"
       >
-        At <span className="font-semibold text-[var(--color-primary)]">Prasanth Nursery</span>, we don’t just grow plants — we nurture living stories.
-        From soulful wooden greens to blooming florals and clean air companions,
-        each leaf we raise carries care, love, and a breath of nature straight from the rich soil of Tamil Nadu to your home.
+        At <span className="font-semibold text-[var(--color-primary)]">Prasanth Nursery</span>, we
+        don’t just grow plants — we nurture living stories. From soulful wooden greens to blooming
+        florals and clean air companions, each leaf we raise carries care, love, and a breath of
+        nature straight from the rich soil of Tamil Nadu to your home.
       </motion.p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-10">
@@ -67,23 +68,22 @@ export const About = () => {
             title: 'Community & Support',
             text: 'Whether you’re a first-time plant parent or a garden enthusiast, we’re here to guide you. Get tips, support, and grow with a community that shares your love for green living.',
           },
-        ]
-          .map((item: any, i: number) => (
-            <motion.div
-              key={i}
-              custom={i}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.4 }}
-              variants={cardVariants}
-              className="backdrop-blur-sm border-2 border-[var(--color-primary-light)] p-6 rounded-tl-3xl rounded-br-3xl shadow-md hover:shadow-[0_10px_40px_rgba(0,128,0,0.2)] transition duration-300 hover:-translate-y-1"
-            >
-              <h3 className="text-xl font-bold text-[var(--color-primary)] mb-3">
-                {item.icon} {item.title}
-              </h3>
-              <p className="text-[var(--foreground)]">{item.text}</p>
-            </motion.div>
-          ))}
+        ].map((item: any, i: number) => (
+          <motion.div
+            key={i}
+            custom={i}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
+            variants={cardVariants}
+            className="backdrop-blur-sm border-2 border-[var(--color-primary-light)] p-6 rounded-tl-3xl rounded-br-3xl shadow-md hover:shadow-[0_10px_40px_rgba(0,128,0,0.2)] transition duration-300 hover:-translate-y-1"
+          >
+            <h3 className="text-xl font-bold text-[var(--color-primary)] mb-3">
+              {item.icon} {item.title}
+            </h3>
+            <p className="text-[var(--foreground)]">{item.text}</p>
+          </motion.div>
+        ))}
       </div>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -100,21 +100,18 @@ export const About = () => {
           { count: '50+', label: 'Local Garden Partners' },
           { count: '300K+', label: 'Plants Delivered' },
           { count: '24/7', label: 'Support Availability' },
-          { count: '4.9★', label: 'Average Rating' }
-        ]
-          .map((stat, idx: number) => (
-            <div
-              key={idx}
-              className="border border-[var(--color-primary-light)] rounded-xs rounded-tl-xl rounded-br-xl p-6 shadow-sm hover:shadow-md transition"
-            >
-              <div className="text-3xl sm:text-4xl font-extrabold text-[var(--color-primary)]">
-                {stat.count}
-              </div>
-              <div className="mt-2 text-[var(--foreground)] font-medium">
-                {stat.label}
-              </div>
+          { count: '4.9★', label: 'Average Rating' },
+        ].map((stat, idx: number) => (
+          <div
+            key={idx}
+            className="border border-[var(--color-primary-light)] rounded-xs rounded-tl-xl rounded-br-xl p-6 shadow-sm hover:shadow-md transition"
+          >
+            <div className="text-3xl sm:text-4xl font-extrabold text-[var(--color-primary)]">
+              {stat.count}
             </div>
-          ))}
+            <div className="mt-2 text-[var(--foreground)] font-medium">{stat.label}</div>
+          </div>
+        ))}
       </motion.div>
     </section>
   );

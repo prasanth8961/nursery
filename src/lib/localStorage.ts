@@ -1,6 +1,6 @@
 /**
  * Generic type-safe wrapper for localStorage operations.
-*/
+ */
 
 export function getLocalStorage<T>(key: string): T | null {
   if (typeof window === 'undefined') return null;

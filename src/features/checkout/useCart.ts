@@ -1,68 +1,84 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { plantsData } from "@/seeds/plantData";
-import { Plant, UseCartReturn } from "@/types";
-import { keys } from "@/constants";
-
-
+import { useEffect, useState, useCallback, useMemo } from 'react';
+import { CartItem, PlantVariant, UseCartReturn, Plant } from '@/types';
+import { keys } from '@/constants';
 
 export const useCart = (user: { id?: string } | null): UseCartReturn => {
-  const [cartIds, setCartIds] = useState<number[]>([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
 
   useEffect(() => {
     if (user?.id) {
-      // TODO: Fetch user's cart IDs from the database
+      // TODO: Fetch cart from backend
     } else {
-      const local = localStorage.getItem(keys.Cart);
-      if (local) {
-        try {
-          const parsed = JSON.parse(local) as number[];
-          setCartIds(parsed);
-        } catch {
-          localStorage.removeItem(keys.Cart);
+      try {
+        const local = localStorage.getItem(keys.Cart);
+        if (local) {
+          const parsed = JSON.parse(local) as CartItem[];
+          setCart(parsed);
         }
+      } catch {
+        localStorage.removeItem(keys.Cart);
       }
     }
   }, [user?.id]);
 
-  const syncLocal = (updated: number[]) : void => {
-    setCartIds(updated);
+  const syncLocal = useCallback((updated: CartItem[]) => {
+    setCart(updated);
     localStorage.setItem(keys.Cart, JSON.stringify(updated));
-  };
+  }, []);
 
-  const toggleCart = (plant: Plant) : void => {
-    const exists = cartIds.includes(plant.id);
-    let updated: number[];
+  const toggleCart = useCallback(
+    (plant: Plant, variant: PlantVariant) => {
+      const exists = cart.some(item => item.variantId === variant.id);
 
-    if (exists) {
-      updated = cartIds.filter(id => id !== plant.id);
+      const updated = exists
+        ? cart.filter(item => item.variantId !== variant.id)
+        : [
+            ...cart,
+            {
+              variantId: variant.id,
+              plantId: plant.id,
+              name: plant.name,
+              tamilName: plant.tamilName,
+              subName: plant.subName,
+              baseImageUrl: plant.baseImageUrl,
+              category: plant.category,
+              variant,
+            } satisfies CartItem,
+          ];
+
       if (user?.id) {
-        // TODO: DELETE from database
+        // TODO: Sync with backend (e.g., POST /cart)
       } else {
-        syncLocal(updated);
+        syncLocal(updated.reverse());
       }
-    } else {
-      updated = [...cartIds, plant.id];
-      if (user?.id) {
-        // TODO: POST to database
-      } else {
-        syncLocal(updated);
-      }
-    }
+    },
+    [cart, user, syncLocal]
+  );
 
-    setCartIds(updated);
-  };
+  const isInCart = useCallback(
+    (variantId: string) => cart.some(item => item.variantId === variantId),
+    [cart]
+  );
 
-  const isInCart = (plantId: number) => cartIds.includes(plantId);
-
-  const clearCart = () => {
-    setCartIds([]);
+  const clearCart = useCallback(() => {
+    setCart([]);
     localStorage.removeItem(keys.Cart);
+  }, []);
+
+  const totalAmount = useMemo(() => {
+    return cart.reduce((sum, item) => {
+      const price = typeof item.variant?.price === 'number' ? item.variant.price : 0;
+      return sum + price;
+    }, 0);
+  }, [cart]);
+
+  return {
+    cart,
+    toggleCart,
+    isInCart,
+    clearCart,
+    totalAmount,
   };
-
-  const cart: Plant[] = plantsData.filter(plant => cartIds.includes(plant.id));
-  const totalAmount : number = cart.reduce((sum, item) => sum + item.price, 0);
-
-  return { cart, toggleCart, isInCart, clearCart, totalAmount };
 };

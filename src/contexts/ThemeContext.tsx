@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import { keys } from "@/constants";
-import { useEffect, useState } from "react";
-import { FaSun, FaMoon } from "react-icons/fa";
+import { keys } from '@/constants';
+import { useEffect, useState } from 'react';
+import { FaSun, FaMoon } from 'react-icons/fa';
 
 export const ThemeContext = () => {
   const [isDark, setIsDark] = useState<boolean>(false);
@@ -11,11 +11,11 @@ export const ThemeContext = () => {
     const root = window.document.documentElement;
     const saved = localStorage.getItem(keys.Theme);
 
-    if (saved === "dark") {
-      root.classList.add("dark");
+    if (saved === 'dark') {
+      root.classList.add('dark');
       setIsDark(true);
     } else {
-      root.classList.remove("dark");
+      root.classList.remove('dark');
       setIsDark(false);
     }
   }, []);
@@ -23,11 +23,11 @@ export const ThemeContext = () => {
   const toggleTheme = () => {
     const root = window.document.documentElement;
     if (isDark) {
-      root.classList.remove("dark");
-      localStorage.setItem(keys.Theme, "light");
+      root.classList.remove('dark');
+      localStorage.setItem(keys.Theme, 'light');
     } else {
-      root.classList.add("dark");
-      localStorage.setItem(keys.Theme, "dark");
+      root.classList.add('dark');
+      localStorage.setItem(keys.Theme, 'dark');
     }
     setIsDark(!isDark);
   };
@@ -40,4 +40,4 @@ export const ThemeContext = () => {
       {isDark ? <FaSun className="text-green-600" /> : <FaMoon className="text-green-600" />}
     </div>
   );
-}
+};

@@ -1,47 +1,75 @@
+export interface PlantVariant {
+  id: string;
+  size: string;
+  price: number;
+  discount: number;
+  ratings: number;
+  reviewsCount: number;
+  growthRate: string;
+  height: string;
+  weight: string;
+  quantityInStock: number;
+  coverImages: string[];
+  isAvailable: boolean;
+}
+
 export interface Plant {
   id: number;
   name: string;
   tamilName?: string;
   subName?: string;
   description: string;
-  price: number;
-  discount: number;
-  reviewsCount: number;
-  ratings: number;
-  imageUrl: string;
-  coverImages: string[];
-  category: "indoor" | "outdoor" | "flowering" |  "wooden" | "succulent" | "bonsai";
+  baseImageUrl: string;
+  category: 'indoor' | 'outdoor' | 'flowering' | 'wooden' | 'succulent' | 'bonsai';
   careInfo: string;
   fertilizingInfo: string;
-  usageInfo: string;  
-  isAvailable: boolean;
-  quantityInStock: number;
-  growthRate: "slow" | "medium" | "fast";
-  tags?: string[];
-  relatedPlantsIds: number[];
+  usageInfo: string;
   isFeatured: boolean;
-  height: string;
-  weight: string;
-  size: string;
+  isAvailable: boolean;
+  tags: string[];
+  relatedPlantsIds: number[];
+  variants: PlantVariant[];
 }
 
 export interface Media {
   id: number;
   icon: any;
-  link: string
+  link: string;
 }
 
+export interface CartItem {
+  variantId: string;
+  plantId: number;
+  name: string;
+  tamilName?: string;
+  subName?: string;
+  category: Plant['category'];
+  baseImageUrl: string;
+  variant: PlantVariant;
+}
 
-export interface UseWishlistReturn {
-  wishlist: Plant[];
-  toggleWishlist: (plant: Plant) => void;
-  isInWishlist: (plantId: number) => boolean;
+export interface WishListItem {
+  variantId: string;
+  plantId: number;
+  name: string;
+  tamilName?: string;
+  subName?: string;
+  category: Plant['category'];
+  baseImageUrl: string;
+  variant: PlantVariant;
 }
 
 export interface UseCartReturn {
-  cart: Plant[];
-  toggleCart: (plant: Plant) => void;
-  isInCart: (plantId: number) => boolean;
+  cart: WishListItem[];
+  toggleCart: (plant: Plant, variant: PlantVariant) => void;
+  isInCart: (variantId: string) => boolean;
   clearCart: () => void;
   totalAmount: number;
+}
+
+export interface UseWishlistReturn {
+  wishlist: WishListItem[];
+  toggleWishlist: (plant: Plant, variant: PlantVariant) => void;
+  isInWishlist: (plantId: string) => boolean;
+  clearWishlist: () => void;
 }
