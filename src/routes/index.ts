@@ -10,6 +10,7 @@ export const ROUTES = {
   about: '/about',
   auth: '/auth',
   profile: '/profile',
+  notfound: '/404',
 };
 
 export const useRoute = () => {
@@ -27,6 +28,7 @@ export const useRoute = () => {
     redirectToWishList: () => router.push(ROUTES.wishlist),
     goToProfile: () => router.push(ROUTES.profile),
     goToAuth: () => router.push(ROUTES.auth),
+    goToNotFound: () => router.push(ROUTES.notfound),
     goToPlantDetails: (id: string | number, variantId?: string) =>
       router.push(ROUTES.plantDetails(id, variantId)),
   };

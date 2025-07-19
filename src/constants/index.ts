@@ -28,3 +28,5 @@ export const SHIPPING_COST: number = 40;
 
 export const CONTACT: string = '+91 7639874667';
 export const EMAIL: string = 'prasanthnursury@gmail.com';
+
+export const USER = null;

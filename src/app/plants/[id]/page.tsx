@@ -5,19 +5,20 @@ import { useEffect, useState } from 'react';
 import { plantsData } from '@/seeds/plantData';
 import { FaArrowLeft, FaHeart, FaRegHeart } from 'react-icons/fa';
 import Image from 'next/image';
-import { useWishlist } from '@/features/wishlist/useWishList';
 import { FaShoppingCart } from 'react-icons/fa';
-import { useCart } from '@/features/checkout/useCart';
 import { decryptId } from '@/lib/crypto';
 import NotFound from '@/components/common/NotFound';
 import { QuantityDropdown } from '@/components/common/DropDownMenu';
 import { IoStarHalfSharp, IoStarOutline, IoStarSharp } from 'react-icons/io5';
-import { Loader } from '@/components/common/Loader';
+import Loader from '@/components/common/Loader';
 import { useRoute } from '@/routes';
-import { PlantCard } from '@/components/common/PlantCard';
+import PlantCard from '@/components/common/PlantCard';
 import { Plant, PlantVariant } from '@/types';
 import Head from 'next/head';
 import { DEFAULT_IMAGE } from '@/constants';
+import { useAppDispatch, useAppSelector } from '@/lib/store/helper';
+import { toggleFav } from '@/lib/store/slices/favSlice';
+import { toggleCart } from '@/lib/store/slices/cartSlice';
 
 export default function Details() {
   const params = useParams();
@@ -30,9 +31,12 @@ export default function Details() {
   const id = decryptId(String(searchParams.get('variantId')));
 
   const router = useRouter();
+  const { goToNotFound } = useRoute();
 
-  const { toggleWishlist, isInWishlist } = useWishlist(null);
-  const { toggleCart, isInCart } = useCart(null);
+  if (!_id) {
+    goToNotFound();
+  }
+
   const [quantityInput, setQuantityInput] = useState<number>(1);
   const [animate, setAnimate] = useState(false);
   const [isPageReady, setIsPageReady] = useState(false);
@@ -51,6 +55,14 @@ export default function Details() {
     Object.fromEntries(imageList.map((_, i: number) => [i, true]))
   );
 
+  const dispatch = useAppDispatch();
+  const isInWishlist = useAppSelector(state =>
+    state.fav.items.some(item => item.variantId === plant?.variants[selectedPlantIdx].id)
+  );
+  const isInCart = useAppSelector(state =>
+    state.cart.items.some(item => item.variantId === plant?.variants[selectedPlantIdx].id)
+  );
+
   useEffect(() => {
     const timer = setTimeout(() => setIsPageReady(true), 300);
     return () => clearTimeout(timer);
@@ -62,13 +74,13 @@ export default function Details() {
     }
   }, [_id]);
 
-  const handleWishlistClick = (plant: Plant, varient: PlantVariant) => {
-    toggleWishlist(plant, varient);
+  const handleWishlistClick = (plant: Plant, variant: PlantVariant) => {
+    dispatch(toggleFav({ plant, variant }));
     setAnimate(true);
     setTimeout(() => setAnimate(false), 500);
   };
 
-  const handleOrder = (id: number, name: string, price: any) => {
+  const handleOrder = (id: number, name: string, price: number | string) => {
     const whatsappMessage = `
 🌿 *Nursery Order Request*
 
@@ -136,9 +148,8 @@ Thank you! 😊
               className="h-10 w-10 rounded-tl-md rounded-br-md border-2 border-[var(--color-accent-light)] flex items-center justify-center hover:bg-[var(--color-accent-mid)] text-[var(--color-primary-dark)] transition cursor-pointer"
             >
               <span
-                className={`transition-transform duration-300 ease-in-out ${
-                  animate ? 'scale-150 animate-ping-once' : 'scale-100'
-                }`}
+                className={`transition-transform duration-300 ease-in-out ${animate ? 'scale-150 animate-ping-once' : 'scale-100'
+                  }`}
               >
                 <FaHeart className="text-green-500" />
               </span>
@@ -163,9 +174,8 @@ Thank you! 😊
                     setLoadingMain(false);
                     (e.currentTarget as HTMLImageElement).src = DEFAULT_IMAGE;
                   }}
-                  className={`object-scale-down rounded-lg transition duration-200 hover:scale-105 ${
-                    loadingMain ? 'opacity-0' : 'opacity-100'
-                  }`}
+                  className={`object-scale-down rounded-lg transition duration-200 hover:scale-105 ${loadingMain ? 'opacity-0' : 'opacity-100'
+                    }`}
                 />
               </div>
 
@@ -174,9 +184,10 @@ Thank you! 😊
                   <div
                     key={idx}
                     onClick={() => setSelectedImage(url)}
-                    className={`relative min-w-[96px] h-24 rounded-md overflow-hidden border-2 cursor-pointer transition ${
-                      selectedImage === url ? 'border-green-600' : 'border-green-200'
-                    }`}
+                    className={`relative min-w-[96px] h-24 rounded-md overflow-hidden cursor-pointer transition ${selectedImage === url
+                        ? 'border-3 border-green-500'
+                        : 'border-2 border-green-100'
+                      }`}
                   >
                     {thumbLoading[idx] && (
                       <div className="absolute inset-0 bg-gray-400 animate-shimmer z-10" />
@@ -191,9 +202,8 @@ Thank you! 😊
                         setThumbLoading(prev => ({ ...prev, [idx]: false }));
                         (e.currentTarget as HTMLImageElement).src = DEFAULT_IMAGE;
                       }}
-                      className={`object-cover transition-opacity duration-300 ${
-                        thumbLoading[idx] ? 'opacity-0' : 'opacity-100'
-                      }`}
+                      className={`object-cover transition-opacity duration-300 ${thumbLoading[idx] ? 'opacity-0' : 'opacity-100'
+                        }`}
                     />
                   </div>
                 ))}
@@ -220,31 +230,29 @@ Thank you! 😊
                 {plant.variants
                   .map(varient => varient.size)
                   .map((size: string, idx: number) => (
-                <div
-  key={idx}
-  onClick={() => {
-    if (plant.variants[idx].isAvailable) {
-      setSelectedPlantIdx(idx);
-    }
-  }}
-  className={`
+                    <div
+                      key={idx}
+                      onClick={() => {
+                        if (plant.variants[idx].isAvailable) {
+                          setSelectedPlantIdx(idx);
+                        }
+                      }}
+                      className={`
     relative flex items-center justify-center font-semibold text-sm
     min-w-[56px] h-13 px-3 py-2 rounded-xl overflow-hidden border transition
     ${selectedPlantIdx === idx ? 'border-green-600 border-2' : 'border-green-300'}
     ${plant.variants[idx].isAvailable
-      ? 'text-green-800 bg-white cursor-pointer'
-      : 'text-gray-500 bg-green-50 border-red-300 border-2 pointer-events-none select-none'}
+                          ? 'text-green-800 bg-white cursor-pointer'
+                          : 'text-gray-500 bg-green-50 border-red-300 border-2 pointer-events-none select-none'
+                        }
   `}
->
-  {size}
+                    >
+                      {size}
 
-  {!plant.variants[idx].isAvailable && (
-    <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] rounded-xl pointer-events-none" />
-  )}
-</div>
-
-
-
+                      {!plant.variants[idx].isAvailable && (
+                        <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] rounded-xl pointer-events-none" />
+                      )}
+                    </div>
                   ))}
               </div>
 
@@ -336,7 +344,7 @@ Thank you! 😊
                           ₹
                           {Math.round(
                             (plant.variants[selectedPlantIdx].price * quantityInput) /
-                              (1 - plant.variants[selectedPlantIdx].discount / 100)
+                            (1 - plant.variants[selectedPlantIdx].discount / 100)
                           )}
                         </span>
                       )}
@@ -350,24 +358,17 @@ Thank you! 😊
 
                   <div className="flex gap-2">
                     <button
-                      onClick={() => toggleCart(plant, plant.variants[selectedPlantIdx])}
+                      onClick={() =>
+                        dispatch(toggleCart({ plant, variant: plant.variants[selectedPlantIdx] }))
+                      }
                       className={`flex items-center gap-2 px-4 h-10 rounded-tl-md rounded-br-md border-2 transition font-medium
-                                            ${
-                                              isInCart(plant.variants[selectedPlantIdx].id)
-                                                ? 'border-green-400 text-green-700'
-                                                : 'border-[var(--color-accent-light)] text-green-600 hover:bg-[var(--color-accent-mid)]'
-                                            }`}
+                                            ${isInCart
+                          ? 'border-green-400 text-green-700'
+                          : 'border-[var(--color-accent-light)] text-green-600 hover:bg-[var(--color-accent-mid)]'
+                        }`}
                     >
-                      <FaShoppingCart
-                        className={
-                          isInCart(plant.variants[selectedPlantIdx].id)
-                            ? 'text-green-600'
-                            : 'text-green-500'
-                        }
-                      />
-                      <span>
-                        {isInCart(plant.variants[selectedPlantIdx].id) ? 'Remove ' : 'Add '}
-                      </span>
+                      <FaShoppingCart className={isInCart ? 'text-green-600' : 'text-green-500'} />
+                      <span>{isInCart ? 'Remove ' : 'Add '}</span>
                     </button>
                     <button
                       onClick={() => handleWishlistClick(plant, plant.variants[selectedPlantIdx])}
@@ -376,7 +377,7 @@ Thank you! 😊
                       <span
                         className={`transition-transform duration-300 ease-in-out ${animate ? 'scale-150 animate-ping-once' : 'scale-100'}`}
                       >
-                        {isInWishlist(plant.variants[selectedPlantIdx].id) ? (
+                        {isInWishlist ? (
                           <FaHeart className="text-green-500" />
                         ) : (
                           <FaRegHeart className="text-green-500" />

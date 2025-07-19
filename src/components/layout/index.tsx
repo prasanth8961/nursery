@@ -1,18 +1,19 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Loader } from '@/components/common/Loader';
-import { HeroSection } from './HeroSection';
-import { Products } from './Products';
-import { About } from '@/app/about/page';
-import { Gallery } from './Gallery';
-import { ContactSection } from './ContactSection';
+import HeroSection from './HeroSection';
+import dynamic from 'next/dynamic';
+const Products = dynamic(() => import('./Products'));
+const About = dynamic(() => import('@/app/about/page'));
+const Gallery = dynamic(() => import('./Gallery'));
+const ContactSection = dynamic(() => import('./ContactSection'));
+const Loader = dynamic(() => import('@/components/common/Loader'), { ssr: false });
 
 export default function ClientLayout() {
   const [isPageReady, setIsPageReady] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsPageReady(true), 300);
+    const timer = setTimeout(() => setIsPageReady(true), 250);
     return () => clearTimeout(timer);
   }, []);
 

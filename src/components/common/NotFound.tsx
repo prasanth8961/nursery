@@ -25,10 +25,9 @@ export default function NotFound({
       <h1 className="text-4xl font-bold text-[var(--color-primary-dark)] mb-2">404 - {message}</h1>
 
       <p className="text-gray-500 mb-6 max-w-md">
-        We couldn't find the page you're looking for. It might have been removed, renamed, or
-        doesn't exist.
+        We couldn&apos;t find the page you&apos;re looking for. It may have been removed, renamed,
+        or never existed.
       </p>
-
       {showButton && (
         <button
           onClick={goToBack}

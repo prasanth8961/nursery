@@ -166,7 +166,7 @@ export const plantsData: Plant[] = [
           '/plants/cover_images/ixora_pink-2.jpg',
         ],
       },
-       {
+      {
         id: '103-4x6',
         size: '4 x 6',
         price: 15,

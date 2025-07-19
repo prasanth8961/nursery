@@ -20,7 +20,7 @@ const mobileImageLayout = [
   { src: imageUrls[11], className: 'row-span-2 col-start-1 row-start-11' },
 ];
 
-export const Gallery = () => {
+const Gallery = () => {
   return (
     <section
       className="py-2 px-4 sm:px-8 max-w-7xl mx-auto select-none pointer-events-none"
@@ -61,3 +61,5 @@ export const Gallery = () => {
     </section>
   );
 };
+
+export default Gallery;

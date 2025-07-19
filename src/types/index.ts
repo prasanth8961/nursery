@@ -1,3 +1,5 @@
+import { IconType } from 'react-icons';
+
 export interface PlantVariant {
   id: string;
   size: string;
@@ -33,8 +35,14 @@ export interface Plant {
 
 export interface Media {
   id: number;
-  icon: any;
+  icon: IconType;
   link: string;
+}
+
+export interface AboutItem {
+  icon: string;
+  title: string;
+  text: string;
 }
 
 export interface CartItem {

@@ -1,16 +1,24 @@
 'use client';
 
-import { plantsData } from '@/seeds/plantData';
 import { Plant } from '@/types';
-import { PlantCard } from '../common/PlantCard';
 import { useRoute } from '@/routes';
+import dynamic from 'next/dynamic';
+const PlantCard = dynamic(() => import('../common/PlantCard'));
+import { useMemo } from 'react';
+import { useAppSelector } from '@/lib/store/helper';
 
-export const Products = () => {
+const Products = () => {
   const { goToPlants } = useRoute();
+  const plantsData: Plant[] = useAppSelector(state => state.product.plants);
+
+  const featuredPlants = useMemo(
+    () => plantsData.filter(p => p.isFeatured).slice(0, 8),
+    [plantsData]
+  );
 
   return (
     <>
-      {plantsData.length > 0 ? (
+      {plantsData.length > 0 && (
         <section className="max-w-[95vw] mx-auto py-2 sm:py-5">
           <div className="w-full overflow-x-auto mb-4">
             <div className="flex items-start gap-4 px-1 min-w-max lg:justify-between lg:px-4">
@@ -26,13 +34,10 @@ export const Products = () => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-[5px] sm:gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:mx-auto">
-            {plantsData
-              .filter(data => data.isFeatured)
-              .slice(0, 8)
-              .map((plant: Plant, _) => (
-                <PlantCard key={plant.id} plant={plant} animated_bounce={true} />
-              ))}
+          <div className="grid grid-cols-2 gap-x-[2px] gap-y-[5px] sm:gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:mx-auto">
+            {featuredPlants.map((plant: Plant) => (
+              <PlantCard key={plant.id} plant={plant} animated_bounce={true} />
+            ))}
           </div>
           <div
             onClick={() => goToPlants()}
@@ -41,9 +46,9 @@ export const Products = () => {
             Load More
           </div>
         </section>
-      ) : (
-        <></>
       )}
     </>
   );
 };
+
+export default Products;

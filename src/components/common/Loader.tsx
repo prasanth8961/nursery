@@ -3,7 +3,7 @@
 import { LOGO } from '@/constants';
 import Image from 'next/image';
 
-export const Loader = () => {
+const Loader = () => {
   return (
     <div className="fixed inset-0 z-50 bg-gradient-to-br from-green-600 via-green-700 to-green-800 flex flex-col items-center justify-center space-y-4">
       <div className="relative h-20 w-20">
@@ -22,3 +22,5 @@ export const Loader = () => {
     </div>
   );
 };
+
+export default Loader;

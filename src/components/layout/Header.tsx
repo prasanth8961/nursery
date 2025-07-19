@@ -10,12 +10,11 @@ import Image from 'next/image';
 import { CONTACT, EMAIL, LOGO_IMAGE, socialMedias } from '@/constants';
 import { Media } from '@/types';
 import { useRoute } from '@/routes';
-import { useCart } from '@/features/checkout/useCart';
+import CartBadge from '../common/CartBadge';
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const { goToCart, goToHome, goToPlants, goToWishlist, redirectToHome, goToAuth } = useRoute();
-  const { cart } = useCart(null);
+  const { goToCart, goToPlants, goToWishlist, goToAuth } = useRoute();
 
   return (
     <header className="bg-[var(--background)] w-full relative sticky top-0 z-50 shadow-sm sm:shadow-none">
@@ -39,7 +38,7 @@ export const Header = () => {
         </div>
 
         <div className="flex gap-2 items-center text-[var(--color-primary-dark)]">
-          {socialMedias.map((media: Media, _) => (
+          {socialMedias.map((media: Media) => (
             <a
               key={media.id}
               href={media.link}
@@ -216,9 +215,7 @@ export const Header = () => {
             <span className="bg-gradient-to-r from-green-500 to-lime-500 bg-clip-text text-transparent drop-shadow-md">
               Cart
             </span>
-            <span className="rounded-sm text-sm font-semibold border-2 border-green-400 flex items-center justify-center h-5 px-1 py-[1px]">
-              {cart.length || 0}
-            </span>
+            <CartBadge />
           </div>
         </div>
 
