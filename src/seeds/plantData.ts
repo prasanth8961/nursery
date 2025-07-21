@@ -1,4 +1,6 @@
 import { Plant } from '@/types';
+import { plantThumbnails } from './plantImages';
+import { getCoverImages } from '@/lib/imageHelper';
 
 export const plantsData: Plant[] = [
   {
@@ -8,7 +10,7 @@ export const plantsData: Plant[] = [
     subName: 'Red Hibiscus',
     description:
       'A vibrant flowering plant commonly found in Tamil homes, ideal for gardens and rituals.',
-    baseImageUrl: '/plants/thumbnail/semparuthi.jpg',
+    baseImageUrl: plantThumbnails.semparuthi,
     category: 'flowering',
     careInfo: 'Needs full sun, well-drained soil, and regular watering. Avoid overwatering.',
     fertilizingInfo:
@@ -32,10 +34,7 @@ export const plantsData: Plant[] = [
         weight: '0.5kg',
         quantityInStock: 800,
         isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/semparuthi-1.jpg',
-          '/plants/cover_images/semparuthi-2.jpg',
-        ],
+        coverImages: getCoverImages('semparuthi', '101-4x6')
       },
       {
         id: '101-7x8',
@@ -49,11 +48,23 @@ export const plantsData: Plant[] = [
         weight: '1.2kg',
         quantityInStock: 38,
         isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/semparuthi-1.jpg',
-          '/plants/cover_images/semparuthi-2.jpg',
-          '/plants/cover_images/semparuthi-3.jpg',
-        ],
+        coverImages: getCoverImages('semparuthi', '101-7x8')
+
+      },
+      {
+        id: '101-8x10',
+        size: '8 x 10',
+        price: 120,
+        discount: 33,
+        ratings: 4.5,
+        reviewsCount: 34,
+        growthRate: 'fast',
+        height: '4.0 feet',
+        weight: '3.5kg',
+        quantityInStock: 38,
+        isAvailable: true,
+        coverImages: getCoverImages('semparuthi', '101-8x10')
+
       },
     ],
   },
@@ -64,7 +75,7 @@ export const plantsData: Plant[] = [
     subName: 'White Jungle Flame',
     description:
       'A sacred and elegant flowering plant known for its clusters of white blooms, often used in rituals and as an ornamental hedge.',
-    baseImageUrl: '/plants/thumbnail/ixora_white.jpg',
+    baseImageUrl: plantThumbnails.ixora_white,
     category: 'flowering',
     careInfo:
       'Prefers partial to full sunlight, well-drained acidic soil, and moderate watering. Prune to encourage bushy growth.',
@@ -73,7 +84,7 @@ export const plantsData: Plant[] = [
     usageInfo:
       'Commonly planted along borders, used in poojas and ceremonies, and appreciated for its calm and serene look.',
     isAvailable: true,
-    isFeatured: false,
+    isFeatured: true,
     tags: ['white flower', 'hedge', 'ritual use', 'low maintenance'],
     relatedPlantsIds: [103],
     variants: [
@@ -89,10 +100,7 @@ export const plantsData: Plant[] = [
         weight: '0.5 kg',
         quantityInStock: 4200,
         isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/ixora_white-1.jpg',
-          '/plants/cover_images/ixora_white-2.jpg',
-        ],
+        coverImages: getCoverImages('ixora_white', '102-4x6')
       },
       {
         id: '102-7x8',
@@ -103,30 +111,26 @@ export const plantsData: Plant[] = [
         reviewsCount: 89,
         growthRate: 'medium',
         height: '1.8 feet',
-        weight: '1.2 kg',
+        weight: '1.8 kg',
         quantityInStock: 42,
         isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/ixora_white-1.jpg',
-          '/plants/cover_images/ixora_white-2.jpg',
-        ],
+        coverImages: getCoverImages('ixora_white', '102-7x8')
+
       },
       {
-        id: '102-10x12',
-        size: '10 x 12',
+        id: '102-7x10',
+        size: '7 x 10',
         price: 145,
         discount: 56,
         ratings: 4.9,
         reviewsCount: 89,
         growthRate: 'medium',
-        height: '2.0 feet',
-        weight: '1.5 kg',
+        height: '2.5 feet',
+        weight: '3.5 kg',
         quantityInStock: 12,
         isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/ixora_white-1.jpg',
-          '/plants/cover_images/ixora_white-2.jpg',
-        ],
+        coverImages: getCoverImages('ixora_white', '102-7x10')
+
       },
     ],
   },
@@ -137,7 +141,7 @@ export const plantsData: Plant[] = [
     subName: 'Pink Jungle Flame',
     description:
       'A vibrant flowering plant admired for its lush clusters of pink blooms, ideal for gardens and spiritual offerings.',
-    baseImageUrl: '/plants/thumbnail/ixora_pink.jpg',
+    baseImageUrl: plantThumbnails.ixora_pink,
     category: 'flowering',
     careInfo:
       'Thrives in partial to full sunlight with well-draining acidic soil. Water moderately and prune for fuller growth.',
@@ -150,23 +154,6 @@ export const plantsData: Plant[] = [
     relatedPlantsIds: [102, 101],
     variants: [
       {
-        id: '103-7x8',
-        size: '7 x 8',
-        price: 50,
-        discount: 40,
-        ratings: 4.4,
-        reviewsCount: 77,
-        growthRate: 'medium',
-        height: '1.3 feet',
-        weight: '1.1 kg',
-        quantityInStock: 38,
-        isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/ixora_pink-1.jpg',
-          '/plants/cover_images/ixora_pink-2.jpg',
-        ],
-      },
-      {
         id: '103-4x6',
         size: '4 x 6',
         price: 15,
@@ -178,11 +165,40 @@ export const plantsData: Plant[] = [
         weight: '0.5 kg',
         quantityInStock: 38,
         isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/ixora_pink-1.jpg',
-          '/plants/cover_images/ixora_pink-2.jpg',
-        ],
+        coverImages: getCoverImages("ixora_pink", '103-4x6')
+
       },
+      {
+        id: '103-7x8',
+        size: '7 x 8',
+        price: 50,
+        discount: 40,
+        ratings: 4.4,
+        reviewsCount: 77,
+        growthRate: 'medium',
+        height: '1.3 feet',
+        weight: '1.5 kg',
+        quantityInStock: 38,
+        isAvailable: true,
+        coverImages: getCoverImages("ixora_pink", '103-7x8')
+      },
+
+      {
+        id: '103-7x10',
+        size: '7 x 10',
+        price: 15,
+        discount: 40,
+        ratings: 4.6,
+        reviewsCount: 77,
+        growthRate: 'medium',
+        height: '2.5 feet',
+        weight: '3.5 kg',
+        quantityInStock: 18,
+        isAvailable: true,
+        coverImages: getCoverImages("ixora_pink", '103-7x10')
+
+      },
+
     ],
   },
   {
@@ -192,7 +208,7 @@ export const plantsData: Plant[] = [
     subName: 'White Aralia',
     description:
       'An elegant foliage plant with lacy white-edged leaves, prized for its ornamental appeal and air-purifying qualities.',
-    baseImageUrl: '/plants/thumbnail/aralia_white.jpg',
+    baseImageUrl: plantThumbnails.aralia_white,
     category: 'indoor',
     careInfo:
       'Prefers bright indirect light and thrives in well-draining soil. Water when the top inch of soil is dry.',
@@ -206,23 +222,6 @@ export const plantsData: Plant[] = [
     relatedPlantsIds: [105],
     variants: [
       {
-        id: '104-7x8',
-        size: '7 x 8',
-        price: 45,
-        discount: 32,
-        ratings: 4.9,
-        reviewsCount: 64,
-        growthRate: 'slow',
-        height: '1.3 feet',
-        weight: '1.1 kg',
-        quantityInStock: 29,
-        isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/aralia_white-1.jpg',
-          '/plants/cover_images/aralia_white-2.jpg',
-        ],
-      },
-      {
         id: '104-4x6',
         size: '4 x 6',
         price: 25,
@@ -234,11 +233,24 @@ export const plantsData: Plant[] = [
         weight: '0.6 kg',
         quantityInStock: 160,
         isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/aralia_white-1.jpg',
-          '/plants/cover_images/aralia_white-2.jpg',
-        ],
+        coverImages: getCoverImages("aralia_white", '104-4x6')
+
       },
+      {
+        id: '104-7x8',
+        size: '7 x 8',
+        price: 45,
+        discount: 32,
+        ratings: 4.9,
+        reviewsCount: 64,
+        growthRate: 'slow',
+        height: '2.3 feet',
+        weight: '2.5 kg',
+        quantityInStock: 29,
+        isAvailable: true,
+        coverImages: getCoverImages("aralia_white", '104-7x8')
+      },
+
     ],
   },
   {
@@ -248,7 +260,7 @@ export const plantsData: Plant[] = [
     subName: 'Hawaiian Good Luck Plant',
     description:
       'A vibrant tropical foliage plant known for its colorful, glossy leaves. It is believed to bring good luck and positive energy.',
-    baseImageUrl: '/plants/thumbnail/hawaiian_ti.jpg',
+    baseImageUrl: plantThumbnails.hawaiian_ti,
     category: 'indoor',
     careInfo:
       'Grows best in bright, filtered light and slightly moist soil. Avoid direct harsh sunlight and cold drafts.',
@@ -261,6 +273,20 @@ export const plantsData: Plant[] = [
     relatedPlantsIds: [104],
     variants: [
       {
+        id: '105-4x6',
+        size: '4 x 6',
+        price: 15,
+        discount: 32,
+        ratings: 4.8,
+        reviewsCount: 58,
+        growthRate: 'medium',
+        height: '1.4 feet',
+        weight: '0.5 kg',
+        quantityInStock: 24,
+        isAvailable: true,
+        coverImages: getCoverImages("hawaiian_ti", '105-4x6')
+      },
+      {
         id: '105-7x8',
         size: '7 x 8',
         price: 75,
@@ -268,14 +294,12 @@ export const plantsData: Plant[] = [
         ratings: 4.7,
         reviewsCount: 58,
         growthRate: 'medium',
-        height: '2.4 feet',
-        weight: '1.2 kg',
+        height: '2.6 feet',
+        weight: '3.2 kg',
         quantityInStock: 24,
         isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/hawaiian_ti-1.jpg',
-          '/plants/cover_images/hawaiian_ti-2.jpg',
-        ],
+        coverImages: getCoverImages("hawaiian_ti", '105-7x8')
+
       },
     ],
   },
@@ -286,7 +310,7 @@ export const plantsData: Plant[] = [
     subName: 'Fragrant Pannir Rose',
     description:
       'A beautiful and fragrant variety of rose native to South India. Known for its soft pink petals and strong, sweet scent.',
-    baseImageUrl: '/plants/thumbnail/pannir_rose.jpg',
+    baseImageUrl: plantThumbnails.pannir_rose,
     category: 'flowering',
     careInfo:
       'Thrives in full sun with well-drained soil. Requires regular watering and pruning for continuous blooming.',
@@ -299,23 +323,6 @@ export const plantsData: Plant[] = [
     relatedPlantsIds: [103],
     variants: [
       {
-        id: '106-7x8',
-        size: '7 x 8',
-        price: 80,
-        discount: 25,
-        ratings: 5.0,
-        reviewsCount: 45,
-        growthRate: 'fast',
-        height: '1.8 feet',
-        weight: '1 kg',
-        quantityInStock: 30,
-        isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/pannir_rose-1.jpg',
-          '/plants/cover_images/pannir_rose-2.jpg',
-        ],
-      },
-      {
         id: '106-4x6',
         size: '4 x 6',
         price: 15,
@@ -327,11 +334,24 @@ export const plantsData: Plant[] = [
         weight: '0.5 kg',
         quantityInStock: 1020,
         isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/pannir_rose-1.jpg',
-          '/plants/cover_images/pannir_rose-2.jpg',
-        ],
+        coverImages: getCoverImages("pannir_rose", '106-4x6')
       },
+      {
+        id: '106-7x8',
+        size: '7 x 8',
+        price: 80,
+        discount: 25,
+        ratings: 5.0,
+        reviewsCount: 45,
+        growthRate: 'fast',
+        height: '1.8 feet',
+        weight: '1 kg',
+        quantityInStock: 30,
+        isAvailable: true,
+        coverImages: getCoverImages("pannir_rose", '106-7x8')
+
+      },
+
     ],
   },
   {
@@ -341,7 +361,7 @@ export const plantsData: Plant[] = [
     subName: 'Red Ixora Flowering Shrub',
     description:
       'A dense, bushy flowering plant known for its bright red clusters of flowers. Popular in tropical gardens and temples.',
-    baseImageUrl: '/plants/thumbnail/ixora_red.jpg',
+    baseImageUrl: plantThumbnails.ixora_red,
     category: 'flowering',
     careInfo:
       'Prefers full sun to partial shade. Needs well-drained acidic soil and regular watering. Prune to maintain shape.',
@@ -365,10 +385,7 @@ export const plantsData: Plant[] = [
         weight: '0.6 kg',
         quantityInStock: 1500,
         isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/ixora_red-1.jpg',
-          '/plants/cover_images/ixora_red-2.jpg',
-        ],
+        coverImages: getCoverImages("ixora_red", '107-4x6'),
       },
       {
         id: '107-7x8',
@@ -382,10 +399,8 @@ export const plantsData: Plant[] = [
         weight: '1.3 kg',
         quantityInStock: 200,
         isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/ixora_red-1.jpg',
-          '/plants/cover_images/ixora_red-2.jpg',
-        ],
+        coverImages: getCoverImages("ixora_red", '107-7x8'),
+
       },
     ],
   },
@@ -396,11 +411,11 @@ export const plantsData: Plant[] = [
     subName: 'Golden Trumpet Vine',
     description:
       'A fast-growing ornamental vine known for its bright yellow trumpet-shaped flowers. Often used to decorate fences and garden walls.',
-    baseImageUrl: '/plants/thumbnail/yellow_allamanda.jpg',
+    baseImageUrl: plantThumbnails.yellow_allamanda,
     category: 'flowering',
     careInfo:
       'Thrives in full sun with regular watering and well-drained soil. Requires support for climbing and occasional pruning to control size.',
-    fertilizingInfo: 'Feed with a balanced fertilizer every 2–3 weeks during blooming season.',
+    fertilizingInfo: 'Feed with a balanced fertilizer every 2 to 3 weeks during blooming season.',
     usageInfo:
       'Perfect for fences, trellises, balconies, and decorative garden walls. Adds a tropical vibe and attracts pollinators.',
     isAvailable: true,
@@ -420,10 +435,7 @@ export const plantsData: Plant[] = [
         weight: '0.6 kg',
         quantityInStock: 1135,
         isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/yellow_allamanda-1.jpg',
-          '/plants/cover_images/yellow_allamanda-2.jpg',
-        ],
+        coverImages: getCoverImages("yellow_allamanda", "108-4x6"),
       },
       {
         id: '108-7x8',
@@ -437,10 +449,8 @@ export const plantsData: Plant[] = [
         weight: '1.4 kg',
         quantityInStock: 120,
         isAvailable: true,
-        coverImages: [
-          '/plants/cover_images/yellow_allamanda-1.jpg',
-          '/plants/cover_images/yellow_allamanda-2.jpg',
-        ],
+        coverImages: getCoverImages("yellow_allamanda", "108-7x8"),
+
       },
     ],
   },
@@ -451,7 +461,7 @@ export const plantsData: Plant[] = [
     subName: 'Psidium guajava',
     description:
       'A tropical fruit plant known for its sweet and nutritious guava fruits. Commonly grown in home gardens and farms.',
-    baseImageUrl: '/plants/thumbnail/guava.jpg',
+    baseImageUrl: plantThumbnails.guava,
     category: 'fruiting',
     careInfo:
       'Prefers full sunlight and moderate watering. Grows well in loamy soil. Prune to shape and remove dead branches regularly.',
@@ -475,7 +485,7 @@ export const plantsData: Plant[] = [
         weight: '0.8 kg',
         quantityInStock: 920,
         isAvailable: true,
-        coverImages: ['/plants/cover_images/guava-1.jpg', '/plants/cover_images/guava-2.jpg'],
+        coverImages: getCoverImages("guava", '109-4x6'),
       },
       {
         id: '109-7x8',
@@ -489,7 +499,8 @@ export const plantsData: Plant[] = [
         weight: '1.2 kg',
         quantityInStock: 260,
         isAvailable: true,
-        coverImages: ['/plants/cover_images/guava-1.jpg', '/plants/cover_images/guava-2.jpg'],
+        coverImages: getCoverImages("guava", '109-7x8'),
+
       },
       {
         id: '109-7x10',
@@ -503,7 +514,8 @@ export const plantsData: Plant[] = [
         weight: '2.1 kg',
         quantityInStock: 95,
         isAvailable: true,
-        coverImages: ['/plants/cover_images/guava-1.jpg', '/plants/cover_images/guava-2.jpg'],
+        coverImages: getCoverImages("guava", '109-7x10'),
+
       },
     ],
   },
@@ -514,8 +526,8 @@ export const plantsData: Plant[] = [
     subName: 'Cassia fistula',
     description:
       'A majestic flowering tree known for its cascading yellow blooms. National tree of Thailand and widely loved in Tamil culture.',
-    baseImageUrl: '/plants/thumbnail/golden_shower.jpg',
-    category: 'flowering',
+    baseImageUrl: plantThumbnails.golden_shower,
+    category: 'tree',
     careInfo:
       'Needs full sunlight and occasional deep watering. Grows best in well-drained sandy or loamy soil.',
     fertilizingInfo: 'Use slow-release fertilizer twice during growing season.',
@@ -538,7 +550,7 @@ export const plantsData: Plant[] = [
         weight: '0.6 kg',
         quantityInStock: 700,
         isAvailable: true,
-        coverImages: ['/plants/cover_images/golden_shower-1.jpg', '/plants/cover_images/golden_shower-2.jpg'],
+        coverImages: getCoverImages("golden_shower", '110-4x6'),
       },
       {
         id: '110-7x8',
@@ -552,7 +564,8 @@ export const plantsData: Plant[] = [
         weight: '1.6 kg',
         quantityInStock: 165,
         isAvailable: true,
-        coverImages: ['/plants/cover_images/golden_shower-1.jpg', '/plants/cover_images/golden_shower-2.jpg'],
+        coverImages: getCoverImages("golden_shower", '110-7x8'),
+
       },
       {
         id: '110-7x10',
@@ -566,7 +579,8 @@ export const plantsData: Plant[] = [
         weight: '2.3 kg',
         quantityInStock: 80,
         isAvailable: true,
-        coverImages: ['/plants/cover_images/golden_shower-1.jpg', '/plants/cover_images/golden_shower-2.jpg'],
+        coverImages: getCoverImages("golden_shower", '110-7x10'),
+
       },
     ],
   },
@@ -577,7 +591,7 @@ export const plantsData: Plant[] = [
     subName: 'Ficus racemosa',
     description:
       'A sacred and medicinal tree native to South Asia. Produces small edible figs and supports diverse wildlife.',
-    baseImageUrl: '/plants/thumbnail/wild_fig.jpg',
+    baseImageUrl: plantThumbnails.wild_fig,
     category: 'fruiting',
     careInfo:
       'Grows in full to partial sunlight. Requires minimal care once established and prefers moist, well-drained soil.',
@@ -601,7 +615,7 @@ export const plantsData: Plant[] = [
         weight: '0.9 kg',
         quantityInStock: 600,
         isAvailable: true,
-        coverImages: ['/plants/cover_images/wild_fig-1.jpg', '/plants/cover_images/wild_fig-2.jpg'],
+        coverImages: getCoverImages("wild_fig", "111-4x6"),
       },
       {
         id: '111-7x8',
@@ -615,7 +629,8 @@ export const plantsData: Plant[] = [
         weight: '1.5 kg',
         quantityInStock: 140,
         isAvailable: true,
-        coverImages: ['/plants/cover_images/wild_fig-1.jpg', '/plants/cover_images/wild_fig-2.jpg'],
+        coverImages: getCoverImages("wild_fig", "111-7x8"),
+
       },
       {
         id: '111-7x10',
@@ -629,9 +644,8 @@ export const plantsData: Plant[] = [
         weight: '2.4 kg',
         quantityInStock: 70,
         isAvailable: true,
-        coverImages: ['/plants/cover_images/wild_fig-1.jpg', '/plants/cover_images/wild_fig-2.jpg'],
+        coverImages: getCoverImages("wild_fig", "111-7x10"),
       },
     ],
   }
-
 ];
