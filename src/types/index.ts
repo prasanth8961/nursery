@@ -11,7 +11,7 @@ export interface PlantVariant {
   height: string;
   weight: string;
   quantityInStock: number;
-  coverImages: string[];
+  coverImages: readonly string[];
   isAvailable: boolean;
 }
 
@@ -53,6 +53,7 @@ export type PlantCategory =
   | 'succulent'
   | 'bonsai'
   | 'fruiting'
+  | 'tree'
   | 'others';
 
 export interface CartItem {
