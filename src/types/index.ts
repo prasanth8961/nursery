@@ -22,7 +22,7 @@ export interface Plant {
   subName?: string;
   description: string;
   baseImageUrl: string;
-  category: 'indoor' | 'outdoor' | 'flowering' | 'wooden' | 'succulent' | 'bonsai';
+  category: PlantCategory
   careInfo: string;
   fertilizingInfo: string;
   usageInfo: string;
@@ -44,6 +44,16 @@ export interface AboutItem {
   title: string;
   text: string;
 }
+
+export type PlantCategory =
+  | 'indoor'
+  | 'outdoor'
+  | 'flowering'
+  | 'wooden'
+  | 'succulent'
+  | 'bonsai'
+  | 'fruiting'
+  | 'others';
 
 export interface CartItem {
   variantId: string;

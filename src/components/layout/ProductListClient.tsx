@@ -53,7 +53,7 @@ export default function ProductListClient() {
 
     const filteredPlants = useMemo(() => {
         let filtered: Plant[] =
-            active === 'All'
+            active === 'All' || active === 'Others'
                 ? plantData
                 : plantData.filter(plant => plant.category.toLowerCase() === active.toLowerCase());
 
@@ -175,7 +175,7 @@ export default function ProductListClient() {
                     </div>
                 </div>
 
-                <div className="flex flex-wrap gap-4 items-start px-1">
+                <div className="flex overflow-x-auto scrollbar-hide gap-4 items-start px-1">
                     {categories.map(category => (
                         <div
                             key={category}
