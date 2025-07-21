@@ -166,13 +166,16 @@ Thank you! 😊
                 )}
                 <Image
                   src={selectedImage || plant.baseImageUrl}
-                  alt={plant.name}
+                  alt=""
                   loading="lazy"
                   fill
                   onLoad={() => setLoadingMain(false)}
-                  onError={e => {
+                  onError={(e) => {
                     setLoadingMain(false);
-                    (e.currentTarget as HTMLImageElement).src = DEFAULT_IMAGE;
+                    const img = e.currentTarget as HTMLImageElement;
+                    if (img.src !== DEFAULT_IMAGE) {
+                      img.src = DEFAULT_IMAGE;
+                    }
                   }}
                   className={`object-scale-down rounded-lg transition duration-200 hover:scale-105 ${loadingMain ? 'opacity-0' : 'opacity-100'
                     }`}
@@ -198,9 +201,12 @@ Thank you! 😊
                       loading="lazy"
                       fill
                       onLoad={() => setThumbLoading(prev => ({ ...prev, [idx]: false }))}
-                      onError={e => {
-                        setThumbLoading(prev => ({ ...prev, [idx]: false }));
-                        (e.currentTarget as HTMLImageElement).src = DEFAULT_IMAGE;
+                      onError={(e) => {
+                        setLoadingMain(false);
+                        const img = e.currentTarget as HTMLImageElement;
+                        if (img.src !== DEFAULT_IMAGE) {
+                          img.src = DEFAULT_IMAGE;
+                        }
                       }}
                       className={`object-cover transition-opacity duration-300 ${thumbLoading[idx] ? 'opacity-0' : 'opacity-100'
                         }`}
