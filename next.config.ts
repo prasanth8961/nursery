@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    domains: [],
+    domains: ["res.cloudinary.com"],
   },
   env: {
     SECRET_KEY: process.env.SECRET_KEY,
