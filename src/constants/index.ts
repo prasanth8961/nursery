@@ -20,11 +20,11 @@ export const socialMedias: Media[] = [
 
 export const LOGO: string = '/logo.png';
 export const LOGO_IMAGE: string = '/logo_transparent.png';
-export const DEFAULT_IMAGE: string = '/images/1.png';
-export const SHOPING_CART: string = '/images/cart_not_found.jpg';
+export const DEFAULT_IMAGE: string = '/gallery/1.png';
+export const SHOPING_CART: string = '/gallery/cart_not_found.jpg';
 export const HERO_IMAGE: string = '/hero_1.png';
 
-export const categories = ['All', 'Indoor', 'Outdoor', 'Flowering', 'Tree', 'Bonsai', 'Others'] as const;
+export const categories = ['All', 'Indoor', 'Outdoor', 'Flowering', 'Tree', 'Bonsai', 'medicinal', 'Others'] as const;
 export type Category = typeof categories[number];
 
 export const SHIPPING_COST: number = 40;

@@ -54,6 +54,7 @@ export type PlantCategory =
   | 'bonsai'
   | 'fruiting'
   | 'tree'
+  | 'medicinal'
   | 'others';
 
 export interface CartItem {
