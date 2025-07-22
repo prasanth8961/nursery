@@ -13,6 +13,10 @@ export const plantThumbnails = {
     ixora_pink: `${BASE_THUMBNAIL_PATH}/ixora_pink.jpg`,
     ixora_red: `${BASE_THUMBNAIL_PATH}/ixora_red.jpg`,
     pannir_rose: `${BASE_THUMBNAIL_PATH}/pannir_rose.jpg`,
+    croton_petra: `${BASE_THUMBNAIL_PATH}/croton_petra.jpg`,
+    mexican_mint: `${BASE_THUMBNAIL_PATH}/mexican_mint.jpg`,
+    duranta: `${BASE_THUMBNAIL_PATH}/duranta.jpg`,
+
 } as const;
 
 export const plantCoverImages = {
@@ -143,9 +147,39 @@ export const plantCoverImages = {
             // "111-7x10": [`${BASE_COVER_PATH}/wild_fig-7x10-1.jpg`, `${BASE_COVER_PATH}/wild_fig-7x10-2.jpg`],
         },
     },
-
-
-
+    croton_petra: {
+        default: [
+            `${BASE_COVER_PATH}/croton_petra-1.jpg`,
+            `${BASE_COVER_PATH}/croton_petra-2.jpg`,
+        ],
+        variants: {
+            // "111-4x6": [`${BASE_COVER_PATH}/croton_petra-4x6-1.jpg`, `${BASE_COVER_PATH}/croton_petra-4x6-2.jpg`],
+            // "111-7x8": [`${BASE_COVER_PATH}/croton_petra-7x8-1.jpg`, `${BASE_COVER_PATH}/croton_petra-7x8-2.jpg`],
+            // "111-7x10": [`${BASE_COVER_PATH}/croton_petra-7x10-1.jpg`, `${BASE_COVER_PATH}/croton_petra-7x10-2.jpg`],
+        },
+    },
+    mexican_mint: {
+        default: [
+            `${BASE_COVER_PATH}/mexican_mint-1.jpg`,
+            `${BASE_COVER_PATH}/mexican_mint-2.jpg`,
+        ],
+        variants: {
+            // "101-4x6": [`${BASE_COVER_PATH}/mexican_mint-4x6-1.jpg`, `${BASE_COVER_PATH}/mexican_mint-4x6-2.jpg`],
+            // "101-7x8": [`${BASE_COVER_PATH}/mexican_mint-7x8-1.jpg`, `${BASE_COVER_PATH}/mexican_mint-7x8-2.jpg`],
+            // "101-7x10": [`${BASE_COVER_PATH}/mexican_mint-7x10-1.jpg`, `${BASE_COVER_PATH}/mexican_mint-7x10-2.jpg`],
+        },
+    },
+    duranta: {
+        default: [
+            `${BASE_COVER_PATH}/duranta-1.jpg`,
+            `${BASE_COVER_PATH}/duranta-2.jpg`,
+        ],
+        variants: {
+            // "101-4x6": [`${BASE_COVER_PATH}/duranta-4x6-1.jpg`, `${BASE_COVER_PATH}/duranta-4x6-2.jpg`],
+            // "101-7x8": [`${BASE_COVER_PATH}/duranta-7x8-1.jpg`, `${BASE_COVER_PATH}/duranta-7x8-2.jpg`],
+            // "101-7x10": [`${BASE_COVER_PATH}/duranta-7x10-1.jpg`, `${BASE_COVER_PATH}/duranta-7x10-2.jpg`],
+        },
+    },
 } as const;
 
 export type PlantKey = keyof typeof plantCoverImages;
