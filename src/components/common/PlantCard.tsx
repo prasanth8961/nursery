@@ -120,7 +120,9 @@ const PlantCard = React.memo(({ plant, animated_bounce }: PlantCardProps) => {
         <div className="flex items-center justify-between gap-3 sm:mt-3">
           <div className="flex flex-col leading-tight">
             {variant.discount > 0 && (
-              <span className="text-sm text-red-400 font-medium line-through">₹{originalPrice}</span>
+              <span className="text-sm text-red-400 font-medium line-through">
+                ₹{originalPrice}
+              </span>
             )}
             <span className="text-xl font-bold text-green-600">₹{variant.price}</span>
           </div>
@@ -128,9 +130,10 @@ const PlantCard = React.memo(({ plant, animated_bounce }: PlantCardProps) => {
           <button
             onClick={handleCartClick}
             className={`group z-20 flex items-center gap-[4px] px-2 py-[6px] text-xs font-medium rounded-tl-sm rounded-br-sm transition-all
-              ${isInCart
-                ? 'bg-gray-100 text-green-800 '
-                : 'bg-gray-100 text-green-800 hover:bg-green-600'
+              ${
+                isInCart
+                  ? 'bg-gray-100 text-green-800 '
+                  : 'bg-gray-100 text-green-800 hover:bg-green-600'
               }
             `}
           >

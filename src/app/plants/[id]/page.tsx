@@ -148,8 +148,9 @@ Thank you! 😊
               className="h-10 w-10 rounded-tl-md rounded-br-md border-2 border-[var(--color-accent-light)] flex items-center justify-center hover:bg-[var(--color-accent-mid)] text-[var(--color-primary-dark)] transition cursor-pointer"
             >
               <span
-                className={`transition-transform duration-300 ease-in-out ${animate ? 'scale-150 animate-ping-once' : 'scale-100'
-                  }`}
+                className={`transition-transform duration-300 ease-in-out ${
+                  animate ? 'scale-150 animate-ping-once' : 'scale-100'
+                }`}
               >
                 <FaHeart className="text-green-500" />
               </span>
@@ -170,15 +171,16 @@ Thank you! 😊
                   loading="lazy"
                   fill
                   onLoad={() => setLoadingMain(false)}
-                  onError={(e) => {
+                  onError={e => {
                     setLoadingMain(false);
                     const img = e.currentTarget as HTMLImageElement;
                     if (img.src !== DEFAULT_IMAGE) {
                       img.src = DEFAULT_IMAGE;
                     }
                   }}
-                  className={`object-scale-down rounded-lg transition duration-200 hover:scale-105 ${loadingMain ? 'opacity-0' : 'opacity-100'
-                    }`}
+                  className={`object-scale-down rounded-lg transition duration-200 hover:scale-105 ${
+                    loadingMain ? 'opacity-0' : 'opacity-100'
+                  }`}
                 />
               </div>
 
@@ -187,10 +189,11 @@ Thank you! 😊
                   <div
                     key={idx}
                     onClick={() => setSelectedImage(url)}
-                    className={`relative min-w-[96px] h-24 rounded-md overflow-hidden cursor-pointer transition ${selectedImage === url
-                      ? 'border-3 border-green-500'
-                      : 'border-2 border-green-100'
-                      }`}
+                    className={`relative min-w-[96px] h-24 rounded-md overflow-hidden cursor-pointer transition ${
+                      selectedImage === url
+                        ? 'border-3 border-green-500'
+                        : 'border-2 border-green-100'
+                    }`}
                   >
                     {thumbLoading[idx] && (
                       <div className="absolute inset-0 bg-gray-400 animate-shimmer z-10" />
@@ -201,15 +204,16 @@ Thank you! 😊
                       loading="lazy"
                       fill
                       onLoad={() => setThumbLoading(prev => ({ ...prev, [idx]: false }))}
-                      onError={(e) => {
+                      onError={e => {
                         setLoadingMain(false);
                         const img = e.currentTarget as HTMLImageElement;
                         if (img.src !== DEFAULT_IMAGE) {
                           img.src = DEFAULT_IMAGE;
                         }
                       }}
-                      className={`object-cover transition-opacity duration-300 ${thumbLoading[idx] ? 'opacity-0' : 'opacity-100'
-                        }`}
+                      className={`object-cover transition-opacity duration-300 ${
+                        thumbLoading[idx] ? 'opacity-0' : 'opacity-100'
+                      }`}
                     />
                   </div>
                 ))}
@@ -247,10 +251,11 @@ Thank you! 😊
     relative flex items-center justify-center font-semibold text-sm
     min-w-[56px] h-13 px-3 py-2 rounded-xl overflow-hidden border transition
     ${selectedPlantIdx === idx ? 'border-green-600 border-2' : 'border-green-300'}
-    ${plant.variants[idx].isAvailable
-                          ? 'text-green-800 bg-white cursor-pointer'
-                          : 'text-gray-500 bg-green-50 border-red-300 border-2 pointer-events-none select-none'
-                        }
+    ${
+      plant.variants[idx].isAvailable
+        ? 'text-green-800 bg-white cursor-pointer'
+        : 'text-gray-500 bg-green-50 border-red-300 border-2 pointer-events-none select-none'
+    }
   `}
                     >
                       {size}
@@ -350,7 +355,7 @@ Thank you! 😊
                           ₹
                           {Math.round(
                             (plant.variants[selectedPlantIdx].price * quantityInput) /
-                            (1 - plant.variants[selectedPlantIdx].discount / 100)
+                              (1 - plant.variants[selectedPlantIdx].discount / 100)
                           )}
                         </span>
                       )}
@@ -368,10 +373,11 @@ Thank you! 😊
                         dispatch(toggleCart({ plant, variant: plant.variants[selectedPlantIdx] }))
                       }
                       className={`flex items-center gap-2 px-4 h-10 rounded-tl-md rounded-br-md border-2 transition font-medium
-                                            ${isInCart
-                          ? 'border-green-400 text-green-700'
-                          : 'border-[var(--color-accent-light)] text-green-600 hover:bg-[var(--color-accent-mid)]'
-                        }`}
+                                            ${
+                                              isInCart
+                                                ? 'border-green-400 text-green-700'
+                                                : 'border-[var(--color-accent-light)] text-green-600 hover:bg-[var(--color-accent-mid)]'
+                                            }`}
                     >
                       <FaShoppingCart className={isInCart ? 'text-green-600' : 'text-green-500'} />
                       <span>{isInCart ? 'Remove ' : 'Add '}</span>

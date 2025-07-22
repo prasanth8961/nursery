@@ -117,8 +117,8 @@ export default function Checkout() {
           <FaLeaf className="text-green-500 text-5xl mb-4" />
           <h2 className="text-xl font-semibold">Your Cart is Empty</h2>
           <p className="text-sm text-gray-500 mt-1">
-            Looks like you haven&apos;t added any plants yet. Let&apos;s explore the greenery and bring your
-            space to life!
+            Looks like you haven&apos;t added any plants yet. Let&apos;s explore the greenery and
+            bring your space to life!
           </p>
           <div
             onClick={() => redirectToHome()}

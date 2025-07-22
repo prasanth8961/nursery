@@ -34,7 +34,7 @@ export const plantsData: Plant[] = [
         weight: '0.5kg',
         quantityInStock: 800,
         isAvailable: true,
-        coverImages: getCoverImages('semparuthi', '101-4x6')
+        coverImages: getCoverImages('semparuthi', '101-4x6'),
       },
       {
         id: '101-7x8',
@@ -48,8 +48,7 @@ export const plantsData: Plant[] = [
         weight: '1.2kg',
         quantityInStock: 38,
         isAvailable: true,
-        coverImages: getCoverImages('semparuthi', '101-7x8')
-
+        coverImages: getCoverImages('semparuthi', '101-7x8'),
       },
       {
         id: '101-8x10',
@@ -63,8 +62,7 @@ export const plantsData: Plant[] = [
         weight: '3.5kg',
         quantityInStock: 38,
         isAvailable: true,
-        coverImages: getCoverImages('semparuthi', '101-8x10')
-
+        coverImages: getCoverImages('semparuthi', '101-8x10'),
       },
     ],
   },
@@ -100,7 +98,7 @@ export const plantsData: Plant[] = [
         weight: '0.5 kg',
         quantityInStock: 4200,
         isAvailable: true,
-        coverImages: getCoverImages('ixora_white', '102-4x6')
+        coverImages: getCoverImages('ixora_white', '102-4x6'),
       },
       {
         id: '102-7x8',
@@ -114,8 +112,7 @@ export const plantsData: Plant[] = [
         weight: '1.8 kg',
         quantityInStock: 42,
         isAvailable: true,
-        coverImages: getCoverImages('ixora_white', '102-7x8')
-
+        coverImages: getCoverImages('ixora_white', '102-7x8'),
       },
       {
         id: '102-7x10',
@@ -129,8 +126,7 @@ export const plantsData: Plant[] = [
         weight: '3.5 kg',
         quantityInStock: 12,
         isAvailable: true,
-        coverImages: getCoverImages('ixora_white', '102-7x10')
-
+        coverImages: getCoverImages('ixora_white', '102-7x10'),
       },
     ],
   },
@@ -165,8 +161,7 @@ export const plantsData: Plant[] = [
         weight: '0.5 kg',
         quantityInStock: 38,
         isAvailable: true,
-        coverImages: getCoverImages("ixora_pink", '103-4x6')
-
+        coverImages: getCoverImages('ixora_pink', '103-4x6'),
       },
       {
         id: '103-7x8',
@@ -180,7 +175,7 @@ export const plantsData: Plant[] = [
         weight: '1.5 kg',
         quantityInStock: 38,
         isAvailable: true,
-        coverImages: getCoverImages("ixora_pink", '103-7x8')
+        coverImages: getCoverImages('ixora_pink', '103-7x8'),
       },
 
       {
@@ -195,10 +190,8 @@ export const plantsData: Plant[] = [
         weight: '3.5 kg',
         quantityInStock: 18,
         isAvailable: true,
-        coverImages: getCoverImages("ixora_pink", '103-7x10')
-
+        coverImages: getCoverImages('ixora_pink', '103-7x10'),
       },
-
     ],
   },
   {
@@ -233,8 +226,7 @@ export const plantsData: Plant[] = [
         weight: '0.6 kg',
         quantityInStock: 160,
         isAvailable: true,
-        coverImages: getCoverImages("aralia_white", '104-4x6')
-
+        coverImages: getCoverImages('aralia_white', '104-4x6'),
       },
       {
         id: '104-7x8',
@@ -248,9 +240,8 @@ export const plantsData: Plant[] = [
         weight: '2.5 kg',
         quantityInStock: 29,
         isAvailable: true,
-        coverImages: getCoverImages("aralia_white", '104-7x8')
+        coverImages: getCoverImages('aralia_white', '104-7x8'),
       },
-
     ],
   },
   {
@@ -284,7 +275,7 @@ export const plantsData: Plant[] = [
         weight: '0.5 kg',
         quantityInStock: 24,
         isAvailable: true,
-        coverImages: getCoverImages("hawaiian_ti", '105-4x6')
+        coverImages: getCoverImages('hawaiian_ti', '105-4x6'),
       },
       {
         id: '105-7x8',
@@ -298,8 +289,7 @@ export const plantsData: Plant[] = [
         weight: '3.2 kg',
         quantityInStock: 24,
         isAvailable: true,
-        coverImages: getCoverImages("hawaiian_ti", '105-7x8')
-
+        coverImages: getCoverImages('hawaiian_ti', '105-7x8'),
       },
     ],
   },
@@ -314,7 +304,8 @@ export const plantsData: Plant[] = [
     category: 'flowering',
     careInfo:
       'Thrives in full sun with well-drained soil. Requires regular watering and pruning for continuous blooming.',
-    fertilizingInfo: 'Feed with organic rose fertilizer once every 2 to 3 weeks during the growing season.',
+    fertilizingInfo:
+      'Feed with organic rose fertilizer once every 2 to 3 weeks during the growing season.',
     usageInfo:
       'Widely used in religious rituals, garlands, perfumes, and for its ornamental beauty in home gardens.',
     isAvailable: true,
@@ -334,7 +325,7 @@ export const plantsData: Plant[] = [
         weight: '0.5 kg',
         quantityInStock: 1020,
         isAvailable: true,
-        coverImages: getCoverImages("pannir_rose", '106-4x6')
+        coverImages: getCoverImages('pannir_rose', '106-4x6'),
       },
       {
         id: '106-7x8',
@@ -348,10 +339,8 @@ export const plantsData: Plant[] = [
         weight: '1 kg',
         quantityInStock: 30,
         isAvailable: true,
-        coverImages: getCoverImages("pannir_rose", '106-7x8')
-
+        coverImages: getCoverImages('pannir_rose', '106-7x8'),
       },
-
     ],
   },
   {
@@ -385,7 +374,7 @@ export const plantsData: Plant[] = [
         weight: '0.6 kg',
         quantityInStock: 1500,
         isAvailable: true,
-        coverImages: getCoverImages("ixora_red", '107-4x6'),
+        coverImages: getCoverImages('ixora_red', '107-4x6'),
       },
       {
         id: '107-7x8',
@@ -399,8 +388,7 @@ export const plantsData: Plant[] = [
         weight: '1.3 kg',
         quantityInStock: 200,
         isAvailable: true,
-        coverImages: getCoverImages("ixora_red", '107-7x8'),
-
+        coverImages: getCoverImages('ixora_red', '107-7x8'),
       },
     ],
   },
@@ -435,7 +423,7 @@ export const plantsData: Plant[] = [
         weight: '0.6 kg',
         quantityInStock: 1135,
         isAvailable: true,
-        coverImages: getCoverImages("yellow_allamanda", "108-4x6"),
+        coverImages: getCoverImages('yellow_allamanda', '108-4x6'),
       },
       {
         id: '108-7x8',
@@ -449,8 +437,7 @@ export const plantsData: Plant[] = [
         weight: '1.4 kg',
         quantityInStock: 120,
         isAvailable: true,
-        coverImages: getCoverImages("yellow_allamanda", "108-7x8"),
-
+        coverImages: getCoverImages('yellow_allamanda', '108-7x8'),
       },
     ],
   },
@@ -485,7 +472,7 @@ export const plantsData: Plant[] = [
         weight: '0.8 kg',
         quantityInStock: 920,
         isAvailable: true,
-        coverImages: getCoverImages("guava", '109-4x6'),
+        coverImages: getCoverImages('guava', '109-4x6'),
       },
       {
         id: '109-7x8',
@@ -499,8 +486,7 @@ export const plantsData: Plant[] = [
         weight: '1.2 kg',
         quantityInStock: 260,
         isAvailable: true,
-        coverImages: getCoverImages("guava", '109-7x8'),
-
+        coverImages: getCoverImages('guava', '109-7x8'),
       },
       {
         id: '109-7x10',
@@ -514,8 +500,7 @@ export const plantsData: Plant[] = [
         weight: '2.1 kg',
         quantityInStock: 95,
         isAvailable: true,
-        coverImages: getCoverImages("guava", '109-7x10'),
-
+        coverImages: getCoverImages('guava', '109-7x10'),
       },
     ],
   },
@@ -550,7 +535,7 @@ export const plantsData: Plant[] = [
         weight: '0.6 kg',
         quantityInStock: 700,
         isAvailable: true,
-        coverImages: getCoverImages("golden_shower", '110-4x6'),
+        coverImages: getCoverImages('golden_shower', '110-4x6'),
       },
       {
         id: '110-7x8',
@@ -564,8 +549,7 @@ export const plantsData: Plant[] = [
         weight: '1.6 kg',
         quantityInStock: 165,
         isAvailable: true,
-        coverImages: getCoverImages("golden_shower", '110-7x8'),
-
+        coverImages: getCoverImages('golden_shower', '110-7x8'),
       },
       {
         id: '110-7x10',
@@ -579,8 +563,7 @@ export const plantsData: Plant[] = [
         weight: '2.3 kg',
         quantityInStock: 80,
         isAvailable: true,
-        coverImages: getCoverImages("golden_shower", '110-7x10'),
-
+        coverImages: getCoverImages('golden_shower', '110-7x10'),
       },
     ],
   },
@@ -615,7 +598,7 @@ export const plantsData: Plant[] = [
         weight: '0.9 kg',
         quantityInStock: 600,
         isAvailable: true,
-        coverImages: getCoverImages("wild_fig", "111-4x6"),
+        coverImages: getCoverImages('wild_fig', '111-4x6'),
       },
       {
         id: '111-7x8',
@@ -629,8 +612,7 @@ export const plantsData: Plant[] = [
         weight: '1.5 kg',
         quantityInStock: 140,
         isAvailable: true,
-        coverImages: getCoverImages("wild_fig", "111-7x8"),
-
+        coverImages: getCoverImages('wild_fig', '111-7x8'),
       },
       {
         id: '111-7x10',
@@ -644,7 +626,7 @@ export const plantsData: Plant[] = [
         weight: '2.4 kg',
         quantityInStock: 70,
         isAvailable: true,
-        coverImages: getCoverImages("wild_fig", "111-7x10"),
+        coverImages: getCoverImages('wild_fig', '111-7x10'),
       },
     ],
   },
@@ -679,7 +661,7 @@ export const plantsData: Plant[] = [
         weight: '0.7 kg',
         quantityInStock: 320,
         isAvailable: true,
-        coverImages: getCoverImages("croton_petra", "112-4x6"),
+        coverImages: getCoverImages('croton_petra', '112-4x6'),
       },
       {
         id: '112-6x8',
@@ -693,7 +675,7 @@ export const plantsData: Plant[] = [
         weight: '1.6 kg',
         quantityInStock: 140,
         isAvailable: true,
-        coverImages: getCoverImages("croton_petra", "112-7x8"),
+        coverImages: getCoverImages('croton_petra', '112-7x8'),
       },
       {
         id: '112-7x10',
@@ -707,7 +689,7 @@ export const plantsData: Plant[] = [
         weight: '2.1 kg',
         quantityInStock: 60,
         isAvailable: true,
-        coverImages: getCoverImages("croton_petra", "112-7x10"),
+        coverImages: getCoverImages('croton_petra', '112-7x10'),
       },
     ],
   },
@@ -742,7 +724,7 @@ export const plantsData: Plant[] = [
         weight: '0.6 kg',
         quantityInStock: 400,
         isAvailable: true,
-        coverImages: getCoverImages("mexican_mint", "113-4x6"),
+        coverImages: getCoverImages('mexican_mint', '113-4x6'),
       },
       {
         id: '113-7x8',
@@ -756,7 +738,7 @@ export const plantsData: Plant[] = [
         weight: '1.2 kg',
         quantityInStock: 170,
         isAvailable: true,
-        coverImages: getCoverImages("mexican_mint", "113-7x8"),
+        coverImages: getCoverImages('mexican_mint', '113-7x8'),
       },
       {
         id: '113-7x10',
@@ -770,7 +752,7 @@ export const plantsData: Plant[] = [
         weight: '1.9 kg',
         quantityInStock: 90,
         isAvailable: true,
-        coverImages: getCoverImages("mexican_mint", "113-7x10"),
+        coverImages: getCoverImages('mexican_mint', '113-7x10'),
       },
     ],
   },
@@ -805,7 +787,7 @@ export const plantsData: Plant[] = [
         weight: '0.8 kg',
         quantityInStock: 280,
         isAvailable: true,
-        coverImages: getCoverImages("duranta", "114-4x6"),
+        coverImages: getCoverImages('duranta', '114-4x6'),
       },
       {
         id: '114-7x8',
@@ -819,7 +801,7 @@ export const plantsData: Plant[] = [
         weight: '1.4 kg',
         quantityInStock: 130,
         isAvailable: true,
-        coverImages: getCoverImages("duranta", "114-7x8"),
+        coverImages: getCoverImages('duranta', '114-7x8'),
       },
       {
         id: '114-7x10',
@@ -833,8 +815,8 @@ export const plantsData: Plant[] = [
         weight: '2.2 kg',
         quantityInStock: 85,
         isAvailable: true,
-        coverImages: getCoverImages("duranta", "114-7x10"),
+        coverImages: getCoverImages('duranta', '114-7x10'),
       },
     ],
-  }
+  },
 ];

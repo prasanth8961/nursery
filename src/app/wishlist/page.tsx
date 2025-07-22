@@ -113,8 +113,9 @@ export default function WishList() {
                     src={plant.baseImageUrl || DEFAULT_IMAGE}
                     alt={plant.name}
                     fill
-                    className={`object-cover transition duration-300 group-hover:scale-105 ${isLoading ? 'opacity-0' : 'opacity-100'
-                      }`}
+                    className={`object-cover transition duration-300 group-hover:scale-105 ${
+                      isLoading ? 'opacity-0' : 'opacity-100'
+                    }`}
                     onLoadingComplete={() =>
                       setImageLoadingMap(prev => ({ ...prev, [plant.plantId]: false }))
                     }

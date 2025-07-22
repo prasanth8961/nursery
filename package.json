@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "format-code": "prettier --write .",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint-fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
@@ -31,6 +32,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9.31.0",
     "eslint-config-next": "15.3.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.3",
     "eslint-plugin-unused-imports": "^4.1.4",
     "prettier": "^3.6.2",
     "tailwindcss": "^4",

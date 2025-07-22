@@ -1,10 +1,17 @@
 // eslint.config.mjs
-import { FlatCompat } from '@eslint/eslintrc'
-import js from '@eslint/js'
+import { FlatCompat } from '@eslint/eslintrc';
+import js from '@eslint/js';
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
-})
+  recommendedConfig: {
+    rules: {
+      'no-unused-vars': 'warn',
+      'no-debugger': 'error',
+      'no-console': 'warn',
+    },
+  },
+});
 
 export default [
   js.configs.recommended,
@@ -33,11 +40,7 @@ export default [
       sourceType: 'module',
       project: './tsconfig.json',
     },
-    plugins: [
-      '@typescript-eslint',
-      'unused-imports',
-      'prettier',
-    ],
+    plugins: ['@typescript-eslint', 'unused-imports', 'prettier'],
     extends: [
       'next',
       'next/core-web-vitals',
@@ -77,4 +80,4 @@ export default [
       },
     },
   }),
-]
+];

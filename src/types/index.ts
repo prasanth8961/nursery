@@ -22,7 +22,7 @@ export interface Plant {
   subName?: string;
   description: string;
   baseImageUrl: string;
-  category: PlantCategory
+  category: PlantCategory;
   careInfo: string;
   fertilizingInfo: string;
   usageInfo: string;

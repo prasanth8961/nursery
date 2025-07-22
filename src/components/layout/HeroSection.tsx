@@ -72,11 +72,7 @@ const HeroSection = () => {
               <br /> THE 🌿 HEART OF NATURE
             </m.h1>
 
-            <m.p
-              className="mt-4 font-medium text-md"
-              variants={textFadeIn}
-              custom={2}
-            >
+            <m.p className="mt-4 font-medium text-md" variants={textFadeIn} custom={2}>
               Where plants find homes and homes find life — explore green treasures, grow with ease,
               and bring nature closer, one leaf at a time.
             </m.p>
@@ -104,11 +100,9 @@ const HeroSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 1.0, ease: 'easeOut' }}
           >
-
             <div className="absolute w-2/3 aspect-square rounded-[25%] bg-green-200 opacity-30 animate-ripple hidden sm:block" />
             <div className="absolute w-2/3 aspect-square rounded-[25%] bg-green-300 opacity-20 animate-ripple delay-[200ms] hidden sm:block" />
             <div className="absolute w-2/3 aspect-square rounded-[25%] bg-green-400 opacity-10 animate-ripple delay-[400ms] hidden sm:block" />
-
 
             <m.div
               animate={{ y: [0, -6, 0] }}
