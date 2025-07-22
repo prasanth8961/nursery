@@ -11,7 +11,7 @@ export interface PlantVariant {
   height: string;
   weight: string;
   quantityInStock: number;
-  coverImages: readonly string[];
+  coverImages: string[];
   isAvailable: boolean;
 }
 

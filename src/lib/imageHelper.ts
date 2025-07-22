@@ -7,7 +7,7 @@ function isValidPlantKey(key: string): key is PlantKey {
 export function getCoverImages(
     plantKey: string,
     variantId?: string
-): readonly string[] {
+): string[] {
     if (!isValidPlantKey(plantKey)) return [];
 
     const entry = plantCoverImages[plantKey];

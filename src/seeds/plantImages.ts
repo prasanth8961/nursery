@@ -17,7 +17,7 @@ export const plantThumbnails = {
     mexican_mint: `${BASE_THUMBNAIL_PATH}/mexican_mint.jpg`,
     duranta: `${BASE_THUMBNAIL_PATH}/duranta.jpg`,
 
-} as const;
+};
 
 export const plantCoverImages = {
     semparuthi: {
@@ -180,6 +180,6 @@ export const plantCoverImages = {
             // "101-7x10": [`${BASE_COVER_PATH}/duranta-7x10-1.jpg`, `${BASE_COVER_PATH}/duranta-7x10-2.jpg`],
         },
     },
-} as const;
+};
 
 export type PlantKey = keyof typeof plantCoverImages;
