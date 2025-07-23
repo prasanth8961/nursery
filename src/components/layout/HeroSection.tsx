@@ -34,7 +34,7 @@ const containerFadeIn: Variants = {
 };
 
 const HeroSection = () => {
-  const { goToPlants, goToAbout } = useRoute();
+  const { goToPlants } = useRoute();
 
   return (
     <>
@@ -84,7 +84,9 @@ const HeroSection = () => {
               </button>
               <button
                 className="border border-[var(--color-primary)] px-5 py-2 hover:bg-[var(--color-primary-light)] rounded-tl-xl rounded-br-xl transition cursor-pointer"
-                onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
+                onClick={() =>
+                  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+                }
               >
                 Need Help? 🌱
               </button>
