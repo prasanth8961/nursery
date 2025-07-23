@@ -5,7 +5,6 @@ import { LazyMotion, domAnimation, m, Variants } from 'framer-motion';
 import { HERO_IMAGE } from '@/constants';
 import { useRoute } from '@/routes';
 import { SeoHead } from '../common/Head';
-import { useRef } from 'react';
 
 const textFadeIn: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -35,8 +34,7 @@ const containerFadeIn: Variants = {
 };
 
 const HeroSection = () => {
-  const { goToPlants } = useRoute();
-  const helpRef = useRef<HTMLDivElement>(null);
+  const { goToPlants, goToAbout } = useRoute();
 
   return (
     <>
@@ -86,7 +84,7 @@ const HeroSection = () => {
               </button>
               <button
                 className="border border-[var(--color-primary)] px-5 py-2 hover:bg-[var(--color-primary-light)] rounded-tl-xl rounded-br-xl transition cursor-pointer"
-                onClick={() => helpRef.current?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
               >
                 Need Help? 🌱
               </button>
@@ -122,7 +120,6 @@ const HeroSection = () => {
           </m.div>
         </LazyMotion>
       </main>
-      <div ref={helpRef} />
     </>
   );
 };
