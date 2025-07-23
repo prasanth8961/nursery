@@ -23,7 +23,6 @@ module.exports = [
     },
 
     js.configs.recommended,
-
     {
         languageOptions: {
             ecmaVersion: 2024,
@@ -51,11 +50,9 @@ module.exports = [
         plugins: [
             '@typescript-eslint',
             'unused-imports',
-            'prettier',
+            'prettier'
         ],
         extends: [
-            'next',
-            'next/core-web-vitals',
             'eslint:recommended',
             'plugin:@typescript-eslint/recommended',
             'plugin:react-hooks/recommended',
