@@ -29,6 +29,7 @@ export const categories = [
   'Indoor',
   'Outdoor',
   'Flowering',
+  'fruiting',
   'Tree',
   'Bonsai',
   'medicinal',

@@ -16,6 +16,9 @@ export const plantThumbnails = {
   croton_petra: `${BASE_THUMBNAIL_PATH}/croton_petra.jpg`,
   mexican_mint: `${BASE_THUMBNAIL_PATH}/mexican_mint.jpg`,
   duranta: `${BASE_THUMBNAIL_PATH}/duranta.jpg`,
+  jackfruit: `${BASE_THUMBNAIL_PATH}/jackfruit.jpg`,
+  vengai: `${BASE_THUMBNAIL_PATH}/vengai.jpg`,
+  semmaram: `${BASE_THUMBNAIL_PATH}/semmaram.jpg`,
 };
 
 export const plantCoverImages = {
@@ -137,6 +140,30 @@ export const plantCoverImages = {
       // "101-4x6": [`${BASE_COVER_PATH}/duranta-4x6-1.jpg`, `${BASE_COVER_PATH}/duranta-4x6-2.jpg`],
       // "101-7x8": [`${BASE_COVER_PATH}/duranta-7x8-1.jpg`, `${BASE_COVER_PATH}/duranta-7x8-2.jpg`],
       // "101-7x10": [`${BASE_COVER_PATH}/duranta-7x10-1.jpg`, `${BASE_COVER_PATH}/duranta-7x10-2.jpg`],
+    },
+  },
+  jackfruit: {
+    default: [`${BASE_COVER_PATH}/jackfruit-1.jpg`, `${BASE_COVER_PATH}/jackfruit-2.jpg`],
+    variants: {
+      // "101-4x6": [`${BASE_COVER_PATH}/jackfruit-4x6-1.jpg`, `${BASE_COVER_PATH}/jackfruit-4x6-2.jpg`],
+      // "101-7x8": [`${BASE_COVER_PATH}/jackfruit-7x8-1.jpg`, `${BASE_COVER_PATH}/jackfruit-7x8-2.jpg`],
+      // "101-7x10": [`${BASE_COVER_PATH}/jackfruit-7x10-1.jpg`, `${BASE_COVER_PATH}/jackfruit-7x10-2.jpg`],
+    },
+  },
+  vengai: {
+    default: [`${BASE_COVER_PATH}/vengai-1.jpg`, `${BASE_COVER_PATH}/vengai-2.jpg`],
+    variants: {
+      // "101-4x6": [`${BASE_COVER_PATH}/vengai-4x6-1.jpg`, `${BASE_COVER_PATH}/vengai-4x6-2.jpg`],
+      // "101-7x8": [`${BASE_COVER_PATH}/vengai-7x8-1.jpg`, `${BASE_COVER_PATH}/vengai-7x8-2.jpg`],
+      // "101-7x10": [`${BASE_COVER_PATH}/vengai-7x10-1.jpg`, `${BASE_COVER_PATH}/vengai-7x10-2.jpg`],
+    },
+  },
+  semmaram: {
+    default: [`${BASE_COVER_PATH}/semmaram-1.jpg`, `${BASE_COVER_PATH}/semmaram-2.jpg`],
+    variants: {
+      // "101-4x6": [`${BASE_COVER_PATH}/semmaram-4x6-1.jpg`, `${BASE_COVER_PATH}/semmaram-4x6-2.jpg`],
+      // "101-7x8": [`${BASE_COVER_PATH}/semmaram-7x8-1.jpg`, `${BASE_COVER_PATH}/semmaram-7x8-2.jpg`],
+      // "101-7x10": [`${BASE_COVER_PATH}/semmaram-7x10-1.jpg`, `${BASE_COVER_PATH}/semmaram-7x10-2.jpg`],
     },
   },
 };
