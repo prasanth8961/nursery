@@ -82,11 +82,12 @@ export default function ProductListClient() {
 
   useEffect(() => {
     setAllFilteredPlants(filteredPlants);
-    if (currentPage !== 1) {
-      setCurrentPage(1);
-      updateURLParams({ page: '1' });
-    }
-  }, [filteredPlants, currentPage, updateURLParams]);
+  }, [filteredPlants]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+    updateURLParams({ page: '1' });
+  }, [filteredPlants.length]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -216,7 +217,7 @@ export default function ProductListClient() {
               <PlantCard key={plant.id} plant={plant} animated_bounce={false} />
             ))}
           </div>
-          {visiblePlants.length > 4 && (
+          {(visiblePlants.length > 4 || currentPage > 1) && (
             <div className="flex justify-center items-center gap-1 md:gap-2 py-6 flex-wrap">
               <button
                 onClick={() => {
