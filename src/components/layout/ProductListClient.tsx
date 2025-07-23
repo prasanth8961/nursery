@@ -3,7 +3,7 @@
 import Head from 'next/head';
 import { AiFillPhone } from 'react-icons/ai';
 import { FaArrowLeft, FaLeaf } from 'react-icons/fa';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Plant } from '@/types';
 import { useDebounce } from '@/hooks/useDebounce';
 import { categories, socialMedias } from '@/constants';
@@ -38,18 +38,20 @@ export default function ProductListClient() {
   const { goToHome } = useRoute();
 
   const plantData = useAppSelector(state => state.product.plants);
-
-  const updateURLParams = (params: Record<string, string>) => {
-    const newParams = new URLSearchParams(searchParams.toString());
-    Object.entries(params).forEach(([key, value]) => {
-      if (value) {
-        newParams.set(key, value);
-      } else {
-        newParams.delete(key);
-      }
-    });
-    router.push(`?${newParams.toString()}`);
-  };
+  const updateURLParams = useCallback(
+    (params: Record<string, string>) => {
+      const newParams = new URLSearchParams(searchParams.toString());
+      Object.entries(params).forEach(([key, value]) => {
+        if (value) {
+          newParams.set(key, value);
+        } else {
+          newParams.delete(key);
+        }
+      });
+      router.push(`?${newParams.toString()}`);
+    },
+    [router, searchParams]
+  );
 
   const filteredPlants = useMemo(() => {
     let filtered: Plant[] =
@@ -66,7 +68,7 @@ export default function ProductListClient() {
     }
 
     return filtered;
-  }, [active, debouncedSearchInput]);
+  }, [active, plantData, debouncedSearchInput]);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsPageReady(true), 300);
@@ -84,7 +86,7 @@ export default function ProductListClient() {
       setCurrentPage(1);
       updateURLParams({ page: '1' });
     }
-  }, [filteredPlants]);
+  }, [filteredPlants, currentPage, updateURLParams]);
 
   useEffect(() => {
     setIsLoading(true);

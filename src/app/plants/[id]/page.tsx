@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { plantsData } from '@/seeds/plantData';
 import { FaArrowLeft, FaHeart, FaRegHeart } from 'react-icons/fa';
 import Image from 'next/image';
@@ -46,9 +46,11 @@ export default function Details() {
     const index = plant?.variants.findIndex(v => v.id === id);
     return index !== undefined && index >= 0 ? index : 0;
   });
-  const imageList = plant
-    ? [...(plant.variants[selectedPlantIdx].coverImages || []), plant.baseImageUrl]
-    : [];
+  const imageList = useMemo(() => {
+    if (!plant) return [];
+    return [...(plant.variants[selectedPlantIdx]?.coverImages || []), plant.baseImageUrl];
+  }, [plant, selectedPlantIdx]);
+
   const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
   const [loadingMain, setLoadingMain] = useState(true);
   const [thumbLoading, setThumbLoading] = useState<{ [key: number]: boolean }>(() =>
@@ -72,7 +74,7 @@ export default function Details() {
     if (imageList.length > 0) {
       setSelectedImage(imageList[0]);
     }
-  }, [_id]);
+  }, [_id, imageList]);
 
   const handleWishlistClick = (plant: Plant, variant: PlantVariant) => {
     dispatch(toggleFav({ plant, variant }));

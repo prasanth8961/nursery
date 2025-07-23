@@ -81,15 +81,15 @@ export interface WishListItem {
 
 export interface UseCartReturn {
   cart: WishListItem[];
-  toggleCart: (plant: Plant, variant: PlantVariant) => void;
-  isInCart: (variantId: string) => boolean;
+  toggleCart: (_plant: Plant, variant: PlantVariant) => void;
+  isInCart: (_variantId: string) => boolean;
   clearCart: () => void;
   totalAmount: number;
 }
 
 export interface UseWishlistReturn {
   wishlist: WishListItem[];
-  toggleWishlist: (plant: Plant, variant: PlantVariant) => void;
-  isInWishlist: (plantId: string) => boolean;
+  toggleWishlist: (_plant: Plant, variant: PlantVariant) => void;
+  isInWishlist: (_plantId: string) => boolean;
   clearWishlist: () => void;
 }
