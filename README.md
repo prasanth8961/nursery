@@ -10,12 +10,11 @@ Welcome to the **Prasanth Nursery Garden** 🌱 — a modern, responsive platfor
 
 | Home Page | Plant Catalog | Gallery |  
 |-----------|---------------|---------|  
-| [![Home Page](/assets/homepage.jpg)](/assets/homepage.jpg) | [![Plant Catalog](/assets/catalog.jpg)](/assets/catalog.jpg) | [![Gallery](/assets/gallery.jpg)](/assets/gallery.jpg) |  
+| [![Home Page](/public/assets/homepage.jpg)](/public/assets/homepage.jpg) | [![Plant Catalog](/public/assets/catalog.jpg)](/public/assets/catalog.jpg) | [![Gallery](/public/assets/gallery.jpg)](/public/assets/gallery.jpg) |  
 
-| Checkout | Favorites | Contact |  
+| Checkout | Favorites | Products |  
 |----------|-----------|---------|  
-| [![Checkout](/assets/checkout.jpg)](/assets/checkout.jpg) | [![Favorites](/assets/favorites.jpg)](/assets/favorites.jpg) | [![Product](/assets/products.jpg)](/assets/products.jpg) |  
-
+| [![Checkout](/public/assets/checkout.jpg)](/public/assets/checkout.jpg) | [![Favorites](/public/assets/favorites.jpg)](/public/assets/favorites.jpg) | [![Product](/public/assets/products.jpg)](/public/assets/products.jpg) |  
 ---
 
 ## ✨ Features  
