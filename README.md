@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌿 Prasanth Nursery Garden  
 
-## Getting Started
+![GitHub repo size](https://img.shields.io/github/repo-size/prasanth8961/nursery?color=green) ![GitHub stars](https://img.shields.io/github/stars/prasanth8961/nursery?style=social)  ![GitHub last commit](https://img.shields.io/github/last-commit/prasanth8961/nursery?color=blue)  [![Vercel Deploy](https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel)](https://nursery.vercel.app)  
 
-First, run the development server:
+Welcome to the **Prasanth Nursery Garden** 🌱 — a modern, responsive platform built to showcase plants, gardening products, and services.  
+
+---
+
+## 🖼️ Preview  
+
+| Home Page | Plant Catalog | Gallery |  
+|-----------|---------------|---------|  
+| [![Home Page](/public/assets/homepage.jpg)](/public/assets/homepage.jpg) | [![Plant Catalog](/public/assets/catalog.jpg)](/public/assets/catalog.jpg) | [![Gallery](/public/assets/gallery.jpg)](/public/assets/gallery.jpg) |  
+
+| Checkout | Favorites | Products |  
+|----------|-----------|---------|  
+| [![Checkout](/public/assets/checkout.jpg)](/public/assets/checkout.jpg) | [![Favorites](/public/assets/favorites.jpg)](/public/assets/favorites.jpg) | [![Product](/public/assets/products.jpg)](/public/assets/products.jpg) |  
+---
+
+## ✨ Features  
+
+- 🏡 **Beautiful Home Page** – Hero section with business highlights  
+- 🌱 **Plant Catalog** – Browse and filter plants easily  
+- 💚 **Wishlist & Favorites** – Save plants for later  
+- 🛒 **Checkout System** – Smooth shopping experience  
+- 📩 **Contact Form** – Customers can reach you instantly  
+- 🛠️ **Service Showcase** – Tools, soil, delivery, consultations  
+- 📱 **Responsive Design** – Mobile, tablet, and desktop optimized  
+- ⚡ **SEO & Performance** – Fast, accessible, and search-engine friendly  
+
+---
+
+## 🛠️ Tech Stack  
+
+- **Frontend:** [Next.js](https://nextjs.org/)  
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)  
+- **Animations:** [Framer motion](https://framermotion.com/)
+- **Hosting:** [Vercel](https://vercel.com/)  
+
+---
+
+## 🚀 Getting Started  
+
+Clone the repository:  
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/prasanth8961/nursery.git
+cd nursery
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Install dependencies:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Run development server:
+```bash
+npm run dev
+```
 
-## Learn More
+- 🚀 http://localhost:3000 
 
-To learn more about Next.js, take a look at the following resources:
+## 🌍 Live Demo
+- [www.prasanthnursery.com](https://nursery-gamma.vercel.app/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🤝 Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+    Contributions are welcome!.
 
-## Deploy on Vercel
+    Fork this repo
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    Create your branch (git checkout -b feature-xyz)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+    Commit changes (git commit -m 'Add feature xyz')
+
+    Push (git push origin feature-xyz)
+
+    Open a Pull Request 🎉
+    
+
+## 📬 Contact 
+    Prasanth nursery Garden 🌱 – Bringing nature closer to you 
+    📍 Location: Pudukkottai - Tamil Nadu 
+    📞 Phone: +91-7639874667 
+    📧 Email: prasanthnusury@gmail.com
+
+## 📄 License
+
+This project is licensed under the MIT License – free to use and modify.
+
+
