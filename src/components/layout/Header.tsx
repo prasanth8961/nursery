@@ -121,7 +121,7 @@ export const Header = () => {
             className="hidden sm:flex border-2 border-[var(--color-accent-light)] bg-[var(--color-primary-light)] text-white px-3 py-2 rounded-tl-lg rounded-br-lg items-center gap-1 text-sm"
             onClick={() => {
               setMenuOpen(false);
-              goToAuth();
+              // goToAuth(); // This will be commanded because, there is no authentication right now
             }}
           >
             <BsPerson /> <span>Welcome</span>
@@ -224,7 +224,7 @@ export const Header = () => {
             className="flex items-center justify-center gap-2 bg-[var(--color-primary-light)] text-white px-3 py-3 rounded-tl-lg rounded-br-lg"
             onClick={() => {
               setMenuOpen(false);
-              goToAuth();
+              // goToAuth();
             }}
           >
             <BsPerson /> <span>Welcome</span>
