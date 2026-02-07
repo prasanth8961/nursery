@@ -1,10 +1,10 @@
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    return [
-        {
-            url: 'https://prasanthnuserygarden.com',
-            lastModified: new Date(),
-        },
-    ]
+  return [
+    {
+      url: 'https://prasanthnuserygarde.com',
+      lastModified: new Date(),
+    },
+  ];
 }
