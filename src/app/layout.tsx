@@ -29,19 +29,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'GardenStore',
-              name: 'Prasanth Nursery',
-              image: 'https://prasanthnursery.com/logo.png',
+              name: 'Prasanth Nursery Garden',
+              image: 'https://prasanthnurserygarden.com/logo.png',
               description: 'Discover indoor, outdoor, and flowering plants at Prasanth Nursery.',
               address: {
                 '@type': 'PostalAddress',
-                streetAddress: '123 Green Lane',
-                addressLocality: 'Coimbatore',
+                streetAddress: '886/77 - Kallukkudieruppu',
+                addressLocality: 'Pudukkottai',
                 addressRegion: 'TN',
-                postalCode: '641001',
+                postalCode: '622202',
                 addressCountry: 'IN',
               },
-              telephone: '+91-9876543210',
-              url: 'https://prasanthnursery.com',
+              telephone: '+91-7639874667',
+              url: 'https://prasanthnurserygarden.com',
             }),
           }}
         />
