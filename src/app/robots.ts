@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://prasanthnuserygarde.com/sitemap.xml',
+    sitemap: 'https://prasanthnurserygarden.com/sitemap.xml',
   };
 }
