@@ -19,11 +19,11 @@ export const metadata = {
   openGraph: {
     title: 'Prasanth Nursery',
     description: 'Explore our fresh collection of green plants and bonsai.',
-    url: 'https://prasanthnursery.com',
+    url: 'https://prasanthnurserygarden.com',
     type: 'website',
     images: [
       {
-        url: 'https://prasanthnursery.com/logo.png',
+        url: 'https://prasanthnurserygarden.com/logo.png',
         width: 1200,
         height: 630,
         alt: 'Prasanth Nursery Hero Image',
