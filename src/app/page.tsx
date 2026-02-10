@@ -16,6 +16,12 @@ export const metadata = {
     'wooden plants',
     'Prasanth Nursery',
   ],
+
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
+
   openGraph: {
     title: 'Prasanth Nursery',
     description: 'Explore our fresh collection of green plants and bonsai.',
