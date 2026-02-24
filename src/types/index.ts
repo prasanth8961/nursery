@@ -16,7 +16,7 @@ export interface PlantVariant {
 }
 
 export interface Plant {
-  id: number;
+  id: string | number;
   name: string;
   tamilName?: string;
   subName?: string;
@@ -29,7 +29,7 @@ export interface Plant {
   isFeatured: boolean;
   isAvailable: boolean;
   tags: string[];
-  relatedPlantsIds: number[];
+  relatedPlantsIds: (string | number)[];
   variants: PlantVariant[];
 }
 
@@ -45,21 +45,11 @@ export interface AboutItem {
   text: string;
 }
 
-export type PlantCategory =
-  | 'indoor'
-  | 'outdoor'
-  | 'flowering'
-  | 'wooden'
-  | 'succulent'
-  | 'bonsai'
-  | 'fruiting'
-  | 'tree'
-  | 'medicinal'
-  | 'others';
+export type PlantCategory = string;
 
 export interface CartItem {
   variantId: string;
-  plantId: number;
+  plantId: string | number;
   name: string;
   tamilName?: string;
   subName?: string;
@@ -70,7 +60,7 @@ export interface CartItem {
 
 export interface WishListItem {
   variantId: string;
-  plantId: number;
+  plantId: string | number;
   name: string;
   tamilName?: string;
   subName?: string;

@@ -62,7 +62,7 @@ const PlantCard = React.memo(({ plant, animated_bounce }: PlantCardProps) => {
       <div className="relative w-full h-36 sm:h-56 bg-gradient-to-br from-green-100 to-green-200">
         {loading && <div className="absolute inset-0 bg-gray-100 animate-pulse z-10" />}
         <Image
-          src={imgError ? DEFAULT_IMAGE : plant.baseImageUrl}
+          src={(imgError || !plant.baseImageUrl) ? DEFAULT_IMAGE : plant.baseImageUrl}
           alt={plant.name ?? 'Plant Image'}
           loading="lazy"
           fill

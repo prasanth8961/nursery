@@ -1,111 +1,101 @@
 'use client';
 
-import Head from 'next/head';
-import { AiFillPhone } from 'react-icons/ai';
-import { FaArrowLeft, FaLeaf } from 'react-icons/fa';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Plant } from '@/types';
+import Head from 'next/head';
+import { useSearchParams, useRouter } from 'next/navigation';
+
+import { AiFillPhone } from 'react-icons/ai';
+import { FaArrowLeft} from 'react-icons/fa';
+
 import { useDebounce } from '@/hooks/useDebounce';
-import { categories, socialMedias } from '@/constants';
-import PlantCard from '@/components/common/PlantCard';
+import { useFetchPlants } from '@/hooks/useFetchPlants';
 import { useRoute } from '@/routes';
+
+import { CategoryTabs } from '@/components/common/CategoryTabs';
+import { Pagination } from '@/components/common/Pagination';
+import { EmptyState } from '@/components/common/EmptyState';
+import PlantCard from '@/components/common/PlantCard';
 import { ShimmerCard } from '@/components/common/ShimmerLoader';
 import Loader from '@/components/common/Loader';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { useAppSelector } from '@/lib/store/helper';
+import { useAppDispatch, useAppSelector } from '@/lib/store/helper';
 
-const PAGE_SIZE = 12;
+import { socialMedias } from '@/constants';
+
+const PAGE_SIZE = 10;
 const DELAY = 300;
 
 export default function ProductListClient() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  // const router = useRouter();
+  // const searchParams = useSearchParams();
 
-  const initialCategory = searchParams.get('category') || categories[0];
-  const initialSearch = searchParams.get('q') || '';
-  const initialPage = parseInt(searchParams.get('page') || '1');
+  // const initialCategory = searchParams.get('category') || 'All';
+  // const initialSearch = searchParams.get('q') || '';
+  // const initialPage = parseInt(searchParams.get('page') || '1');
 
-  const [active, setActive] = useState<string>(initialCategory);
-  const [allFilteredPlants, setAllFilteredPlants] = useState<Plant[]>([]);
-  const [visiblePlants, setVisiblePlants] = useState<Plant[]>([]);
-  const [searchInput, setSearchInput] = useState<string>(initialSearch);
-  const [currentPage, setCurrentPage] = useState<number>(initialPage);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const dispatch = useAppDispatch();
+
+  const [active, setActive] = useState<string>('All');
+  const [searchInput, setSearchInput] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [isPageReady, setIsPageReady] = useState(false);
+  
   const debouncedSearchInput = useDebounce<string>(searchInput, DELAY);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const { goToHome } = useRoute();
 
-  const plantData = useAppSelector(state => state.product.plants);
-  const updateURLParams = useCallback(
-    (params: Record<string, string>) => {
-      const newParams = new URLSearchParams(searchParams.toString());
-      Object.entries(params).forEach(([key, value]) => {
-        if (value) {
-          newParams.set(key, value);
-        } else {
-          newParams.delete(key);
-        }
-      });
-      router.push(`?${newParams.toString()}`);
-    },
-    [router, searchParams]
-  );
-
-  const filteredPlants = useMemo(() => {
-    let filtered: Plant[] =
-      active === 'All' || active === 'Others'
-        ? plantData
-        : plantData.filter(plant => plant.category.toLowerCase() === active.toLowerCase());
-
-    if (debouncedSearchInput) {
-      filtered = filtered.filter(
-        item =>
-          item.name.toLowerCase().includes(debouncedSearchInput.toLowerCase()) ||
-          item.category.toLowerCase().includes(debouncedSearchInput.toLowerCase())
-      );
-    }
-
-    return filtered;
-  }, [active, plantData, debouncedSearchInput]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsPageReady(true), 300);
-    return () => clearTimeout(timer);
+  const { categories: dynamicCategories, loading: isFetching } = useFetchPlants({
+    page: currentPage,
+    limit: PAGE_SIZE,
+    category: active,
+    search: debouncedSearchInput,
   });
 
-  const paginatedPlants = useMemo(() => {
-    const start = (currentPage - 1) * PAGE_SIZE;
-    return filteredPlants.slice(start, start + PAGE_SIZE);
-  }, [filteredPlants, currentPage]);
+  const { plants: visiblePlants, total: totalPlants } = useAppSelector(state => state.product);
 
-  useEffect(() => {
-    setAllFilteredPlants(filteredPlants);
-  }, [filteredPlants]);
+  // const updateURLParams = useCallback(
+  //   (params: Record<string, string>) => {
+  //     const newParams = new URLSearchParams(searchParams.toString());
+  //     Object.entries(params).forEach(([key, value]) => {
+  //       if (value) {
+  //         newParams.set(key, value);
+  //       } else {
+  //         newParams.delete(key);
+  //       }
+  //     });
+  //     router.push(`?${newParams.toString()}`);
+  //   },
+  //   [router, searchParams]
+  // );
 
-  useEffect(() => {
-    setCurrentPage(1);
-    updateURLParams({ page: '1' });
-  }, [filteredPlants.length]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    const timeout = setTimeout(() => {
-      setVisiblePlants(paginatedPlants);
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timeout);
-  }, [paginatedPlants]);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setIsPageReady(true), 300);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   useEffect(() => {
     const listTop = document.getElementById('plant-list')?.offsetTop;
     if (listTop !== undefined) window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage]);
+  }, [currentPage, active, debouncedSearchInput]);
 
-  const totalPages = Math.ceil(allFilteredPlants.length / PAGE_SIZE);
+  useEffect(() => {
+    setCurrentPage(1);
+    // updateURLParams({ page: '1' });
+  }, [active, debouncedSearchInput]);
 
-  if (!isPageReady) return <Loader />;
+  const totalPages = Math.ceil(totalPlants / PAGE_SIZE);
+
+  // if (!isPageReady) return <Loader />;
+
+  const handleCategoryChange = (category: string) => {
+    setActive(category);
+    // updateURLParams({ category, page: '1' });
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // updateURLParams({ page: String(page) });
+  };
 
   return (
     <div>
@@ -170,7 +160,7 @@ export default function ProductListClient() {
               value={searchInput}
               onChange={e => {
                 setSearchInput(e.target.value);
-                updateURLParams({ q: e.target.value, page: '1' });
+                // updateURLParams({ q: e.target.value, page: '1' });
               }}
               onKeyDown={e => e.key === 'Enter' && searchInputRef.current?.blur()}
               className="flex-1 bg-transparent focus:outline-none text-[var(--color-primary-dark)] placeholder:text-gray-400"
@@ -178,30 +168,14 @@ export default function ProductListClient() {
           </div>
         </div>
 
-        <div className="flex overflow-x-auto scrollbar-hide gap-4 items-start px-1">
-          {categories.map(category => (
-            <div
-              key={category}
-              onClick={() => {
-                setActive(category);
-                updateURLParams({ category, page: '1' });
-              }}
-              className="flex flex-col items-center pb-2 cursor-pointer"
-            >
-              <span
-                className={`text-sm font-medium transition-colors duration-200 ${active === category ? 'text-[var(--color-primary-dark)]' : 'text-[var(--color-primary)] hover:text-[var(--color-primary-light)]'}`}
-              >
-                {category}
-              </span>
-              <div
-                className={`h-[2px] mt-1 w-full rounded-full transition-all duration-300 ${active === category ? 'bg-[var(--color-primary)]' : 'bg-transparent'}`}
-              />
-            </div>
-          ))}
-        </div>
+        <CategoryTabs
+          categories={dynamicCategories}
+          activeCategory={active}
+          onCategoryChange={handleCategoryChange}
+        />
       </div>
 
-      {isLoading ? (
+      {isFetching ? (
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 p-2 mt-4">
           {Array.from({ length: PAGE_SIZE }).map((_, i) => (
             <ShimmerCard key={i} />
@@ -217,63 +191,17 @@ export default function ProductListClient() {
               <PlantCard key={plant.id} plant={plant} animated_bounce={false} />
             ))}
           </div>
-          {(visiblePlants.length > 4 || currentPage > 1) && (
-            <div className="flex justify-center items-center gap-1 md:gap-2 py-6 flex-wrap">
-              <button
-                onClick={() => {
-                  setCurrentPage(prev => Math.max(1, prev - 1));
-                  updateURLParams({ page: String(Math.max(1, currentPage - 1)) });
-                }}
-                disabled={currentPage === 1}
-                className="px-4 py-2 rounded-md border border-[var(--color-primary)] bg-[var(--color-accent-ultralight)] font-semibold text-sm hover:bg-[var(--color-primary-light)] disabled:opacity-50"
-              >
-                Prev
-              </button>
-              {(() => {
-                const pagesToShow = 4;
-                let startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
-                let endPage = startPage + pagesToShow - 1;
-                if (endPage > totalPages) {
-                  endPage = totalPages;
-                  startPage = Math.max(1, endPage - pagesToShow + 1);
-                }
-                return Array.from({ length: endPage - startPage + 1 }, (_, i) => {
-                  const page = startPage + i;
-                  return (
-                    <button
-                      key={page}
-                      onClick={() => {
-                        setCurrentPage(page);
-                        updateURLParams({ page: String(page) });
-                      }}
-                      className={`px-4 py-2 text-sm font-semibold rounded-md transition border ${currentPage === page ? 'bg-[var(--color-primary-dark)] text-[var(--color-primary-light)] border-[var(--color-primary)]' : 'border-[var(--color-primary)] hover:bg-[var(--color-accent-ultralight)]'}`}
-                    >
-                      {page}
-                    </button>
-                  );
-                });
-              })()}
-              <button
-                onClick={() => {
-                  setCurrentPage(prev => Math.min(totalPages, prev + 1));
-                  updateURLParams({ page: String(Math.min(totalPages, currentPage + 1)) });
-                }}
-                disabled={currentPage === totalPages}
-                className="px-4 py-2 rounded-md border border-[var(--color-primary)] bg-[var(--color-accent-ultralight)] font-semibold text-sm hover:bg-[var(--color-primary-light)] disabled:opacity-50"
-              >
-                Next
-              </button>
-            </div>
-          )}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </>
       ) : (
-        <div className="flex flex-col items-center justify-center mt-20 text-center text-gray-600">
-          <FaLeaf className="text-green-500 text-5xl mb-4" />
-          <h2 className="text-xl font-semibold">No Plants Found</h2>
-          <p className="text-sm text-gray-500 mt-1">
-            Try searching with a different name or filter.
-          </p>
-        </div>
+        <EmptyState
+          title="No Plants Found"
+          message="Try searching with a different name or filter."
+        />
       )}
     </div>
   );

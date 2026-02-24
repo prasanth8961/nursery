@@ -37,6 +37,6 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "prettier": "^3.6.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "5.9.3"
   }
 }

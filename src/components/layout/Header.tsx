@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { CONTACT, EMAIL, LOGO_IMAGE, socialMedias } from '@/constants';
 import { Media } from '@/types';
 import { useRoute } from '@/routes';
+import { useFetchPlants } from '@/hooks/useFetchPlants';
 import CartBadge from '../common/CartBadge';
 
 export const Header = () => {

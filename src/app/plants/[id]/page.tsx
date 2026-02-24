@@ -2,8 +2,10 @@
 
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, useMemo } from 'react';
-import { plantsData } from '@/seeds/plantData';
 import { FaArrowLeft, FaHeart, FaRegHeart } from 'react-icons/fa';
+import { plantsApi } from '@/lib/api';
+import { setPlants } from '@/lib/store/slices/productSlice';
+import { AdminPlant } from '@/types/admin';
 import Image from 'next/image';
 import { FaShoppingCart } from 'react-icons/fa';
 import { decryptId } from '@/lib/crypto';
@@ -41,11 +43,59 @@ export default function Details() {
   const [animate, setAnimate] = useState(false);
   const [isPageReady, setIsPageReady] = useState(false);
   const { redirectToCart, redirectToWishList } = useRoute();
-  const plant = plantsData.find(p => p.id === Number(_id));
-  const [selectedPlantIdx, setSelectedPlantIdx] = useState<number>(() => {
-    const index = plant?.variants.findIndex(v => v.id === id);
-    return index !== undefined && index >= 0 ? index : 0;
-  });
+
+  const plantData = useAppSelector(state => state.product.plants);
+  const dispatch = useAppDispatch();
+
+  // Try to find plant in store
+  const plant = useMemo(() => {
+    return plantData.find(p => String(p.id) === String(_id));
+  }, [plantData, _id]);
+
+  useEffect(() => {
+    const fetchIfMissing = async () => {
+      if (!plant && _id) {
+        try {
+          const res = await plantsApi.getAll();
+          const plantsRes = res.data;
+          const mappedPlants: Plant[] = (plantsRes.data as unknown as AdminPlant[]).map(p => {
+            const variants = p.variants || [];
+            const fallbackImage = variants[0]?.coverImages?.[0] || '';
+            return {
+              ...p,
+              category: p.category?.name || 'Others',
+              description: p.description || '',
+              careInfo: p.careInfo || '',
+              fertilizingInfo: p.fertilizingInfo || '',
+              usageInfo: p.usageInfo || '',
+              baseImageUrl: p.baseImageUrl || fallbackImage,
+              variants: variants.map(v => ({
+                ...v,
+                growthRate: v.growthRate || '',
+                height: v.height || '',
+                weight: v.weight || '',
+              }))
+            };
+          }) as unknown as Plant[];
+          dispatch(setPlants({ plants: mappedPlants, total: plantsRes.total }));
+        } catch (err) {
+          console.error('Failed to fetch plants:', err);
+        }
+      }
+      setIsPageReady(true);
+    };
+    fetchIfMissing();
+  }, [plant, _id, dispatch]);
+
+  const [selectedPlantIdx, setSelectedPlantIdx] = useState<number>(0);
+
+  // Sync selected index if variantId is in URL
+  useEffect(() => {
+    if (plant && id) {
+      const index = plant.variants.findIndex(v => String(v.id) === String(id));
+      if (index >= 0) setSelectedPlantIdx(index);
+    }
+  }, [plant, id]);
   const imageList = useMemo(() => {
     if (!plant) return [];
     return [...(plant.variants[selectedPlantIdx]?.coverImages || []), plant.baseImageUrl];
@@ -56,8 +106,6 @@ export default function Details() {
   const [thumbLoading, setThumbLoading] = useState<{ [key: number]: boolean }>(() =>
     Object.fromEntries(imageList.map((_, i: number) => [i, true]))
   );
-
-  const dispatch = useAppDispatch();
   const isInWishlist = useAppSelector(state =>
     state.fav.items.some(item => item.variantId === plant?.variants[selectedPlantIdx].id)
   );
@@ -82,7 +130,7 @@ export default function Details() {
     setTimeout(() => setAnimate(false), 500);
   };
 
-  const handleOrder = (id: number, name: string, price: number | string) => {
+  const handleOrder = (id: string | number, name: string, price: number | string) => {
     const whatsappMessage = `
 🌿 *Nursery Order Request*
 
@@ -168,7 +216,7 @@ Thank you! 😊
                   <div className="absolute inset-0 bg-gray-300 animate-shimmer z-10" />
                 )}
                 <Image
-                  src={selectedImage || plant.baseImageUrl}
+                  src={(selectedImage || plant.baseImageUrl) || DEFAULT_IMAGE}
                   alt=""
                   loading="lazy"
                   fill
@@ -201,7 +249,7 @@ Thank you! 😊
                       <div className="absolute inset-0 bg-gray-400 animate-shimmer z-10" />
                     )}
                     <Image
-                      src={url}
+                      src={url || DEFAULT_IMAGE}
                       alt={`${plant.name} preview ${idx + 1}`}
                       loading="lazy"
                       fill
@@ -414,8 +462,9 @@ Thank you! 😊
           </div>
           {
             <div className="mt-10 grid grid-cols-2 gap-[5px] sm:gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:mx-auto">
-              {plantsData
-                .filter(x => plant.relatedPlantsIds.includes(x.id))
+              {plantData
+                .filter(x => plant.relatedPlantsIds?.includes(x.id))
+                .slice(0, 4)
                 .map((item, idx: number) => (
                   <PlantCard key={idx} plant={item} animated_bounce={false} />
                 ))}

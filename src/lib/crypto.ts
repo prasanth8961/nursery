@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-const SECRET_KEY: string = process.env.SECRET_KEY!;
+const SECRET_KEY: string = process.env.NEXT_PUBLIC_SECRET_KEY || 'prasanth-nursery-secret-key';
 
 export function encryptId(id: number | string) {
   return encodeURIComponent(CryptoJS.AES.encrypt(id.toString(), SECRET_KEY).toString());

@@ -10,12 +10,13 @@ import { useRoute } from '@/routes';
 import { useRouter } from 'next/navigation';
 import Loader from '@/components/common/Loader';
 import { IoStarHalfSharp, IoStarOutline, IoStarSharp } from 'react-icons/io5';
-import { plantsData } from '@/seeds/plantData';
 import { useAppDispatch, useAppSelector } from '@/lib/store/helper';
 import { clearCart, toggleCart } from '@/lib/store/slices/cartSlice';
+import { useFetchPlants } from '@/hooks/useFetchPlants';
 
 export default function Checkout() {
-  const [imageLoadingMap, setImageLoadingMap] = useState<Record<string, boolean>>({});
+  useFetchPlants();
+  const [imageLoadingMap, setImageLoadingMap] = useState<Record<string | number, boolean>>({});
   const { goToPlantDetails, redirectToHome } = useRoute();
   const [confirmation, setconfirmation] = useState(false);
   const router = useRouter();
@@ -28,6 +29,7 @@ export default function Checkout() {
 
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector(state => state.cart.items);
+  const plantsData = useAppSelector(state => state.product.plants);
   const subtotal = useMemo(
     () => cartItems.reduce((sum, item) => sum + (item.variant?.price ?? 0), 0),
     [cartItems]

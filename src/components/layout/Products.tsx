@@ -1,20 +1,37 @@
 'use client';
 
-import { Plant } from '@/types';
 import { useRoute } from '@/routes';
 import dynamic from 'next/dynamic';
-const PlantCard = dynamic(() => import('../common/PlantCard'));
 import { useMemo } from 'react';
+
+const PlantCard = dynamic(() => import('../common/PlantCard'));
+import { ShimmerCard } from '../common/ShimmerLoader';
+
+import { Plant } from '@/types';
 import { useAppSelector } from '@/lib/store/helper';
+import { useFetchFeaturedPlants } from '@/hooks/useFetchFeaturedPlants';
 
 const Products = () => {
   const { goToPlants } = useRoute();
-  const plantsData: Plant[] = useAppSelector(state => state.product.plants);
+  useFetchFeaturedPlants();
+  const { plants: plantsData, loading } = useAppSelector(state => state.product);
 
-  const featuredPlants = useMemo(
-    () => plantsData.filter(p => p.isFeatured).slice(0, 8),
-    [plantsData]
-  );
+  // const featuredPlants = useMemo(
+  //   () => plantsData.filter(p => p.isFeatured).slice(0, 8),
+  //   [plantsData]
+  // );
+
+  if (loading && plantsData.length === 0) {
+    return (
+      <section className="max-w-[95vw] mx-auto py-2 sm:py-5">
+        <div className="grid grid-cols-2 gap-x-[2px] gap-y-[5px] sm:gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:mx-auto">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <ShimmerCard key={i} />
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <>
@@ -35,7 +52,7 @@ const Products = () => {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-x-[2px] gap-y-[5px] sm:gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:mx-auto">
-            {featuredPlants.map((plant: Plant) => (
+            {plantsData.map((plant: Plant) => (
               <PlantCard key={plant.id} plant={plant} animated_bounce={true} />
             ))}
           </div>

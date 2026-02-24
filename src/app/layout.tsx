@@ -13,6 +13,8 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+import { SupportChat } from '@/components/common/SupportChat';
+
 export const metadata: Metadata = {
   title: '🌱 Prasanth Nursery Garden',
   description: 'Discover and share beautiful nursery plants nearby.',
@@ -47,7 +49,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className={`select-none ${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ReduxProvider>{children}</ReduxProvider>
+        <ReduxProvider>
+          {children}
+          <SupportChat />
+        </ReduxProvider>
       </body>
     </html>
   );

@@ -10,12 +10,13 @@ import { encryptId } from '@/lib/crypto';
 import { DEFAULT_IMAGE } from '@/constants';
 import { useRoute } from '@/routes';
 import Loader from '@/components/common/Loader';
-import { plantsData } from '@/seeds/plantData';
 import { useAppDispatch, useAppSelector } from '@/lib/store/helper';
 import { toggleFav } from '@/lib/store/slices/favSlice';
+import { useFetchPlants } from '@/hooks/useFetchPlants';
 
 export default function WishList() {
-  const [imageLoadingMap, setImageLoadingMap] = useState<Record<number, boolean>>({});
+  useFetchPlants();
+  const [imageLoadingMap, setImageLoadingMap] = useState<Record<string | number, boolean>>({});
   const router = useRouter();
   const { goToPlantDetails, goToHome } = useRoute();
   const [totalAmount, setTotalAmount] = useState<string>('0.00');
@@ -23,6 +24,7 @@ export default function WishList() {
   const dispatch = useAppDispatch();
 
   const favItems = useAppSelector(state => state.fav.items);
+  const plantsData = useAppSelector(state => state.product.plants);
 
   const handleClick = (id: string) => {
     goToPlantDetails(id);
